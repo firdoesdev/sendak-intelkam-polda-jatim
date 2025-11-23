@@ -12,9 +12,16 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate();
+        
+        $users = User::when($request->search, function ($query, $search) {
+                    $query->whereRaw('LOWER(name) like ?', ['%' . strtolower($search) . '%'])
+                        ->orWhereRaw('LOWER(email) like ?', ['%' . strtolower($search) . '%']);
+                })
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
         return Inertia::render('iam/users/page', [
             'users' => $users
         ]);
