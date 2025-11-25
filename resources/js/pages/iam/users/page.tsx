@@ -19,18 +19,21 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const UserPage = () => {
-    const props = usePage<{ users: PaginationMeta<TUser> }>().props;
+    const page = usePage<{ data: PaginationMeta<TUser> }>();
+
+    const handleSearch = (search: string) => {
+        router.visit(UserController.index({ mergeQuery: { search: search } }), { preserveState: true, replace: true, only: ['data'] });
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <DataTable<TUser>
-                    onSearch={(search: string) => router.visit(UserController.index({ mergeQuery: { search: search } }), { preserveState: true, replace: true, only: ['users'] })}
+                    onSearch={handleSearch}
                     title="Data User"
                     columns={columns}
-                    data={props.users.data}
-                    next_page_url={props.users.next_page_url}
-                    prev_page_url={props.users.prev_page_url}
+                    data={page.props.data.data}
                 />
             </div>
         </AppLayout>

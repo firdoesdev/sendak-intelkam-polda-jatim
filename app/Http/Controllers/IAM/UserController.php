@@ -23,7 +23,7 @@ class UserController extends Controller
                 ->paginate(10)
                 ->withQueryString();
         return Inertia::render('iam/users/page', [
-            'users' => $users
+            'data' => $users
         ]);
     }
 

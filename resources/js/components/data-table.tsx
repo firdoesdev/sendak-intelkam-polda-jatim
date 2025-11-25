@@ -9,12 +9,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { useReactTable, getCoreRowModel, flexRender, ColumnDef } from '@tanstack/react-table'
-import { Link } from "@inertiajs/react";
+import { useReactTable, getCoreRowModel, flexRender, ColumnDef, getFilteredRowModel } from '@tanstack/react-table'
+import { Link, usePage } from "@inertiajs/react";
+import { PaginationMeta } from "@/types";
+import {ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight} from 'lucide-react'
+import { useState } from "react";
 
 interface DataTableProps<T> {
-    prev_page_url: string | null;
-    next_page_url: string | null;
+    
     columns: ColumnDef<T>[];
     data: T[];
     title:string
@@ -22,20 +24,34 @@ interface DataTableProps<T> {
 }
 
 const DataTable = <T,>(props: DataTableProps<T>) => {
+    const page = usePage<{data: PaginationMeta<T>}>()
+
+    const [rowSelection, setRowSelection] = useState({})
+
     const table = useReactTable({
         data: props.data,
         columns: props.columns,
-        getCoreRowModel: getCoreRowModel()
+        getCoreRowModel: getCoreRowModel(),
+        onRowSelectionChange: setRowSelection, // set row selection `checked` or `unchecked`
+        getFilteredRowModel:getFilteredRowModel(), // get row selection data
+        state:{
+            rowSelection // state selected row
+        }
     });
+
+    
+
     return (
         <div className="w-full">
-            <div>
-                <h2 className="text-2xl font-bold mb-4">{props.title}</h2>
-            </div>
+            <h2 className="text-2xl font-bold mb-4">{props.title}</h2>
             <div className="mb-4 flex justify-end">
 
                 <Input placeholder="Search" className="max-w-1/4" onChange={(e)=>props.onSearch(e.target.value)}/>
             </div>
+            {/* <div className="text-muted-foreground flex-1 text-sm">
+                {table.getFilteredSelectedRowModel().rows.length} of{" "}
+                {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div> */}
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -63,7 +79,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                                 data-state={row.getIsSelected() && "selected"}
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>
+                                    <TableCell key={cell.id} className="p-3">
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}
@@ -79,13 +95,13 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                 </TableBody>
             </Table>
             <div className="flex items-center justify-end space-x-2 py-4">
-                <Button
+                 <Button
                     asChild
                     variant="outline"
                     size="sm"
                 >
-                    <Link href={props.prev_page_url || '#'}>
-                        Previous
+                    <Link href={page.props.data.first_page_url || '#'}>
+                        <ChevronsLeft/>
                     </Link>
                 </Button>
                 <Button
@@ -93,8 +109,29 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                     variant="outline"
                     size="sm"
                 >
-                    <Link href={props.next_page_url || '#'}>
-                        Next
+                    <Link href={page.props.data.prev_page_url || '#'}>
+                        <ChevronLeft/>
+                    </Link>
+                </Button>
+                <div className="text-sm">
+                    {page.props.data.current_page} of {page.props.data.last_page}
+                </div>
+                <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                >
+                    <Link href={page.props.data.next_page_url || '#'}>
+                        <ChevronRight/>
+                    </Link>
+                </Button>
+                <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                >
+                    <Link href={page.props.data.last_page_url || '#'}>
+                        <ChevronsRight/>
                     </Link>
                 </Button>
             </div>
