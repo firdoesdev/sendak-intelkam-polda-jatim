@@ -12,19 +12,20 @@ import { Input } from "@/components/ui/input";
 import { useReactTable, getCoreRowModel, flexRender, ColumnDef, getFilteredRowModel } from '@tanstack/react-table'
 import { Link, usePage } from "@inertiajs/react";
 import { PaginationMeta } from "@/types";
-import {ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight} from 'lucide-react'
-import { useState } from "react";
+import { ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from 'lucide-react'
+import { useState, useEffect, Activity, useEffectEvent } from "react";
 
 interface DataTableProps<T> {
-    
+
     columns: ColumnDef<T>[];
     data: T[];
-    title:string
-    onSearch: (search: string) => void;
+    title: string
+    onSearch?: (search: string) => void;
+    onSelectedRows?: (rows: T[]) => void;
 }
 
 const DataTable = <T,>(props: DataTableProps<T>) => {
-    const page = usePage<{data: PaginationMeta<T>}>()
+    const page = usePage<{ data: PaginationMeta<T> }>()
 
     const [rowSelection, setRowSelection] = useState({})
 
@@ -33,20 +34,29 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
         columns: props.columns,
         getCoreRowModel: getCoreRowModel(),
         onRowSelectionChange: setRowSelection, // set row selection `checked` or `unchecked`
-        getFilteredRowModel:getFilteredRowModel(), // get row selection data
-        state:{
+        getFilteredRowModel: getFilteredRowModel(), // get row selection data
+        state: {
             rowSelection // state selected row
         }
     });
 
+    const selectedRow = useEffectEvent((onSelectedRows?: (rows: T[]) => void) => {
+        onSelectedRows?.(table.getFilteredSelectedRowModel().rows.map((row) => row.original));
+    })
     
+    useEffect(() => {
+        selectedRow(props.onSelectedRows);
+    }, [props.onSelectedRows, rowSelection]);
+
+    // console.log('rowSelection', table.getFilteredSelectedRowModel().rows.map((row) => row.original));
 
     return (
         <div className="w-full">
             <h2 className="text-2xl font-bold mb-4">{props.title}</h2>
             <div className="mb-4 flex justify-end">
-
-                <Input placeholder="Search" className="max-w-1/4" onChange={(e)=>props.onSearch(e.target.value)}/>
+                <Activity mode={props.onSearch ? "visible" : "hidden"}>
+                    <Input placeholder="Search" className="max-w-1/4" onChange={(e) => props.onSearch?.(e.target.value)} />
+                </Activity>
             </div>
             {/* <div className="text-muted-foreground flex-1 text-sm">
                 {table.getFilteredSelectedRowModel().rows.length} of{" "}
@@ -95,13 +105,13 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                 </TableBody>
             </Table>
             <div className="flex items-center justify-end space-x-2 py-4">
-                 <Button
+                <Button
                     asChild
                     variant="outline"
                     size="sm"
                 >
                     <Link href={page.props.data.first_page_url || '#'}>
-                        <ChevronsLeft/>
+                        <ChevronsLeft />
                     </Link>
                 </Button>
                 <Button
@@ -110,7 +120,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                     size="sm"
                 >
                     <Link href={page.props.data.prev_page_url || '#'}>
-                        <ChevronLeft/>
+                        <ChevronLeft />
                     </Link>
                 </Button>
                 <div className="text-sm">
@@ -122,7 +132,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                     size="sm"
                 >
                     <Link href={page.props.data.next_page_url || '#'}>
-                        <ChevronRight/>
+                        <ChevronRight />
                     </Link>
                 </Button>
                 <Button
@@ -131,7 +141,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                     size="sm"
                 >
                     <Link href={page.props.data.last_page_url || '#'}>
-                        <ChevronsRight/>
+                        <ChevronsRight />
                     </Link>
                 </Button>
             </div>

@@ -31,6 +31,7 @@ const UserPage = () => {
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <DataTable<TUser>
                     onSearch={handleSearch}
+                    onSelectedRows={(rows) => console.log(rows)}
                     title="Data User"
                     columns={columns}
                     data={page.props.data.data}
