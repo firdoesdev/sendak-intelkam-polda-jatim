@@ -11,7 +11,8 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard,  } from '@/routes';
-import { index } from '@/routes/users';
+import users from '@/routes/users';
+import roles from '@/routes/roles';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
@@ -25,7 +26,12 @@ const mainNavItems: NavItem[] = [
     },
      {
         title: 'Users',
-        href: index(),
+        href: users.index(),
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Roles',
+        href: roles.index(),
         icon: LayoutGrid,
     },
 ];
