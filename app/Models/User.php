@@ -50,4 +50,14 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
+
+      public function policeUnit()
+    {
+        return $this->belongsTo(PoliceUnit::class);
+    }
+
+    public function defaultDivision()
+    {
+        return $this->belongsTo(Division::class, 'default_division_id');
+    }
 }
