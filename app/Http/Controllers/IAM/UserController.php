@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\IAM;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IAM\UserStoreRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
@@ -38,9 +39,16 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
         //
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return redirect()->route('users.index');
     }
 
     /**
@@ -73,5 +81,7 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+        User::destroy($id);
+        return redirect()->route('users.index');
     }
 }
