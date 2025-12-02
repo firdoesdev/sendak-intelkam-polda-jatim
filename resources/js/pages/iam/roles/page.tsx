@@ -5,9 +5,8 @@ import { Head } from '@inertiajs/react';
 import { TRole } from './types';
 import { usePage, router } from '@inertiajs/react';
 import { PaginationMeta } from "@/types";
-import { columns } from './columns'
+import { columns } from './columns';
 import DataTable from '@/components/data-table';
-import UserController from '@/actions/App/Http/Controllers/IAM/UserController'
 import RoleController from '@/actions/App/Http/Controllers/IAM/RoleController';
 
 
