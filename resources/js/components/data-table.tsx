@@ -48,14 +48,12 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
         selectedRow(props.onSelectedRows);
     }, [props.onSelectedRows, rowSelection]);
 
-    // console.log('rowSelection', table.getFilteredSelectedRowModel().rows.map((row) => row.original));
-
     return (
         <div className="w-full">
             <h2 className="text-2xl font-bold mb-4">{props.title}</h2>
             <div className="mb-4 flex justify-end">
                 <Activity mode={props.onSearch ? "visible" : "hidden"}>
-                    <Input placeholder="Search" className="max-w-1/4" onChange={(e) => props.onSearch?.(e.target.value)} />
+                    <Input placeholder="Search" className="w-full lg:max-w-1/4" onChange={(e) => props.onSearch?.(e.target.value)} />
                 </Activity>
             </div>
             {/* <div className="text-muted-foreground flex-1 text-sm">
