@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table"
-import {TUser} from './types'
+import { TUser } from './types'
 import { Checkbox } from "@/components/ui/checkbox"
-import {DropdownMenu, DropdownMenuTrigger,DropdownMenuItem, DropdownMenuLabel, DropdownMenuContent, DropdownMenuSeparator} from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuContent } from '@/components/ui/dropdown-menu'
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
  
@@ -38,7 +38,7 @@ export const columns: ColumnDef<TUser>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
+    cell: () => {
       return(
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

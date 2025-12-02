@@ -8,6 +8,7 @@ import { PaginationMeta } from "@/types";
 import { columns } from './columns'
 import DataTable from '@/components/data-table';
 import UserController from '@/actions/App/Http/Controllers/IAM/UserController'
+import { Button } from '@/components/ui/button';
 
 
 
@@ -35,6 +36,9 @@ const UserPage = () => {
                     title="Data User"
                     columns={columns}
                     data={page.props.data.data}
+                    topActions={[
+                        <Button key="add-user" type='button' variant='default'>Tambah User</Button>
+                    ]}
                 />
             </div>
         </AppLayout>
