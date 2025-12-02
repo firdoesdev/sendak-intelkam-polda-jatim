@@ -24,16 +24,38 @@ import { MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { TUser } from './types';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '@/components/ui/input';
 
 type TDialogProps = {
-    id: string;
+    row: Row<TUser>;
     open: boolean;
     onOpenChange: (open: boolean) => void;
 };
 
-const DeleteUserDialog = ({ id, open, onOpenChange }: TDialogProps) => {
+const DeleteUserDialog = ({ row, open, onOpenChange }: TDialogProps) => {
     const handleDelete = () => {
-        router.delete(users.destroy(id), {
+        router.delete(users.destroy(row?.original.id), {
             onSuccess: () => {
                 onOpenChange(false);
                 toast.success('Berhasil menghapus user');
@@ -67,8 +89,87 @@ const DeleteUserDialog = ({ id, open, onOpenChange }: TDialogProps) => {
     );
 };
 
+const EditUserDialog = ({ row, open, onOpenChange }: TDialogProps) => {
+    const formSchema = z.object({
+        name: z.string().min(2, 'Nama harus terdiri dari minimal 2 karakter'),
+    });
+    // Implementation for updating user goes here
+    const form = useForm({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: row?.original.name ?? '',
+        },
+    })
+
+    const handleSubmit = (values: z.infer<typeof formSchema>) => {
+        // Handle form submission logic here
+        // For example, you can send the form data to the server
+        router.put(users.update(row?.original.id).url, values, {
+            onSuccess: () => {
+                form.reset();
+                // close the dialog if needed
+                onOpenChange(false);
+                toast.success('Berhasil memperbarui user');
+            },
+            onError: () => {
+                // Handle validation errors if needed
+                toast.error('Gagal memperbarui user');
+            }
+        });
+    }
+    return (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent>
+
+                <DialogHeader>
+                    <DialogTitle>Edit User</DialogTitle>
+                    <DialogDescription>
+                        Edit data user pada form di bawah ini.
+                    </DialogDescription>
+                </DialogHeader>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(handleSubmit)}>
+                        {/* Form to update user goes here */}
+                        <div className="grid gap-4">
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel htmlFor="name">
+                                            Name
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                id="name"
+                                                placeholder="ex: John Doe"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                        </div>
+                        <DialogFooter className='mt-4'>
+                            <DialogClose asChild>
+                                <Button variant="outline">Close</Button>
+                            </DialogClose>
+                            <Button type="submit" variant="default">
+                                Save changes
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </Form>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
 const ActionsCell = ({ row }: { row: Row<TUser> }) => {
     const [deleteDialog, setDeleteDialog] = useState(false);
+    const [editDialog, setEditDialog] = useState(false);
 
     return (
         <>
@@ -81,16 +182,21 @@ const ActionsCell = ({ row }: { row: Row<TUser> }) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => setEditDialog(true)}>Edit</DropdownMenuItem>
                     <DropdownMenuItem onSelect={() => setDeleteDialog(true)}>
                         Delete
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
             <DeleteUserDialog
-                id={row.original.id}
+                row={row}
                 open={deleteDialog}
                 onOpenChange={setDeleteDialog}
+            />
+            <EditUserDialog
+                row={row}
+                open={editDialog}
+                onOpenChange={setEditDialog}
             />
         </>
     );

@@ -4,9 +4,14 @@ namespace App\Http\Controllers\IAM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IAM\UserStoreRequest;
+use App\Http\Requests\IAM\UserUpdateRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
+
+use App\Actions\IAM\DeleteUser;
+use App\Actions\IAM\UpdateUser;
+use App\Actions\Fortify\CreateNewUser;
 
 class UserController extends Controller
 {
@@ -39,14 +44,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserStoreRequest $request)
+    public function store(UserStoreRequest $request, CreateNewUser $createNewUser)
     {
-        //
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
+        $createNewUser->create($request->validated());
 
         return redirect()->route('users.index');
     }
@@ -70,18 +70,22 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserUpdateRequest $request, string $id, UpdateUser $updateUser)
     {
+        $updateUser->execute((int)$id, $request->validated());
+
+        return redirect()->route('users.index');
+   
         //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, DeleteUser $deleteUser)
     {
         //
-        User::destroy($id);
+        $deleteUser->execute((int)$id);
         return redirect()->route('users.index');
     }
 }
