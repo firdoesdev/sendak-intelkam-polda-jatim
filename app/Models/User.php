@@ -23,6 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'police_unit_id',
+        'default_division_id',
+        'user_type',
     ];
 
     /**
@@ -60,4 +63,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Division::class, 'default_division_id');
     }
+
+    public function createdPermits()
+    {
+        return $this->hasMany(Permit::class, 'created_by');
+    }
+
+    public function updatedPermits()
+    {
+        return $this->hasMany(Permit::class, 'updated_by');
+    }
+
+
 }
