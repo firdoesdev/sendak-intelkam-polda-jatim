@@ -24,6 +24,7 @@ interface DataTableProps<T> {
     onSearch?: (search: string) => void;
     onSelectedRows?: (rows: T[]) => void;
     topActions?: React.ReactNode[];
+    filters?: React.ReactNode[];
 }
 
 const DataTable = <T,>(props: DataTableProps<T>) => {
@@ -58,10 +59,13 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                     {props.topActions}
                 </div>
             </div>
-            <div className="mb-4 flex justify-start">
+            <div className="mb-4 flex flex-col lg:flex-row justify-start gap-2">
                 <Activity mode={props.onSearch ? "visible" : "hidden"}>
                     <Input placeholder="Search" className="w-full lg:max-w-1/4" onChange={(e) => props.onSearch?.(e.target.value)} />
                 </Activity>
+                <div className="flex gap-2">
+                    {props.filters}
+                </div>
             </div>
             
             <Table>
