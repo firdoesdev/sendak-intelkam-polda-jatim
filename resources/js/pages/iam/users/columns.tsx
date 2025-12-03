@@ -15,6 +15,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import users from '@/routes/users';
@@ -182,6 +183,7 @@ const ActionsCell = ({ row }: { row: Row<TUser> }) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                     <DropdownMenuSeparator />
                     <DropdownMenuItem onSelect={() => setEditDialog(true)}>Edit</DropdownMenuItem>
                     <DropdownMenuItem onSelect={() => setDeleteDialog(true)}>
                         Delete
