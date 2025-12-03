@@ -26,7 +26,7 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-const IamItems: NavItem[] = [
+const IamNavItems: NavItem[] = [
    
      {
         title: 'Users',
@@ -70,7 +70,7 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
-                <NavMain groupLabel='Account & Permissions' items={IamItems} />
+                <NavMain groupLabel='Account & Permissions' items={IamNavItems} />
             </SidebarContent>
 
             <SidebarFooter>
