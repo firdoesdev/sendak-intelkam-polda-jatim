@@ -8,12 +8,16 @@ import {
 import { resolveUrl } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
+import { Activity } from 'react';
 
-export function NavMain({ items = [] }: { items: NavItem[] }) {
+export function NavMain({ groupLabel,items = [] }: { groupLabel?: string, items: NavItem[] }) {
     const page = usePage();
     return (
         <SidebarGroup className="px-2 py-0">
-            <SidebarGroupLabel>Platform</SidebarGroupLabel>
+            <Activity mode={groupLabel ? 'visible' : 'hidden'}>
+
+            <SidebarGroupLabel>{groupLabel}</SidebarGroupLabel>
+            </Activity>
             <SidebarMenu>
                 {items.map((item) => (
                     <SidebarMenuItem key={item.title}>

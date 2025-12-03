@@ -24,6 +24,10 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+];
+
+const IamItems: NavItem[] = [
+   
      {
         title: 'Users',
         href: users.index(),
@@ -66,6 +70,7 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
+                <NavMain groupLabel='Account & Permissions' items={IamItems} />
             </SidebarContent>
 
             <SidebarFooter>
