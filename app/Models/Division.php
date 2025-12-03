@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Division extends Model
@@ -18,6 +19,11 @@ class Division extends Model
     public function permits()
     {
         return $this->hasMany(Permit::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'default_division_id');
     }
 
     

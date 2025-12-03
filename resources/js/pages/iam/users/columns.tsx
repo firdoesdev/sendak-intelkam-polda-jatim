@@ -233,6 +233,18 @@ export const columns: ColumnDef<TUser>[] = [
         accessorKey: 'email',
         header: 'Email',
     },
+   
+    {
+        accessorKey: 'default_division',
+        header: 'Default Division',
+        cell: ({ row }) => row.original.default_division_id ? row.original.default_division?.name : '-',
+    },
+    {
+        accessorKey: 'police_unit',
+        header: 'Police Unit',
+        cell: ({ row }) => row.original.police_unit_id ? row.original.police_unit?.name : '-',
+    },
+    
     {
         id: 'actions',
         enableHiding: false,

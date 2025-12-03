@@ -21,7 +21,8 @@ class UserController extends Controller
     public function index(Request $request)
     {
         
-        $users = User::when($request->search, function ($query, $search) {
+        $users = User::with('policeUnit', 'defaultDivision')
+                ->when($request->search, function ($query, $search) {
                     $query->whereRaw('LOWER(name) like ?', ['%' . strtolower($search) . '%'])
                         ->orWhereRaw('LOWER(email) like ?', ['%' . strtolower($search) . '%']);
                 })

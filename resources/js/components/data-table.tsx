@@ -91,7 +91,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                                 data-state={row.getIsSelected() && "selected"}
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id} className="p-3">
+                                    <TableCell key={cell.id} className="p-2">
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}

@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use App\Enums\PoliceUnitType;
+
 return new class extends Migration
 {
     /**
@@ -15,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('name');
-            $table->enum('unit_type', ['polda', 'polres', 'polsek', 'lainnya'])->default('polres');
+            $table->enum('unit_type', PoliceUnitType::getUnitTypes())->default(PoliceUnitType::POLRES->value);
             $table->string('region')->nullable();     // contoh: "Gresik", "Jawa Timur"
             $table->text('address')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('police_units');

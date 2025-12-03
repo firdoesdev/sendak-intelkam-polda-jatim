@@ -15,41 +15,50 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        if(app()->environment('local')) {
+            $this->call([
+                DivisionSeeder::class,
+                PoliceUnitSeeder::class,
+            ]);
+        }
         
-        User::factory(20)->create();
+        User::factory(20)->create([
+            'police_unit_id' => \App\Models\PoliceUnit::inRandomOrder()->first()?->id,
+            'default_division_id' => \App\Models\Division::inRandomOrder()->first()?->id,
+        ]);
 
          // basic permissions Phase 1
-    $permissions = [
-        'manage-masters',   // divisions, police_units, storages, organizations, persons
-        'view-permits',
-        'manage-permits',
-    ];
+        $permissions = [
+            'manage-masters',   // divisions, police_units, storages, organizations, persons
+            'view-permits',
+            'manage-permits',
+        ];
 
-    foreach ($permissions as $perm) {
-        Permission::firstOrCreate(['name' => $perm]);
-    }
+        foreach ($permissions as $perm) {
+            Permission::firstOrCreate(['name' => $perm]);
+        }
 
-    $adminRole   = Role::firstOrCreate(['name' => 'admin-sendak']);
-    $operatorRole = Role::firstOrCreate(['name' => 'operator']);
+        $adminRole   = Role::firstOrCreate(['name' => 'admin-sendak']);
+        $operatorRole = Role::firstOrCreate(['name' => 'operator']);
 
-    $adminRole->givePermissionTo($permissions);
-    $operatorRole->givePermissionTo(['view-permits']);
+        $adminRole->givePermissionTo($permissions);
+        $operatorRole->givePermissionTo(['view-permits']);
 
-     $user = User::firstOrCreate(
-            ['email' => 'test@example.com'],
-            [
-                'name' => 'Test User',
-                'password' => 'password',
-                'email_verified_at' => now(),
-            ]
-        );
+        $user = User::firstOrCreate(
+                ['email' => 'test@example.com'],
+                [
+                    'name' => 'Test User',
+                    'password' => 'password',
+                    'email_verified_at' => now(),
+                ]
+            );
 
-    // Assign ke user pertama
-    // $user = User::first(); // contoh, atau create manual
-    if ($user) {
-        $user->assignRole('admin-sendak');
-    }
+        // Assign ke user pertama
+        if ($user) {
+            $user->assignRole('admin-sendak');
+        }
 
+      
        
     }
 }
