@@ -11,8 +11,9 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard,  } from '@/routes';
-import users from '@/routes/users';
-import roles from '@/routes/roles';
+import users from '@/routes/iam/users';
+import roles from '@/routes/iam/roles';
+import policeUnits from '@/routes/master-data/police-units';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
@@ -38,6 +39,17 @@ const IamNavItems: NavItem[] = [
         href: roles.index(),
         icon: LayoutGrid,
     },
+];
+
+
+const masterNavItems: NavItem[] = [
+   
+     {
+        title: 'Police Units',
+        href: policeUnits.index(),
+        icon: LayoutGrid,
+    },
+   
 ];
 
 const footerNavItems: NavItem[] = [
@@ -71,6 +83,7 @@ export function AppSidebar() {
             <SidebarContent>
                 <NavMain items={mainNavItems} />
                 <NavMain groupLabel='Account & Permissions' items={IamNavItems} />
+                <NavMain groupLabel='Master Data' items={masterNavItems} />
             </SidebarContent>
 
             <SidebarFooter>

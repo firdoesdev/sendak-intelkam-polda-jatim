@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
-import { index } from '@/routes/users';
+import { index } from '@/routes/iam/users';
 import { Head } from '@inertiajs/react';
 import { TRole } from './types';
 import { usePage, router } from '@inertiajs/react';

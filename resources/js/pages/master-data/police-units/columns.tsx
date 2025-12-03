@@ -18,13 +18,13 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import users from '@/routes/iam/users';
+import policeUnits from '@/routes/master-data/police-units';
 import { router } from '@inertiajs/react';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { TUser } from './types';
+import { TPoliceUnit } from './types';
 import {
     Dialog,
     DialogClose,
@@ -49,14 +49,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 
 type TDialogProps = {
-    row: Row<TUser>;
+    row: Row<TPoliceUnit>;
     open: boolean;
     onOpenChange: (open: boolean) => void;
 };
 
 const DeleteUserDialog = ({ row, open, onOpenChange }: TDialogProps) => {
     const handleDelete = () => {
-        router.delete(users.destroy(row?.original.id), {
+        router.delete(policeUnits.destroy(row?.original.id), {
             onSuccess: () => {
                 onOpenChange(false);
                 toast.success('Berhasil menghapus user');
@@ -105,7 +105,7 @@ const EditUserDialog = ({ row, open, onOpenChange }: TDialogProps) => {
     const handleSubmit = (values: z.infer<typeof formSchema>) => {
         // Handle form submission logic here
         // For example, you can send the form data to the server
-        router.put(users.update(row?.original.id).url, values, {
+        router.put(policeUnits.update(row?.original.id).url, values, {
             onSuccess: () => {
                 form.reset();
                 // close the dialog if needed
@@ -168,7 +168,7 @@ const EditUserDialog = ({ row, open, onOpenChange }: TDialogProps) => {
     );
 }
 
-const ActionsCell = ({ row }: { row: Row<TUser> }) => {
+const ActionsCell = ({ row }: { row: Row<TPoliceUnit> }) => {
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [editDialog, setEditDialog] = useState(false);
 
@@ -204,7 +204,7 @@ const ActionsCell = ({ row }: { row: Row<TUser> }) => {
     );
 };
 
-export const columns: ColumnDef<TUser>[] = [
+export const columns: ColumnDef<TPoliceUnit>[] = [
     {
         accessorKey: 'id',
         header: ({ table }) => (
@@ -232,21 +232,13 @@ export const columns: ColumnDef<TUser>[] = [
         header: 'Name',
     },
     {
-        accessorKey: 'email',
-        header: 'Email',
-    },
-   
-    {
-        accessorKey: 'default_division',
-        header: 'Default Division',
-        cell: ({ row }) => row.original.default_division_id ? row.original.default_division?.name : '-',
+        accessorKey: 'code',
+        header: 'Code',
     },
     {
-        accessorKey: 'police_unit',
-        header: 'Police Unit',
-        cell: ({ row }) => row.original.police_unit_id ? row.original.police_unit?.name : '-',
+        accessorKey: 'region',
+        header: 'Region',
     },
-    
     {
         id: 'actions',
         enableHiding: false,

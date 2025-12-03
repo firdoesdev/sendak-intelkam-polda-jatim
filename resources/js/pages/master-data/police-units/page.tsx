@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import users from '@/routes/iam/users';
+import policeUnits from '@/routes/master-data/police-units';
 import { BreadcrumbItem, PaginationMeta } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Head, router, usePage } from '@inertiajs/react';
@@ -28,7 +28,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { columns } from './columns';
-import { TUser } from './types';
+import { TPoliceUnit } from './types';
 import { toast } from 'sonner';
 import { PlusCircleIcon } from 'lucide-react';
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -36,16 +36,16 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Data User',
-        href: users.index().url,
+        title: 'Data Police Units',
+        href: policeUnits.index().url,
     },
 ];
 
-const UserPage = () => {
-    const page = usePage<{ data: PaginationMeta<TUser> }>();
+const PoliceUnitsPage = () => {
+    const page = usePage<{ data: PaginationMeta<TPoliceUnit> }>();
 
     const handleSearch = (search: string) => {
-        router.visit(users.index({ mergeQuery: { search: search } }), {
+        router.visit(policeUnits.index({ mergeQuery: { search: search } }), {
             preserveState: true,
             replace: true,
             only: ['data'],
@@ -54,11 +54,11 @@ const UserPage = () => {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Users" />
+            <Head title="Police Units" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <DataTable<TUser>
+                <DataTable<TPoliceUnit>
                     onSearch={handleSearch}
-                    title="Data User"
+                    title="Data Police Units"
                     columns={columns}
                     data={page.props.data.data}
                     topActions={[<AddUserButton key="add-user" />]}
@@ -105,7 +105,7 @@ const AddUserButton = () => {
     const handleSubmit = (values: z.infer<typeof userSchema>) => {
         // Handle form submission logic here
         // For example, you can send the form data to the server
-        router.post(users.store().url, values, {
+        router.post(policeUnits.store().url, values, {
             onSuccess: () => {
                 form.reset();
                 // close the dialog if needed
@@ -233,4 +233,4 @@ const AddUserButton = () => {
     );
 };
 
-export default UserPage;
+export default PoliceUnitsPage;
