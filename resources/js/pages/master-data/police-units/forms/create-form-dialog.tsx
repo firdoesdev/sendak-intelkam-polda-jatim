@@ -1,4 +1,3 @@
-import DataTable from '@/components/data-table';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -19,90 +18,39 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import AppLayout from '@/layouts/app-layout';
 import policeUnits from '@/routes/master-data/police-units';
-import { BreadcrumbItem, PaginationMeta } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Head, router, usePage } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { columns } from './columns';
-import { TPoliceUnit } from './types';
 import { toast } from 'sonner';
 import { PlusCircleIcon } from 'lucide-react';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Data Police Units',
-        href: policeUnits.index().url,
-    },
-];
-
-const PoliceUnitsPage = () => {
-    const page = usePage<{ data: PaginationMeta<TPoliceUnit> }>();
-
-    const handleSearch = (search: string) => {
-        router.visit(policeUnits.index({ mergeQuery: { search: search } }), {
-            preserveState: true,
-            replace: true,
-            only: ['data'],
-        });
-    };
-
-    return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Police Units" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <DataTable<TPoliceUnit>
-                    onSearch={handleSearch}
-                    title="Data Police Units"
-                    columns={columns}
-                    data={page.props.data.data}
-                    topActions={[<AddUserButton key="add-user" />]}
-                />
-            </div>
-        </AppLayout>
-    );
-};
+import { policeUnitSchema } from './form-schema';
+import { Row } from '@tanstack/react-table';
+import { TPoliceUnit } from '../types';
 
 
 
-const AddUserButton = () => {
-    const userSchema = z
-        .object({
-            name: z.string().min(1, 'Silakan masukkan nama'),
-            email: z.string().email('Silakan masukkan email yang valid'),
-            password: z
-                .string()
-                .min(6, 'Password harus terdiri dari minimal 6 karakter'),
-            password_confirmation: z
-                .string()
-                .min(
-                    6,
-                    'Konfirmasi Password harus terdiri dari minimal 6 karakter',
-                ),
-        })
-        .refine((data) => data.password === data.password_confirmation, {
-            message: "Passwords don't match",
-            path: ['password_confirmation'],
-        });
+export const CreatePoliceUnitForm = () => {
 
     const form = useForm({
-        resolver: zodResolver(userSchema),
+        resolver: zodResolver(policeUnitSchema),
         defaultValues: {
+            code: '',
             name: '',
-            email: '',
-            password: '',
-            password_confirmation: '',
+            unit_type: 'POLRES',
+            region: '',
+            address: '',
+            parent_id: null,
+            is_active: true,
         },
     });
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const handleSubmit = (values: z.infer<typeof userSchema>) => {
+    const handleSubmit = (values: z.infer<typeof policeUnitSchema>) => {
+        
         // Handle form submission logic here
         // For example, you can send the form data to the server
         router.post(policeUnits.store().url, values, {
@@ -125,14 +73,14 @@ const AddUserButton = () => {
                 <DialogTrigger asChild>
                     <Button type="button" variant="default">
                         <PlusCircleIcon/>
-                        Tambah User
+                        Tambah Unit
                     </Button>
                 </DialogTrigger>
                 <DialogContent aria-describedby="firdaus">
                     <DialogHeader>
-                        <DialogTitle>Tambah User</DialogTitle>
+                        <DialogTitle>Tambah Unit</DialogTitle>
                         <DialogDescription>
-                            Isi data user baru pada form di bawah ini.
+                            Isi data unit baru pada form di bawah ini.
                         </DialogDescription>
                     </DialogHeader>
 
@@ -141,11 +89,11 @@ const AddUserButton = () => {
                         <div className="grid gap-4">
                             <FormField
                                 control={form.control}
-                                name="name"
+                                name="code"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel htmlFor="name">
-                                            Name
+                                        <FormLabel htmlFor="code">
+                                            Code
                                         </FormLabel>
                                         <FormControl>
                                             <Input
@@ -160,17 +108,17 @@ const AddUserButton = () => {
                             />
                             <FormField
                                 control={form.control}
-                                name="email"
+                                name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel htmlFor="email">
-                                            Email
+                                        <FormLabel htmlFor="name">
+                                            Name
                                         </FormLabel>
                                         <FormControl>
                                             <Input
-                                                id="email"
-                                                type="email"
-                                                placeholder="ex: hello@world.co"
+                                                id="name"
+                                                type="text"
+                                                placeholder="ex: John Doe"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -181,17 +129,17 @@ const AddUserButton = () => {
 
                             <FormField
                                 control={form.control}
-                                name="password"
+                                name="address"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel htmlFor="password">
-                                            Password
+                                        <FormLabel htmlFor="address">
+                                            Address
                                         </FormLabel>
                                         <FormControl>
                                             <Input
-                                                id="password"
-                                                type="password"
-                                                placeholder="Enter your password"
+                                                id="address"
+                                                type="text"
+                                                placeholder="Enter your address"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -201,17 +149,17 @@ const AddUserButton = () => {
                             />
                             <FormField
                                 control={form.control}
-                                name="password_confirmation"
+                                name="region"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel htmlFor="password_confirmation">
-                                            Confirm Password
+                                        <FormLabel htmlFor="region">
+                                            Region
                                         </FormLabel>
                                         <FormControl>
                                             <Input
-                                                id="password_confirmation"
-                                                type="password"
-                                                placeholder="Confirm your password"
+                                                id="region"
+                                                type="text"
+                                                placeholder="Enter your region"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -224,7 +172,7 @@ const AddUserButton = () => {
                             <DialogClose asChild>
                                 <Button variant="outline">Cancel</Button>
                             </DialogClose>
-                            <Button type="submit">Save changes</Button>
+                            <Button type="submit">Save Changes</Button>
                         </DialogFooter>
                     </form>
                 </DialogContent>
@@ -232,5 +180,3 @@ const AddUserButton = () => {
         </Dialog>
     );
 };
-
-export default PoliceUnitsPage;

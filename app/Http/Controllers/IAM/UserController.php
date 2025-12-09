@@ -49,7 +49,7 @@ class UserController extends Controller
     {
         $createNewUser->create($request->validated());
 
-        return redirect()->route('users.index');
+        return redirect()->route('iam.users.index');
     }
 
     /**
@@ -75,7 +75,7 @@ class UserController extends Controller
     {
         $updateUser->execute((int)$id, $request->validated());
 
-        return redirect()->route('users.index');
+        return redirect()->route('iam.users.index');
    
         //
     }
@@ -87,6 +87,6 @@ class UserController extends Controller
     {
         //
         $deleteUser->execute((int)$id);
-        return redirect()->route('users.index');
+        return redirect()->route('iam.users.index');
     }
 }

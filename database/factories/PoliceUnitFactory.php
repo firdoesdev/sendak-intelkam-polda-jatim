@@ -25,6 +25,8 @@ class PoliceUnitFactory extends Factory
             'region' => $this->faker->city(),
             'address' => $this->faker->address(),
             'is_active' => $this->faker->boolean(90), // 90% chance of being active
+            'created_at' => now(),
+            'updated_at' => now(),
 
         ];
     }
