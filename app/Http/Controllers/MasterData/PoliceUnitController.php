@@ -5,24 +5,38 @@ namespace App\Http\Controllers\MasterData;
 use App\Actions\MasterData\CreatePoliceUnit;
 use App\Actions\MasterData\DeletePoliceUnit;
 use App\Http\Controllers\Controller;
-use App\Models\PoliceUnit;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\MasterData\PoliceUnitStoreRequest;
 use App\Http\Requests\MasterData\PoliceUnitUpdateRequest;
 use App\Actions\MasterData\UpdatePoliceUnit;
+use App\Actions\MasterData\ListPoliceUnit;
 
 class PoliceUnitController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    private $listPoliceUnit;
+    private $createPoliceUnit;
+    private $updatePoliceUnit;
+    private $deletePoliceUnit;
+    public function __construct(ListPoliceUnit $listPoliceUnit, CreatePoliceUnit $createPoliceUnit, UpdatePoliceUnit $updatePoliceUnit, DeletePoliceUnit $deletePoliceUnit)
+    {
+        $this->listPoliceUnit = $listPoliceUnit;
+        $this->createPoliceUnit = $createPoliceUnit;
+        $this->updatePoliceUnit = $updatePoliceUnit;
+        $this->deletePoliceUnit = $deletePoliceUnit;
+    }
+    
     public function index(Request $request)
     {
         //
-
         return Inertia::render('master-data/police-units/index',[
-            'data' => PoliceUnit::orderByDesc('created_at')->paginate(10)
+            // 'data' => PoliceUnit::orderByDesc('created_at')->paginate(10)
+            'data' => $this->listPoliceUnit->execute([
+                'search' => $request->search ?? null
+            ])
         ]);
     }
 
@@ -37,9 +51,9 @@ class PoliceUnitController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PoliceUnitStoreRequest $request, CreatePoliceUnit $createPoliceUnit)
+    public function store(PoliceUnitStoreRequest $request)
     {
-        $createPoliceUnit->execute($request->validated());
+        $this->createPoliceUnit->execute($request->validated());
         return to_route('master-data.police-units.index')->with('success','Police Unit created successfully.');
     }
 
@@ -62,11 +76,11 @@ class PoliceUnitController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PoliceUnitUpdateRequest $request, string $id, UpdatePoliceUnit $updatePoliceUnit)
+    public function update(PoliceUnitUpdateRequest $request, string $id)
     {
         //
 
-        $updatePoliceUnit->execute($request->validated(), $id );
+        $this->updatePoliceUnit->execute($request->validated(), $id );
         return to_route('master-data.police-units.index')->with('success','Police Unit updated successfully.');
 
     }
@@ -74,10 +88,10 @@ class PoliceUnitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, DeletePoliceUnit $deletePoliceUnit)
+    public function destroy(string $id)
     {
         //
-        $deletePoliceUnit->execute($id);
+        $this->deletePoliceUnit->execute($id);
         return to_route('master-data.police-units.index')->with('success','Police Unit deleted successfully.');
     }
 }

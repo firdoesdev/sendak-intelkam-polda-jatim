@@ -12,25 +12,19 @@ use App\Models\User;
 use App\Actions\IAM\DeleteUser;
 use App\Actions\IAM\UpdateUser;
 use App\Actions\Fortify\CreateNewUser;
+use App\Actions\IAM\ListUser;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, ListUser $listUser)
     {
-        
-        $users = User::with('policeUnit', 'defaultDivision')
-                ->when($request->search, function ($query, $search) {
-                    $query->whereRaw('LOWER(name) like ?', ['%' . strtolower($search) . '%'])
-                        ->orWhereRaw('LOWER(email) like ?', ['%' . strtolower($search) . '%']);
-                })
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)
-                ->withQueryString();
         return Inertia::render('iam/users/index', [
-            'data' => $users
+            'data' => $listUser->execute([
+                'search' => $request->search ?? null
+            ])
         ]);
     }
 

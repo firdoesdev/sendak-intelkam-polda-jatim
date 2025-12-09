@@ -10,7 +10,7 @@ const PoliceUnitDataTable = () => {
     const page = usePage<{ data: PaginationMeta<TPoliceUnit> }>();
 
     const handleSearch = (search: string) => {
-        router.get(policeUnits.index({ mergeQuery: { search: search } }), {
+        router.visit(policeUnits.index({ mergeQuery: { search: search } }), {
             preserveState: true,
             replace: true,
             only: ['data'],
