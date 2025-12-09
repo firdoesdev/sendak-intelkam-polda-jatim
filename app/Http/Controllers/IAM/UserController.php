@@ -29,7 +29,7 @@ class UserController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
-        return Inertia::render('iam/users/page', [
+        return Inertia::render('iam/users/index', [
             'data' => $users
         ]);
     }
