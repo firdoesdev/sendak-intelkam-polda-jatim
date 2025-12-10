@@ -17,6 +17,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
+import { Spinner } from '@/components/ui/spinner';
 import { Input } from '@/components/ui/input';
 import policeUnits from '@/routes/master-data/police-units';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -27,8 +28,6 @@ import { z } from 'zod';
 import { toast } from 'sonner';
 import { PlusCircleIcon } from 'lucide-react';
 import { policeUnitSchema } from './form-schema';
-import { Row } from '@tanstack/react-table';
-import { TPoliceUnit } from '../types';
 
 
 
@@ -48,14 +47,20 @@ export const CreatePoliceUnitForm = () => {
     });
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = (values: z.infer<typeof policeUnitSchema>) => {
         
         // Handle form submission logic here
         // For example, you can send the form data to the server
         router.post(policeUnits.store().url, values, {
+            preserveState: true,
+            replace: true,
+            only:['data'],
+            onProgress: () => {
+                setIsSubmitting(true);
+            },
             onSuccess: () => {
-                form.reset();
                 // close the dialog if needed
                 setIsDialogOpen(false);
                 toast.success('Berhasil menambahkan user baru');
@@ -63,8 +68,13 @@ export const CreatePoliceUnitForm = () => {
             onError: () => {
                 // Handle validation errors if needed
                 toast.error('Gagal menambahkan user baru');
+            },
+            onFinish: () => {
+                setIsSubmitting(false);
+                form.reset();
             }
         });
+        
     };
 
     return (
@@ -172,7 +182,10 @@ export const CreatePoliceUnitForm = () => {
                             <DialogClose asChild>
                                 <Button variant="outline">Cancel</Button>
                             </DialogClose>
-                            <Button type="submit">Save Changes</Button>
+                            <Button type="submit" disabled={isSubmitting}>
+                                {isSubmitting && <Spinner className="mr-2 h-4 w-4" />}
+                                Save Changes
+                            </Button>
                         </DialogFooter>
                     </form>
                 </DialogContent>

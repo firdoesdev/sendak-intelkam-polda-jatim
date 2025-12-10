@@ -27,6 +27,8 @@ import { policeUnitSchema } from './form-schema';
 import { Row } from '@tanstack/react-table';
 import { PoliceUnitTypeOptions, TPoliceUnit } from '../types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useState } from 'react';
+import { Spinner } from '@/components/ui/spinner';
 
 type TDialogProps = {
     row: Row<TPoliceUnit>;
@@ -38,6 +40,7 @@ export const EditPoliceUnitForm = ({ row, open, onOpenChange }: TDialogProps) =>
     const form = useForm({
         resolver: zodResolver(policeUnitSchema),
         defaultValues: {
+            id: row?.original.id || undefined,
             code: row?.original.code || '',
             name: row?.original.name || '',
             unit_type: row?.original.unit_type || '',
@@ -48,11 +51,16 @@ export const EditPoliceUnitForm = ({ row, open, onOpenChange }: TDialogProps) =>
         },
     });
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const handleSubmit = (values: z.infer<typeof policeUnitSchema>) => {
         // Handle form submission logic here
         router.put(policeUnits.update(row.original.id).url, values, {
+            preserveState: true,
+            replace: true,
+            only:['data'],
             onProgress: () => {
-                form.reset();
+                setIsSubmitting(true);
             },
             onSuccess: () => {
                 // close the dialog if needed
@@ -63,8 +71,13 @@ export const EditPoliceUnitForm = ({ row, open, onOpenChange }: TDialogProps) =>
             onError: () => {
                 // Handle validation errors if needed
                 toast.error('Gagal mengupdate police unit');
+            },
+            onFinish: () => {
+                setIsSubmitting(false);
+                form.reset();
             }
         });
+        
     };
 
     return (
@@ -74,7 +87,7 @@ export const EditPoliceUnitForm = ({ row, open, onOpenChange }: TDialogProps) =>
                 <DialogHeader>
                     <DialogTitle>Edit Police Unit</DialogTitle>
                     <DialogDescription>
-                        Edit data police unit pada form di bawah ini.
+                        Edit data police unit pada form di bawah ini. {row.original.name}
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -191,8 +204,8 @@ export const EditPoliceUnitForm = ({ row, open, onOpenChange }: TDialogProps) =>
                             <DialogClose asChild>
                                 <Button variant="outline">Close</Button>
                             </DialogClose>
-                            <Button type="submit" variant="default">
-                                Save changes
+                            <Button type="submit" variant="default" disabled={isSubmitting} >
+                                {isSubmitting ? <><Spinner className="mr-2" /> Saving...</> : 'Save changes'}
                             </Button>
                         </DialogFooter>
                     </form>

@@ -37,7 +37,7 @@ const ActionsCell = ({ row }: { row: Row<TPoliceUnit> }) => {
 
     return (
         <>
-            <DropdownMenu modal={false}>
+            <DropdownMenu modal={false} key={row.original.id}>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="h-8 w-8 p-0">
                         <span className="sr-only">Open menu</span>
@@ -54,11 +54,13 @@ const ActionsCell = ({ row }: { row: Row<TPoliceUnit> }) => {
                 </DropdownMenuContent>
             </DropdownMenu>
             <DeleteUserDialog
+                key={row.original.id}
                 row={row}
                 open={deleteDialog}
                 onOpenChange={setDeleteDialog}
             />
             <EditPoliceUnitForm
+                key={row.original.id}
                 row={row}
                 open={editDialog}
                 onOpenChange={setEditDialog}
@@ -110,6 +112,6 @@ export const columns: ColumnDef<TPoliceUnit>[] = [
     {
         id: 'actions',
         enableHiding: false,
-        cell: ({ row }) => <ActionsCell row={row} />,
+        cell: ({ row }) => <ActionsCell key={row.original.id} row={row} />,
     },
 ];
