@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
                 DivisionSeeder::class,
                 PoliceUnitSeeder::class,
                 WarehouseSeeder::class,
+                OrganizationSeeder::class,
             ]);
         }
         
