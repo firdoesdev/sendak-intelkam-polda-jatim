@@ -15,7 +15,7 @@ enum DivisionCode:string
         return match($this) {
             DivisionCode::SENPI => 'Senjata Api',
             DivisionCode::POLSUS => 'Kepolisian Khusus',
-            DivisionCode::HANDAK => 'Perlengkapan dan Peralatan',
+            DivisionCode::HANDAK => 'Bahan Peledak',
             DivisionCode::SPORT => 'Olahraga',
         };
     }

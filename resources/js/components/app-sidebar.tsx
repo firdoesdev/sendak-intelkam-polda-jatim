@@ -16,6 +16,8 @@ import roles from '@/routes/iam/roles';
 import policeUnits from '@/routes/master-data/police-units';
 import warehouses from '@/routes/master-data/warehouses';
 import organizations from '@/routes/master-data/organizations';
+import applicants from '@/routes/master-data/applicants';
+import permits from '@/routes/permits';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
@@ -61,7 +63,20 @@ const masterNavItems: NavItem[] = [
         href: organizations.index(),
         icon: LayoutGrid,
     },
+    {
+        title: 'Pemohon',
+        href: applicants.index(),
+        icon: LayoutGrid,
+    },
    
+];
+
+const permitNavItems: NavItem[] = [
+    {
+        title: 'Data Izin',
+        href: permits.index(),
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
@@ -96,6 +111,7 @@ export function AppSidebar() {
                 <NavMain items={mainNavItems} />
                 <NavMain groupLabel='Account & Permissions' items={IamNavItems} />
                 <NavMain groupLabel='Master Data' items={masterNavItems} />
+                <NavMain groupLabel='Perizinan' items={permitNavItems} />
             </SidebarContent>
 
             <SidebarFooter>
