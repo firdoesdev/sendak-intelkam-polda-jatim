@@ -88,6 +88,11 @@ export const columns: ColumnDef<TWarehouse>[] = [
         header: 'Name',
     },
     {
+        accessorKey: 'organization_name',
+        header: 'Organization Name',
+        cell: ({ row }) => row.original.organization?.name || '-',
+    },
+    {
         accessorKey: 'storage_type',
         header: 'Storage Type',
         cell: ({ row }) => <Badge variant='secondary'>{row.original.storage_type}</Badge>,
