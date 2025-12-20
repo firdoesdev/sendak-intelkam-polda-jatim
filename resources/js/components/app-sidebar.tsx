@@ -70,7 +70,7 @@ const masterNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Permohonan Izin',
+        title: 'Permohonan Perizinan',
         href: applicants.index(),
         icon: LayoutGrid,
     },
@@ -79,7 +79,7 @@ const masterNavItems: NavItem[] = [
 
 const permitNavItems: NavItem[] = [
     {
-        title: 'Data Izin',
+        title: 'Data Perizinan',
         href: permits.index(),
         icon: LayoutGrid,
     },
