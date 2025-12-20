@@ -16,6 +16,7 @@ import roles from '@/routes/iam/roles';
 import policeUnits from '@/routes/master-data/police-units';
 import warehouses from '@/routes/master-data/warehouses';
 import organizations from '@/routes/master-data/organizations';
+import persons from '@/routes/master-data/persons';
 import applicants from '@/routes/master-data/applicants';
 import permits from '@/routes/permits';
 import { type NavItem } from '@/types';
@@ -64,7 +65,12 @@ const masterNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Pemohon',
+        title: 'Data Pemohon',
+        href: persons.index(),
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Permohonan Izin',
         href: applicants.index(),
         icon: LayoutGrid,
     },

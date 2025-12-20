@@ -30,6 +30,7 @@ import { toast } from 'sonner';
 import { PlusCircleIcon } from 'lucide-react';
 import { applicantSchema } from './form-schema';
 import { ApplicantTypeOptions } from '../types';
+import { QuickCreatePerson } from './quick-create-person';
 
 export const CreateApplicantForm = () => {
     const page = usePage<{ persons: Array<{ id: number; full_name: string; national_id: string | null }>; organizations: Array<{ id: number; name: string; org_type: string | null }> }>();
@@ -123,40 +124,53 @@ export const CreateApplicantForm = () => {
                         />
 
                         {applicantType === 'person' && (
-                            <FormField
-                                control={form.control}
-                                name="person_id"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel htmlFor="person_id">Person</FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                value={field.value?.toString() || ''}
-                                                onValueChange={(value) => {
-                                                    field.onChange(value ? Number(value) : null);
-                                                    const person = persons.find(p => p.id === Number(value));
-                                                    if (person && !form.getValues('display_name')) {
-                                                        form.setValue('display_name', person.full_name);
-                                                    }
-                                                }}
-                                            >
-                                                <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder="Pilih person" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {persons.map((person) => (
-                                                        <SelectItem key={person.id} value={person.id.toString()}>
-                                                            {person.full_name}
-                                                            {person.national_id && ` (${person.national_id})`}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            <>
+                                <FormField
+                                    control={form.control}
+                                    name="person_id"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel htmlFor="person_id">Person</FormLabel>
+                                            <FormControl>
+                                                <Select
+                                                    value={field.value?.toString() || ''}
+                                                    onValueChange={(value) => {
+                                                        field.onChange(value ? Number(value) : null);
+                                                        const person = persons.find(p => p.id === Number(value));
+                                                        if (person && !form.getValues('display_name')) {
+                                                            form.setValue('display_name', person.full_name);
+                                                        }
+                                                    }}
+                                                >
+                                                    <SelectTrigger className="w-full">
+                                                        <SelectValue placeholder="Pilih person" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {persons.map((person) => (
+                                                            <SelectItem key={person.id} value={person.id.toString()}>
+                                                                {person.full_name}
+                                                                {person.national_id && ` (${person.national_id})`}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <div className="flex justify-end">
+                                    <QuickCreatePerson 
+                                        onPersonCreated={(personId) => {
+                                            form.setValue('person_id', personId);
+                                            const person = persons.find(p => p.id === personId);
+                                            if (person && !form.getValues('display_name')) {
+                                                form.setValue('display_name', person.full_name);
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            </>
                         )}
 
                         {applicantType === 'organization' && (
