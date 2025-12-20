@@ -7,6 +7,8 @@ use App\Actions\MasterData\DeleteApplicant;
 use App\Actions\MasterData\UpdateApplicant;
 use App\Actions\MasterData\ListApplicant;
 use App\Http\Controllers\Controller;
+use App\Models\Person;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\MasterData\ApplicantStoreRequest;
@@ -37,7 +39,9 @@ class ApplicantController extends Controller
         return Inertia::render('master-data/applicants/index',[
             'data' => $this->listApplicant->execute([
                 'search' => $request->search ?? null
-            ])
+            ]),
+            'persons' => Person::select('id', 'full_name', 'national_id')->orderBy('full_name')->get(),
+            'organizations' => Organization::select('id', 'name', 'org_type')->orderBy('name')->get(),
         ]);
     }
 

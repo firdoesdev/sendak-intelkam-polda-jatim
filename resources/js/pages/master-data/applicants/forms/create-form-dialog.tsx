@@ -22,7 +22,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import applicants from '@/routes/master-data/applicants';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -32,6 +32,9 @@ import { applicantSchema } from './form-schema';
 import { ApplicantTypeOptions } from '../types';
 
 export const CreateApplicantForm = () => {
+    const page = usePage<{ persons: Array<{ id: number; full_name: string; national_id: string | null }>; organizations: Array<{ id: number; name: string; org_type: string | null }> }>();
+    const { persons, organizations } = page.props;
+
     const form = useForm({
         resolver: zodResolver(applicantSchema),
         defaultValues: {
@@ -125,19 +128,30 @@ export const CreateApplicantForm = () => {
                                 name="person_id"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel htmlFor="person_id">Person ID</FormLabel>
+                                        <FormLabel htmlFor="person_id">Person</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                id="person_id"
-                                                type="number"
-                                                placeholder="Masukkan ID Person"
-                                                value={field.value || ''}
-                                                onChange={(e) =>
-                                                    field.onChange(
-                                                        e.target.value ? Number(e.target.value) : null
-                                                    )
-                                                }
-                                            />
+                                            <Select
+                                                value={field.value?.toString() || ''}
+                                                onValueChange={(value) => {
+                                                    field.onChange(value ? Number(value) : null);
+                                                    const person = persons.find(p => p.id === Number(value));
+                                                    if (person && !form.getValues('display_name')) {
+                                                        form.setValue('display_name', person.full_name);
+                                                    }
+                                                }}
+                                            >
+                                                <SelectTrigger className="w-full">
+                                                    <SelectValue placeholder="Pilih person" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {persons.map((person) => (
+                                                        <SelectItem key={person.id} value={person.id.toString()}>
+                                                            {person.full_name}
+                                                            {person.national_id && ` (${person.national_id})`}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -151,19 +165,30 @@ export const CreateApplicantForm = () => {
                                 name="organization_id"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel htmlFor="organization_id">Organization ID</FormLabel>
+                                        <FormLabel htmlFor="organization_id">Organisasi</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                id="organization_id"
-                                                type="number"
-                                                placeholder="Masukkan ID Organisasi"
-                                                value={field.value || ''}
-                                                onChange={(e) =>
-                                                    field.onChange(
-                                                        e.target.value ? Number(e.target.value) : null
-                                                    )
-                                                }
-                                            />
+                                            <Select
+                                                value={field.value?.toString() || ''}
+                                                onValueChange={(value) => {
+                                                    field.onChange(value ? Number(value) : null);
+                                                    const org = organizations.find(o => o.id === Number(value));
+                                                    if (org && !form.getValues('display_name')) {
+                                                        form.setValue('display_name', org.name);
+                                                    }
+                                                }}
+                                            >
+                                                <SelectTrigger className="w-full">
+                                                    <SelectValue placeholder="Pilih organisasi" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {organizations.map((org) => (
+                                                        <SelectItem key={org.id} value={org.id.toString()}>
+                                                            {org.name}
+                                                            {org.org_type && ` (${org.org_type})`}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

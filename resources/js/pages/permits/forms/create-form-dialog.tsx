@@ -22,7 +22,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import permits from '@/routes/permits';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -32,6 +32,9 @@ import { permitSchema } from './form-schema';
 import { PermitTypeOptions, PermitStatusOptions } from '../types';
 
 export const CreatePermitForm = () => {
+    const page = usePage<{ divisions: Array<{ id: number; code: string; name: string }>; applicants: Array<{ id: number; display_name: string; applicant_type: string }> }>();
+    const { divisions, applicants } = page.props;
+
     const form = useForm({
         resolver: zodResolver(permitSchema),
         defaultValues: {
@@ -91,19 +94,25 @@ export const CreatePermitForm = () => {
                             name="division_id"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel htmlFor="division_id">Divisi ID</FormLabel>
+                                    <FormLabel htmlFor="division_id">Divisi</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            id="division_id"
-                                            type="number"
-                                            placeholder="Masukkan ID Divisi"
-                                            value={field.value || ''}
-                                            onChange={(e) =>
-                                                field.onChange(
-                                                    e.target.value ? Number(e.target.value) : 0
-                                                )
+                                        <Select
+                                            value={field.value?.toString() || ''}
+                                            onValueChange={(value) =>
+                                                field.onChange(value ? Number(value) : 0)
                                             }
-                                        />
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Pilih divisi" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {divisions.map((division) => (
+                                                    <SelectItem key={division.id} value={division.id.toString()}>
+                                                        {division.name} ({division.code})
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -115,19 +124,28 @@ export const CreatePermitForm = () => {
                             name="applicant_id"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel htmlFor="applicant_id">Pemohon ID</FormLabel>
+                                    <FormLabel htmlFor="applicant_id">Pemohon</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            id="applicant_id"
-                                            type="number"
-                                            placeholder="Masukkan ID Pemohon"
-                                            value={field.value || ''}
-                                            onChange={(e) =>
-                                                field.onChange(
-                                                    e.target.value ? Number(e.target.value) : 0
-                                                )
+                                        <Select
+                                            value={field.value?.toString() || ''}
+                                            onValueChange={(value) =>
+                                                field.onChange(value ? Number(value) : 0)
                                             }
-                                        />
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Pilih pemohon" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {applicants.map((applicant) => (
+                                                    <SelectItem key={applicant.id} value={applicant.id.toString()}>
+                                                        {applicant.display_name}
+                                                        <span className="text-muted-foreground text-xs ml-2">
+                                                            ({applicant.applicant_type})
+                                                        </span>
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

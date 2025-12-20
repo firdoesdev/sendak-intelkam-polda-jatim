@@ -7,6 +7,8 @@ use App\Actions\Permits\DeletePermit;
 use App\Actions\Permits\UpdatePermit;
 use App\Actions\Permits\ListPermit;
 use App\Http\Controllers\Controller;
+use App\Models\Division;
+use App\Models\Applicant;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\Permits\PermitStoreRequest;
@@ -40,7 +42,9 @@ class PermitController extends Controller
                 'status' => $request->status ?? null,
                 'permit_type' => $request->permit_type ?? null,
                 'division_id' => $request->division_id ?? null,
-            ])
+            ]),
+            'divisions' => Division::select('id', 'code', 'name')->where('is_active', true)->orderBy('name')->get(),
+            'applicants' => Applicant::select('id', 'display_name', 'applicant_type')->orderBy('display_name')->get(),
         ]);
     }
 
