@@ -14,6 +14,7 @@ import { dashboard,  } from '@/routes';
 import users from '@/routes/iam/users';
 import roles from '@/routes/iam/roles';
 import policeUnits from '@/routes/master-data/police-units';
+import warehouses from '@/routes/master-data/warehouses';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
@@ -45,8 +46,13 @@ const IamNavItems: NavItem[] = [
 const masterNavItems: NavItem[] = [
    
      {
-        title: 'Police Units',
+        title: 'Markas Kepolisian',
         href: policeUnits.index(),
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Gudang Senjata',
+        href: warehouses.index(),
         icon: LayoutGrid,
     },
    
