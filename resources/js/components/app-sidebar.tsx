@@ -10,18 +10,27 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard,  } from '@/routes';
-import users from '@/routes/iam/users';
+import { dashboard } from '@/routes';
 import roles from '@/routes/iam/roles';
-import policeUnits from '@/routes/master-data/police-units';
-import warehouses from '@/routes/master-data/warehouses';
+import users from '@/routes/iam/users';
+import applicants from '@/routes/master-data/applicants';
 import organizations from '@/routes/master-data/organizations';
 import persons from '@/routes/master-data/persons';
-import applicants from '@/routes/master-data/applicants';
+import policeUnits from '@/routes/master-data/police-units';
+import warehouses from '@/routes/master-data/warehouses';
 import permits from '@/routes/permits';
+import weapons from '@/routes/weapons';
+import permitRenewals from '@/routes/permits/renewals';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import {
+    ArrowLeftRight,
+    BookOpen,
+    Folder,
+    LayoutGrid,
+    RefreshCw,
+    Shield,
+} from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -33,8 +42,7 @@ const mainNavItems: NavItem[] = [
 ];
 
 const IamNavItems: NavItem[] = [
-   
-     {
+    {
         title: 'Users',
         href: users.index(),
         icon: LayoutGrid,
@@ -46,10 +54,8 @@ const IamNavItems: NavItem[] = [
     },
 ];
 
-
 const masterNavItems: NavItem[] = [
-   
-     {
+    {
         title: 'Markas Kepolisian',
         href: policeUnits.index(),
         icon: LayoutGrid,
@@ -74,7 +80,19 @@ const masterNavItems: NavItem[] = [
         href: applicants.index(),
         icon: LayoutGrid,
     },
-   
+];
+
+const weaponNavItems: NavItem[] = [
+    {
+        title: 'Data Senjata',
+        href: weapons.index(),
+        icon: Shield,
+    },
+    {
+        title: 'Permintaan Transfer',
+        href: '/weapons/transfer-requests',
+        icon: ArrowLeftRight,
+    },
 ];
 
 const permitNavItems: NavItem[] = [
@@ -82,6 +100,11 @@ const permitNavItems: NavItem[] = [
         title: 'Data Perizinan',
         href: permits.index(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Perpanjangan Izin',
+        href: permitRenewals.index(),
+        icon: RefreshCw,
     },
 ];
 
@@ -115,9 +138,16 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
-                <NavMain groupLabel='Account & Permissions' items={IamNavItems} />
-                <NavMain groupLabel='Master Data' items={masterNavItems} />
-                <NavMain groupLabel='Perizinan' items={permitNavItems} />
+                <NavMain
+                    groupLabel="Account & Permissions"
+                    items={IamNavItems}
+                />
+                <NavMain groupLabel="Master Data" items={masterNavItems} />
+                <NavMain groupLabel="Perizinan" items={permitNavItems} />
+                <NavMain
+                    groupLabel="Manajemen Senjata"
+                    items={weaponNavItems}
+                />
             </SidebarContent>
 
             <SidebarFooter>
