@@ -21,6 +21,12 @@ class Warehouse extends Model
         'is_active',
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+        'latitude' => 'decimal:7',
+        'longitude' => 'decimal:7',
+    ];
+
     public function policeUnit()
     {
         return $this->belongsTo(PoliceUnit::class);
@@ -29,5 +35,20 @@ class Warehouse extends Model
     public function organization()
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    public function weapons()
+    {
+        return $this->hasMany(Weapon::class);
+    }
+
+    public function incomingTransfers()
+    {
+        return $this->hasMany(WeaponTransferRequest::class, 'to_warehouse_id');
+    }
+
+    public function outgoingTransfers()
+    {
+        return $this->hasMany(WeaponTransferRequest::class, 'from_warehouse_id');
     }
 }
