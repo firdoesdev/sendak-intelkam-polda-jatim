@@ -34,6 +34,8 @@ class DatabaseSeeder extends Seeder
             'manage-masters',   // divisions, police_units, storages, organizations, persons
             'view-permits',
             'manage-permits',
+            'request-permit-renewal',
+            'approve-permit-renewal',
         ];
 
         foreach ($permissions as $perm) {
@@ -44,7 +46,7 @@ class DatabaseSeeder extends Seeder
         $operatorRole = Role::firstOrCreate(['name' => 'operator']);
 
         $adminRole->givePermissionTo($permissions);
-        $operatorRole->givePermissionTo(['view-permits']);
+        $operatorRole->givePermissionTo(['view-permits', 'request-permit-renewal']);
 
         $user = User::firstOrCreate(
                 ['email' => 'test@example.com'],

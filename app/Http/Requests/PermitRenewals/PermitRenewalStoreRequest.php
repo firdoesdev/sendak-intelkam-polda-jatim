@@ -8,7 +8,7 @@ class PermitRenewalStoreRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // TODO: Add permission check
+        return $this->user()->can('request-permit-renewal');
     }
 
     public function rules(): array

@@ -15,10 +15,14 @@ import { useState } from 'react';
 import { TPermit, PermitTypeOptions, PermitStatusOptions } from '../types';
 import { EditPermitForm } from '../forms/edit-form-dialog';
 import { DeletePermitDialog } from '../dialogs/delete-dialog';
+import { RenewalFormDialog } from '../forms/renewal-form-dialog';
 
 const ActionsCell = ({ row }: { row: Row<TPermit> }) => {
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [editDialog, setEditDialog] = useState(false);
+    const [renewalDialog, setRenewalDialog] = useState(false);
+    
+    const canRenew = row.original.status === 'approved';
 
     return (
         <>
@@ -32,6 +36,11 @@ const ActionsCell = ({ row }: { row: Row<TPermit> }) => {
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuSeparator />
+                    {canRenew && (
+                        <DropdownMenuItem onSelect={() => setRenewalDialog(true)}>
+                            Perpanjang Izin
+                        </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem onSelect={() => setEditDialog(true)}>Edit</DropdownMenuItem>
                     <DropdownMenuItem onSelect={() => setDeleteDialog(true)}>
                         Delete
@@ -50,6 +59,14 @@ const ActionsCell = ({ row }: { row: Row<TPermit> }) => {
                 open={editDialog}
                 onOpenChange={setEditDialog}
             />
+            {canRenew && (
+                <RenewalFormDialog
+                    key={`renewal-${row.original.id}`}
+                    permit={row.original}
+                    open={renewalDialog}
+                    onOpenChange={setRenewalDialog}
+                />
+            )}
         </>
     );
 };

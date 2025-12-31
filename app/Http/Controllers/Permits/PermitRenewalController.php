@@ -50,6 +50,8 @@ class PermitRenewalController extends Controller
 
     public function approve(Request $request, string $id)
     {
+        abort_unless($request->user()->can('approve-permit-renewal'), 403, 'Anda tidak memiliki izin untuk menyetujui perpanjangan.');
+        
         try {
             $this->approveRenewal->execute($id, null);
             return to_route('permits.renewals.index')
@@ -61,6 +63,8 @@ class PermitRenewalController extends Controller
 
     public function reject(Request $request, string $id)
     {
+        abort_unless($request->user()->can('approve-permit-renewal'), 403, 'Anda tidak memiliki izin untuk menolak perpanjangan.');
+        
         $request->validate([
             'rejection_reason' => 'required|string',
         ]);
