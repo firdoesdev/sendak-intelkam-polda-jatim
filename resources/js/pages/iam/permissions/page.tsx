@@ -35,7 +35,7 @@ const PermissionPage = () => {
                     title="Data Permission"
                     columns={columns}
                     data={page.props.data.data}
-                    actionButtons={<CreatePermissionFormDialog />}
+                    topActions={[<CreatePermissionFormDialog />]}
                 />
             </div>
         </AppLayout>

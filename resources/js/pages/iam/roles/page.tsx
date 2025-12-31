@@ -35,7 +35,7 @@ const RolePage = () => {
                     title="Data Role"
                     columns={columns}
                     data={page.props.data.data}
-                    actionButtons={<CreateRoleFormDialog />}
+                    topActions={[<CreateRoleFormDialog />]}
                 />
             </div>
         </AppLayout>
