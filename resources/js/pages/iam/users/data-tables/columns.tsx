@@ -78,7 +78,27 @@ export const columns: ColumnDef<TUser>[] = [
         accessorKey: 'email',
         header: 'Email',
     },
-
+    {
+        accessorKey: 'roles',
+        header: 'Roles',
+        cell: ({ row }) => {
+            const roles = row.original.roles || [];
+            return roles.length > 0 ? (
+                <div className="flex flex-wrap gap-1">
+                    {roles.map((role) => (
+                        <span
+                            key={role.id}
+                            className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
+                        >
+                            {role.name}
+                        </span>
+                    ))}
+                </div>
+            ) : (
+                <span className="text-muted-foreground">-</span>
+            );
+        },
+    },
     {
         accessorKey: 'default_division',
         header: 'Default Division',
