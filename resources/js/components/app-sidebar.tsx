@@ -13,6 +13,7 @@ import {
 import { dashboard } from '@/routes';
 import roles from '@/routes/iam/roles';
 import users from '@/routes/iam/users';
+import permissions from '@/routes/iam/permissions';
 import applicants from '@/routes/master-data/applicants';
 import organizations from '@/routes/master-data/organizations';
 import persons from '@/routes/master-data/persons';
@@ -27,9 +28,11 @@ import {
     ArrowLeftRight,
     BookOpen,
     Folder,
+    Key,
     LayoutGrid,
     RefreshCw,
     Shield,
+    Users,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -45,12 +48,17 @@ const IamNavItems: NavItem[] = [
     {
         title: 'Users',
         href: users.index(),
-        icon: LayoutGrid,
+        icon: Users,
     },
     {
         title: 'Roles',
         href: roles.index(),
-        icon: LayoutGrid,
+        icon: Shield,
+    },
+    {
+        title: 'Permissions',
+        href: permissions.index(),
+        icon: Key,
     },
 ];
 

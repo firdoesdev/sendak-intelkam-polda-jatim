@@ -1,6 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
-import { index } from '@/routes/iam/users';
 import { Head } from '@inertiajs/react';
 import { TRole } from './types';
 import { usePage, router } from '@inertiajs/react';
@@ -8,13 +7,14 @@ import { PaginationMeta } from "@/types";
 import { columns } from './columns';
 import DataTable from '@/components/data-table';
 import RoleController from '@/actions/App/Http/Controllers/IAM/RoleController';
+import { CreateRoleFormDialog } from './forms/create-form-dialog';
 
 
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Roles',
-        href: index().url,
+        href: RoleController.index().url,
     },
 ];
 
@@ -35,6 +35,7 @@ const RolePage = () => {
                     title="Data Role"
                     columns={columns}
                     data={page.props.data.data}
+                    actionButtons={<CreateRoleFormDialog />}
                 />
             </div>
         </AppLayout>

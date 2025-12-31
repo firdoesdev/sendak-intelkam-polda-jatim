@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\IAM;
 
+use App\Actions\IAM\AssignRolesToUser;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IAM\AssignRolesRequest;
 use App\Http\Requests\IAM\UserStoreRequest;
 use App\Http\Requests\IAM\UserUpdateRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 use App\Actions\IAM\DeleteUser;
 use App\Actions\IAM\UpdateUser;
@@ -51,7 +54,13 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::with('roles')->findOrFail($id);
+        $allRoles = Role::orderBy('name')->get();
+
+        return Inertia::render('iam/users/show', [
+            'user' => $user,
+            'allRoles' => $allRoles,
+        ]);
     }
 
     /**
@@ -70,8 +79,6 @@ class UserController extends Controller
         $updateUser->execute((int)$id, $request->validated());
 
         return redirect()->route('iam.users.index');
-   
-        //
     }
 
     /**
@@ -79,8 +86,20 @@ class UserController extends Controller
      */
     public function destroy(string $id, DeleteUser $deleteUser)
     {
-        //
         $deleteUser->execute((int)$id);
         return redirect()->route('iam.users.index');
+    }
+
+    /**
+     * Assign roles to a user.
+     */
+    public function assignRoles(
+        AssignRolesRequest $request,
+        string $id,
+        AssignRolesToUser $assignRoles
+    ) {
+        $assignRoles->execute((int)$id, $request->validated()['role_ids']);
+
+        return back()->with('success', 'Roles assigned successfully');
     }
 }
