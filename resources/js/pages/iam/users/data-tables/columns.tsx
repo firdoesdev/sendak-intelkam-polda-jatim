@@ -14,6 +14,8 @@ import { useState } from 'react';
 import { TUser } from '../types';
 import { DeleteUserDialog } from '../dialogs/delete-dialog';
 import { EditUserForm } from '../forms/edit-form-dialog';
+import { Link } from '@inertiajs/react';
+import users from '@/routes/iam/users';
 
 const ActionsCell = ({ row }: { row: Row<TUser> }) => {
     const [deleteDialog, setDeleteDialog] = useState(false);
@@ -73,6 +75,17 @@ export const columns: ColumnDef<TUser>[] = [
     {
         accessorKey: 'name',
         header: 'Name',
+        cell: ({ row }) => {
+            const user = row.original;
+            return (
+                <Link 
+                    href={users.show({ user: user.id }).url} 
+                    className="font-medium text-primary hover:underline"
+                >
+                    {user.name}
+                </Link>
+            );
+        },
     },
     {
         accessorKey: 'email',

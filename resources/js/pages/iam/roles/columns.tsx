@@ -3,6 +3,8 @@ import {TRole} from './types'
 import { Checkbox } from "@/components/ui/checkbox"
 import { EditRoleFormDialog } from './forms/edit-form-dialog'
 import { DeleteRoleDialog } from './dialogs/delete-dialog'
+import { Link } from '@inertiajs/react'
+import RoleController from '@/actions/App/Http/Controllers/IAM/RoleController'
  
 export const columns: ColumnDef<TRole>[] = [
 {
@@ -28,6 +30,17 @@ export const columns: ColumnDef<TRole>[] = [
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => {
+      const role = row.original;
+      return (
+        <Link 
+          href={RoleController.show({ role: role.id }).url} 
+          className="font-medium text-primary hover:underline"
+        >
+          {role.name}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "guard_name",
