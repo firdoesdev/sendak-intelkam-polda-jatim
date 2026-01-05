@@ -27,7 +27,9 @@ import { Link } from '@inertiajs/react';
 import {
     ArrowLeftRight,
     BookOpen,
+    CreditCard,
     Folder,
+    Gift,
     Key,
     LayoutGrid,
     RefreshCw,
@@ -97,6 +99,11 @@ const weaponNavItems: NavItem[] = [
         icon: Shield,
     },
     {
+        title: 'Transfer Hibah',
+        href: '/weapons/hibah-transfers',
+        icon: Gift,
+    },
+    {
         title: 'Permintaan Transfer',
         href: '/weapons/transfer-requests',
         icon: ArrowLeftRight,
@@ -113,6 +120,11 @@ const permitNavItems: NavItem[] = [
         title: 'Perpanjangan Izin',
         href: permitRenewals.index(),
         icon: RefreshCw,
+    },
+    {
+        title: 'Kartu Pengpin',
+        href: '/kartu-pengpin',
+        icon: CreditCard,
     },
 ];
 
