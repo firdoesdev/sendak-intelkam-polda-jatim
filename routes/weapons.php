@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\WeaponHibahTransferController;
 use App\Http\Controllers\Weapons\WeaponController;
 use App\Http\Controllers\Weapons\WeaponTransferController;
-use App\Http\Controllers\Permits\PermitRenewalController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -18,5 +18,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{id}/reject', [WeaponTransferController::class, 'reject'])->name('reject');
     });
 
-
+    // Weapon Hibah Transfers
+    Route::prefix('/weapons/hibah-transfers')->name('weapons.hibah-transfers.')->group(function () {
+        Route::get('/', [WeaponHibahTransferController::class, 'index'])->name('index');
+        Route::post('/', [WeaponHibahTransferController::class, 'store'])->name('store');
+        Route::get('/{transfer}', [WeaponHibahTransferController::class, 'show'])->name('show');
+        Route::post('/{transfer}/submit', [WeaponHibahTransferController::class, 'submit'])->name('submit');
+        Route::post('/{transfer}/approve', [WeaponHibahTransferController::class, 'approve'])->name('approve');
+    });
 });
