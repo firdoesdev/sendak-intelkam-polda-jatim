@@ -3,6 +3,13 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use App\Models\WeaponHibahTransferRequest;
+use App\Models\KartuPengpin;
+use App\Models\PermitDocument;
+use App\Policies\WeaponHibahTransferRequestPolicy;
+use App\Policies\KartuPengpinPolicy;
+use App\Policies\PermitDocumentPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register policies
+        Gate::policy(WeaponHibahTransferRequest::class, WeaponHibahTransferRequestPolicy::class);
+        Gate::policy(KartuPengpin::class, KartuPengpinPolicy::class);
+        Gate::policy(PermitDocument::class, PermitDocumentPolicy::class);
     }
 }

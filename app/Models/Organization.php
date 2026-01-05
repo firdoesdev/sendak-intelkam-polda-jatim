@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Organization extends Model
 {
-    //
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -33,5 +34,9 @@ class Organization extends Model
     {
         return $this->hasMany(Warehouse::class);
     }
-    
+
+    public function representatives()
+    {
+        return $this->hasMany(OrganizationRepresentative::class);
+    }
 }

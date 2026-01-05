@@ -22,12 +22,16 @@ import warehouses from '@/routes/master-data/warehouses';
 import permits from '@/routes/permits';
 import weapons from '@/routes/weapons';
 import permitRenewals from '@/routes/permits/renewals';
+import hibahTransfers from '@/routes/weapons/hibah-transfers';
+import kartuPengpin from '@/routes/kartu-pengpin';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
     ArrowLeftRight,
     BookOpen,
+    CreditCard,
     Folder,
+    Gift,
     Key,
     LayoutGrid,
     RefreshCw,
@@ -97,6 +101,11 @@ const weaponNavItems: NavItem[] = [
         icon: Shield,
     },
     {
+        title: 'Transfer Hibah',
+        href: hibahTransfers.index(),
+        icon: Gift,
+    },
+    {
         title: 'Permintaan Transfer',
         href: '/weapons/transfer-requests',
         icon: ArrowLeftRight,
@@ -113,6 +122,11 @@ const permitNavItems: NavItem[] = [
         title: 'Perpanjangan Izin',
         href: permitRenewals.index(),
         icon: RefreshCw,
+    },
+    {
+        title: 'Kartu Pengpin',
+        href: kartuPengpin.index(),
+        icon: CreditCard,
     },
 ];
 

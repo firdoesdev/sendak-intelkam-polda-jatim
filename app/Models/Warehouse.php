@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Warehouse extends Model
 {
-    //
+    use HasFactory;
+
     protected $fillable = [
         'code',
         'name',
@@ -18,6 +20,8 @@ class Warehouse extends Model
         'province',
         'latitude',
         'longitude',
+        'capacity_kg',
+        'current_load_kg',
         'is_active',
     ];
 
@@ -25,6 +29,8 @@ class Warehouse extends Model
         'is_active' => 'boolean',
         'latitude' => 'decimal:7',
         'longitude' => 'decimal:7',
+        'capacity_kg' => 'decimal:2',
+        'current_load_kg' => 'decimal:2',
     ];
 
     public function policeUnit()
