@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Eye, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import hibahTransfers from '@/routes/weapons/hibah-transfers';
 import {
     AlertDialog,
     AlertDialogContent,
@@ -78,7 +79,7 @@ const HibahTransfersIndexPage = () => {
     const [submitDialog, setSubmitDialog] = useState<number | null>(null);
 
     const handleSubmit = (id: number) => {
-        router.post(`/weapons/hibah-transfers/${id}/submit`, {}, {
+        router.post(hibahTransfers.submit(id).url, {}, {
             preserveState: true,
             replace: true,
             only: ['data'],
@@ -157,7 +158,7 @@ const HibahTransfersIndexPage = () => {
                         size="sm"
                         asChild
                     >
-                        <Link href={`/weapons/hibah-transfers/${row.original.id}`}>
+                        <Link href={hibahTransfers.show(row.original.id).url}>
                             <Eye className="h-4 w-4 mr-1" />
                             Lihat
                         </Link>

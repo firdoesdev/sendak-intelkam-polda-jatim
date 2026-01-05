@@ -3,12 +3,15 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\WeaponHibahTransferRequest as HibahTransferModel;
 
 class ApproveHibahTransferRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        // Get the transfer from route parameter
+        $transfer = $this->route('transfer');
+        return $this->user()->can('approve', $transfer);
     }
 
     public function rules(): array

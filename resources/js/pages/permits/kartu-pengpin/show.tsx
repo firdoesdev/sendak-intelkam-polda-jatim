@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Printer, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import kartuPengpin from '@/routes/kartu-pengpin';
 import {
     AlertDialog,
     AlertDialogContent,
@@ -92,7 +93,7 @@ const KartuPengpinShowPage = () => {
     ];
 
     const handleRevoke = () => {
-        router.post(`/kartu-pengpin/${kartu.id}/revoke`, {
+        router.post(kartuPengpin.revoke(kartu.id).url, {
             revoke_reason: revokeReason,
         }, {
             preserveState: true,
@@ -108,7 +109,7 @@ const KartuPengpinShowPage = () => {
     };
 
     const handlePrint = () => {
-        window.open(`/kartu-pengpin/${kartu.id}/print`, '_blank');
+        window.open(kartuPengpin.print(kartu.id).url, '_blank');
     };
 
     const expired = isExpired(kartu.expired_at);

@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { CheckCircle, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import hibahTransfers from '@/routes/weapons/hibah-transfers';
 import {
     AlertDialog,
     AlertDialogContent,
@@ -97,7 +98,7 @@ const HibahTransferShowPage = () => {
     ];
 
     const handleApprove = () => {
-        router.post(`/weapons/hibah-transfers/${transfer.id}/approve`, {
+        router.post(hibahTransfers.approve(transfer.id).url, {
             action: 'approve',
             notes,
         }, {
@@ -114,7 +115,7 @@ const HibahTransferShowPage = () => {
     };
 
     const handleReject = () => {
-        router.post(`/weapons/hibah-transfers/${transfer.id}/approve`, {
+        router.post(hibahTransfers.approve(transfer.id).url, {
             action: 'reject',
             notes,
         }, {

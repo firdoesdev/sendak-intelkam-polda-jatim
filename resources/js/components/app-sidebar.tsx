@@ -22,6 +22,8 @@ import warehouses from '@/routes/master-data/warehouses';
 import permits from '@/routes/permits';
 import weapons from '@/routes/weapons';
 import permitRenewals from '@/routes/permits/renewals';
+import hibahTransfers from '@/routes/weapons/hibah-transfers';
+import kartuPengpin from '@/routes/kartu-pengpin';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
@@ -100,7 +102,7 @@ const weaponNavItems: NavItem[] = [
     },
     {
         title: 'Transfer Hibah',
-        href: '/weapons/hibah-transfers',
+        href: hibahTransfers.index(),
         icon: Gift,
     },
     {
@@ -123,7 +125,7 @@ const permitNavItems: NavItem[] = [
     },
     {
         title: 'Kartu Pengpin',
-        href: '/kartu-pengpin',
+        href: kartuPengpin.index(),
         icon: CreditCard,
     },
 ];

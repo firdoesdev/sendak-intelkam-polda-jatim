@@ -6,6 +6,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Eye, Printer } from 'lucide-react';
+import kartuPengpin from '@/routes/kartu-pengpin';
 
 interface KartuPengpin {
     id: number;
@@ -127,7 +128,7 @@ const KartuPengpinIndexPage = () => {
                             </Badge>
                         )}
                         {!expired && expiringSoon && (
-                            <Badge variant="warning" className="text-xs mt-1">
+                            <Badge variant="secondary" className="text-xs mt-1 bg-yellow-500 text-white">
                                 Segera Habis
                             </Badge>
                         )}
@@ -154,7 +155,7 @@ const KartuPengpinIndexPage = () => {
                         size="sm"
                         asChild
                     >
-                        <Link href={`/kartu-pengpin/${row.original.id}`}>
+                        <Link href={kartuPengpin.show(row.original.id).url}>
                             <Eye className="h-4 w-4 mr-1" />
                             Lihat
                         </Link>
@@ -165,7 +166,7 @@ const KartuPengpinIndexPage = () => {
                             size="sm"
                             asChild
                         >
-                            <Link href={`/kartu-pengpin/${row.original.id}/print`} target="_blank">
+                            <Link href={kartuPengpin.print(row.original.id).url} target="_blank">
                                 <Printer className="h-4 w-4 mr-1" />
                                 Cetak
                             </Link>
