@@ -1,24 +1,24 @@
-import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, PaginationMeta } from '@/types';
-import { Head, usePage, router, Link } from '@inertiajs/react';
 import DataTable from '@/components/data-table';
-import { ColumnDef } from '@tanstack/react-table';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Eye, Send } from 'lucide-react';
-import { toast } from 'sonner';
-import { useState } from 'react';
-import hibahTransfers from '@/routes/weapons/hibah-transfers';
 import {
     AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
     AlertDialogContent,
-    AlertDialogHeader,
-    AlertDialogTitle,
     AlertDialogDescription,
     AlertDialogFooter,
-    AlertDialogCancel,
-    AlertDialogAction,
+    AlertDialogHeader,
+    AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import AppLayout from '@/layouts/app-layout';
+import hibahTransfers from '@/routes/weapons/hibah-transfers';
+import { BreadcrumbItem, PaginationMeta } from '@/types';
+import { Head, Link, router, usePage } from '@inertiajs/react';
+import { ColumnDef } from '@tanstack/react-table';
+import { Eye, Send } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface WeaponHibahTransfer {
     id: number;
@@ -43,19 +43,15 @@ interface WeaponHibahTransfer {
         model: string;
         caliber: string;
     };
-    from_person: {
+    from_owner: {
         id: number;
         name: string;
         nik: string;
     };
-    to_person: {
+    to_owner: {
         id: number;
         name: string;
         nik: string;
-    };
-    from_permit: {
-        id: number;
-        permit_number: string;
     };
     to_permit: {
         id: number;
@@ -103,7 +99,9 @@ const HibahTransfersIndexPage = () => {
             header: 'Senjata',
             cell: ({ row }) => (
                 <div>
-                    <div className="font-medium">{row.original.weapon.serial_number}</div>
+                    <div className="font-medium">
+                        {row.original.weapon.serial_number}
+                    </div>
                     <div className="text-sm text-muted-foreground">
                         {row.original.weapon.brand} {row.original.weapon.model}
                     </div>
@@ -111,25 +109,30 @@ const HibahTransfersIndexPage = () => {
             ),
         },
         {
-            accessorKey: 'from_person.name',
+            accessorKey: 'from_owner.name',
             header: 'Dari',
             cell: ({ row }) => (
                 <div>
-                    <div className="font-medium">{row.original.from_person.name}</div>
+                    <div className="font-medium">
+                        {row.original.from_owner.name}
+                    </div>
                     <div className="text-sm text-muted-foreground">
-                        {row.original.from_permit.permit_number}
+                        NIK: {row.original.from_owner.nik}
                     </div>
                 </div>
             ),
         },
         {
-            accessorKey: 'to_person.name',
+            accessorKey: 'to_owner.name',
             header: 'Kepada',
             cell: ({ row }) => (
                 <div>
-                    <div className="font-medium">{row.original.to_person.name}</div>
+                    <div className="font-medium">
+                        {row.original.to_owner.name}
+                    </div>
                     <div className="text-sm text-muted-foreground">
-                        {row.original.to_permit?.permit_number || 'Belum ada izin'}
+                        {row.original.to_permit?.permit_number ||
+                            'Belum ada izin'}
                     </div>
                 </div>
             ),
@@ -146,20 +149,17 @@ const HibahTransfersIndexPage = () => {
         {
             accessorKey: 'created_at',
             header: 'Dibuat',
-            cell: ({ row }) => new Date(row.original.created_at).toLocaleDateString('id-ID'),
+            cell: ({ row }) =>
+                new Date(row.original.created_at).toLocaleDateString('id-ID'),
         },
         {
             id: 'actions',
             header: 'Aksi',
             cell: ({ row }) => (
                 <div className="flex gap-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        asChild
-                    >
+                    <Button variant="outline" size="sm" asChild>
                         <Link href={hibahTransfers.show(row.original.id).url}>
-                            <Eye className="h-4 w-4 mr-1" />
+                            <Eye className="mr-1 h-4 w-4" />
                             Lihat
                         </Link>
                     </Button>
@@ -169,7 +169,7 @@ const HibahTransfersIndexPage = () => {
                             size="sm"
                             onClick={() => setSubmitDialog(row.original.id)}
                         >
-                            <Send className="h-4 w-4 mr-1" />
+                            <Send className="mr-1 h-4 w-4" />
                             Ajukan
                         </Button>
                     )}
@@ -195,18 +195,28 @@ const HibahTransfersIndexPage = () => {
                 ]}
             />
 
-            <AlertDialog open={submitDialog !== null} onOpenChange={() => setSubmitDialog(null)}>
+            <AlertDialog
+                open={submitDialog !== null}
+                onOpenChange={() => setSubmitDialog(null)}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Ajukan Transfer Hibah</AlertDialogTitle>
+                        <AlertDialogTitle>
+                            Ajukan Transfer Hibah
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                            Apakah Anda yakin ingin mengajukan transfer hibah ini? 
-                            Status akan berubah menjadi "Menunggu Persetujuan" dan tidak dapat diubah lagi.
+                            Apakah Anda yakin ingin mengajukan transfer hibah
+                            ini? Status akan berubah menjadi "Menunggu
+                            Persetujuan" dan tidak dapat diubah lagi.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Batal</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => submitDialog && handleSubmit(submitDialog)}>
+                        <AlertDialogAction
+                            onClick={() =>
+                                submitDialog && handleSubmit(submitDialog)
+                            }
+                        >
                             Ya, Ajukan
                         </AlertDialogAction>
                     </AlertDialogFooter>

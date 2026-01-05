@@ -6,10 +6,7 @@ use App\Http\Controllers\Weapons\WeaponTransferController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Weapon Management
-    Route::resource('/weapons', WeaponController::class)
-        ->names('weapons');
-
+  
     // Weapon Transfer Requests
     Route::prefix('/weapons/transfer-requests')->name('weapons.transfer-requests.')->group(function () {
         Route::get('/', [WeaponTransferController::class, 'index'])->name('index');
@@ -26,4 +23,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{transfer}/submit', [WeaponHibahTransferController::class, 'submit'])->name('submit');
         Route::post('/{transfer}/approve', [WeaponHibahTransferController::class, 'approve'])->name('approve');
     });
+
+      // Weapon Management
+    Route::resource('/weapons', WeaponController::class)
+        ->names('weapons');
+
 });

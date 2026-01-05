@@ -127,7 +127,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                         variant="outline"
                         size="sm"
                     >
-                        <Link href={page.props.data.first_page_url || '#'}>
+                        <Link href={page.props.data?.first_page_url || '#'}>
                             <ChevronsLeft />
                         </Link>
                     </Button>
@@ -136,19 +136,19 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                         variant="outline"
                         size="sm"
                     >
-                        <Link href={page.props.data.prev_page_url || '#'}>
+                        <Link href={page.props.data?.prev_page_url || '#'}>
                             <ChevronLeft />
                         </Link>
                     </Button>
                     <div className="text-sm">
-                        {page.props.data.current_page} of {page.props.data.last_page}
+                        {page.props.data?.current_page} of {page.props.data?.last_page}
                     </div>
                     <Button
                         asChild
                         variant="outline"
                         size="sm"
                     >
-                        <Link href={page.props.data.next_page_url || '#'}>
+                        <Link href={page.props.data?.next_page_url || '#'}>
                             <ChevronRight />
                         </Link>
                     </Button>
@@ -157,7 +157,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                         variant="outline"
                         size="sm"
                     >
-                        <Link href={page.props.data.last_page_url || '#'}>
+                        <Link href={page.props.data?.last_page_url || '#'}>
                             <ChevronsRight />
                         </Link>
                     </Button>

@@ -24,12 +24,11 @@ class WeaponHibahTransferController extends Controller
     {
         $transfers = WeaponHibahTransferRequest::with([
             'weapon',
-            'fromPerson',
-            'fromPermit',
-            'toPerson',
+            'fromOwner',
+            'toOwner',
             'toPermit',
-            'requestedBy',
-            'approvedBy'
+            'requester',
+            'approver'
         ])
         ->latest('submitted_at')
         ->paginate(20);
@@ -37,18 +36,19 @@ class WeaponHibahTransferController extends Controller
         return Inertia::render('weapons/hibah-transfers/index', [
             'transfers' => $transfers,
         ]);
+
+        // return Inertia::render('weapons/hibah-transfers/index' );
     }
 
     public function show(WeaponHibahTransferRequest $transfer)
     {
         $transfer->load([
             'weapon',
-            'fromPerson',
-            'fromPermit',
-            'toPerson',
+            'fromOwner',
+            'toOwner',
             'toPermit',
-            'requestedBy',
-            'approvedBy',
+            'requester',
+            'approver',
             'activities'
         ]);
 

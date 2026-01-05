@@ -24,9 +24,8 @@ import { Label } from '@/components/ui/label';
 interface WeaponHibahTransfer {
     id: number;
     weapon_id: number;
-    from_person_id: number;
-    from_permit_id: number;
-    to_person_id: number;
+    from_owner_id: number;
+    to_owner_id: number;
     to_permit_id: number | null;
     transfer_reason: string;
     status: string;
@@ -46,22 +45,17 @@ interface WeaponHibahTransfer {
         caliber: string;
         weapon_type: string;
     };
-    from_person: {
+    from_owner: {
         id: number;
         name: string;
         nik: string;
         address: string;
     };
-    to_person: {
+    to_owner: {
         id: number;
         name: string;
         nik: string;
         address: string;
-    };
-    from_permit: {
-        id: number;
-        permit_number: string;
-        permit_type: string;
     };
     to_permit: {
         id: number;
@@ -189,19 +183,15 @@ const HibahTransferShowPage = () => {
                         <CardContent className="space-y-2">
                             <div>
                                 <div className="text-sm text-muted-foreground">Nama</div>
-                                <div className="font-medium">{transfer.from_person.name}</div>
+                                <div className="font-medium">{transfer.from_owner.name}</div>
                             </div>
                             <div>
                                 <div className="text-sm text-muted-foreground">NIK</div>
-                                <div className="font-medium">{transfer.from_person.nik}</div>
+                                <div className="font-medium">{transfer.from_owner.nik}</div>
                             </div>
                             <div>
                                 <div className="text-sm text-muted-foreground">Alamat</div>
-                                <div className="font-medium">{transfer.from_person.address}</div>
-                            </div>
-                            <div>
-                                <div className="text-sm text-muted-foreground">Nomor Izin</div>
-                                <div className="font-medium">{transfer.from_permit.permit_number}</div>
+                                <div className="font-medium">{transfer.from_owner.address}</div>
                             </div>
                         </CardContent>
                     </Card>
@@ -213,15 +203,15 @@ const HibahTransferShowPage = () => {
                         <CardContent className="space-y-2">
                             <div>
                                 <div className="text-sm text-muted-foreground">Nama</div>
-                                <div className="font-medium">{transfer.to_person.name}</div>
+                                <div className="font-medium">{transfer.to_owner.name}</div>
                             </div>
                             <div>
                                 <div className="text-sm text-muted-foreground">NIK</div>
-                                <div className="font-medium">{transfer.to_person.nik}</div>
+                                <div className="font-medium">{transfer.to_owner.nik}</div>
                             </div>
                             <div>
                                 <div className="text-sm text-muted-foreground">Alamat</div>
-                                <div className="font-medium">{transfer.to_person.address}</div>
+                                <div className="font-medium">{transfer.to_owner.address}</div>
                             </div>
                             <div>
                                 <div className="text-sm text-muted-foreground">Nomor Izin</div>
