@@ -75,14 +75,14 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const HibahTransfersIndexPage = () => {
-    const page = usePage<{ data: PaginationMeta<WeaponHibahTransfer> }>();
+    const page = usePage<{ transfers: PaginationMeta<WeaponHibahTransfer> }>();
     const [submitDialog, setSubmitDialog] = useState<number | null>(null);
 
     const handleSubmit = (id: number) => {
         router.post(hibahTransfers.submit(id).url, {}, {
             preserveState: true,
             replace: true,
-            only: ['data'],
+            only: ['transfers'],
             onSuccess: () => {
                 setSubmitDialog(null);
                 toast.success('Transfer hibah berhasil diajukan');
@@ -185,7 +185,7 @@ const HibahTransfersIndexPage = () => {
             <DataTable
                 title="Transfer Hibah Senjata"
                 columns={columns}
-                data={page.props.data.data}
+                data={page.props.transfers.data}
                 topActions={[
                     <Button key="create" asChild>
                         <Link href="/weapons/hibah-transfers/create">
