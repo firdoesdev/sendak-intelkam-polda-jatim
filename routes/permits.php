@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Permit Renewals
-    Route::get('/permits-renewals', [PermitRenewalController::class, 'index'])->name('permits.renewals.index');
-    Route::post('/permits-renewals', [PermitRenewalController::class, 'store'])->name('permits.renewals.store');
-    Route::post('/permits-renewals/{id}/approve', [PermitRenewalController::class, 'approve'])->name('permits.renewals.approve');
-    Route::post('/permits-renewals/{id}/reject', [PermitRenewalController::class, 'reject'])->name('permits.renewals.reject');
+    Route::get('/renewals-permits', [PermitRenewalController::class, 'index'])->name('permits.renewals.index');
+    Route::post('/renewals-permits', [PermitRenewalController::class, 'store'])->name('permits.renewals.store');
+    Route::post('/renewals-permits/{id}/approve', [PermitRenewalController::class, 'approve'])->name('permits.renewals.approve');
+    Route::post('/renewals-permits/{id}/reject', [PermitRenewalController::class, 'reject'])->name('permits.renewals.reject');
 
     Route::resource('/permits', PermitController::class)->names('permits');
 

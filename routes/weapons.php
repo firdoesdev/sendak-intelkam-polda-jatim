@@ -7,8 +7,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
   
+          // Weapon Management
+    Route::resource('/weapons', WeaponController::class)
+        ->only(['index', 'store','update','destroy'])
+        ->names('weapons');
+
     // Weapon Transfer Requests
-    Route::prefix('/weapons/transfer-requests')->name('weapons.transfer-requests.')->group(function () {
+    Route::prefix('/transfer-requests')->name('weapons.transfer-requests.')->group(function () {
         Route::get('/', [WeaponTransferController::class, 'index'])->name('index');
         Route::post('/', [WeaponTransferController::class, 'store'])->name('store');
         Route::post('/{id}/approve', [WeaponTransferController::class, 'approve'])->name('approve');
@@ -16,7 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Weapon Hibah Transfers
-    Route::prefix('/weapons/hibah-transfers')->name('weapons.hibah-transfers.')->group(function () {
+    Route::prefix('/hibah-transfers')->name('weapons.hibah-transfers.')->group(function () {
         Route::get('/', [WeaponHibahTransferController::class, 'index'])->name('index');
         Route::post('/', [WeaponHibahTransferController::class, 'store'])->name('store');
         Route::get('/{transfer}', [WeaponHibahTransferController::class, 'show'])->name('show');
@@ -24,8 +29,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{transfer}/approve', [WeaponHibahTransferController::class, 'approve'])->name('approve');
     });
 
-      // Weapon Management
-    Route::resource('/weapons', WeaponController::class)
-        ->names('weapons');
+
 
 });

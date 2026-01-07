@@ -68,16 +68,7 @@ class WeaponController extends Controller
 
     public function show(string $id)
     {
-        $weapon = \App\Models\Weapon::with([
-            'warehouse',
-            'currentOwner',
-            'currentPermit',
-            'movements' => fn($query) => $query->latest()->limit(10),
-        ])->findOrFail($id);
-
-        return Inertia::render('weapons/show', [
-            'weapon' => $weapon,
-        ]);
+        //
     }
 
     public function store(WeaponStoreRequest $request)

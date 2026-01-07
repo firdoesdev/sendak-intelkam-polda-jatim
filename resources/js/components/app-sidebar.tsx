@@ -23,6 +23,7 @@ import permits from '@/routes/permits';
 import weapons from '@/routes/weapons';
 import permitRenewals from '@/routes/permits/renewals';
 import hibahTransfers from '@/routes/weapons/hibah-transfers';
+import transferRequests from '@/routes/weapons/transfer-requests';
 import kartuPengpin from '@/routes/kartu-pengpin';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
@@ -107,7 +108,7 @@ const weaponNavItems: NavItem[] = [
     },
     {
         title: 'Permintaan Transfer',
-        href: '/weapons/transfer-requests',
+        href: transferRequests.index(),
         icon: ArrowLeftRight,
     },
 ];
