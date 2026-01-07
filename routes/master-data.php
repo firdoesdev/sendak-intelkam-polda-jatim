@@ -9,11 +9,30 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('master-data')->group(function () {
-        Route::resource('/police-units', PoliceUnitController::class)->names('master-data.police-units');
-        Route::resource('/warehouses', WarehouseController::class)->names('master-data.warehouses');
-        Route::resource('/organizations', OrganizationController::class)->names('master-data.organizations');
-        Route::resource('/applicants', ApplicantController::class)->names('master-data.applicants');
-        Route::resource('/persons', PersonController::class)->names('master-data.persons');
+        // Police Units
+        Route::resource('/police-units', PoliceUnitController::class)
+        ->only(['index','store','update','destroy'])
+        ->names('master-data.police-units');
+
+        // Warehouses
+        Route::resource('/warehouses', WarehouseController::class)
+        ->only(['index','store','update','destroy'])
+        ->names('master-data.warehouses');
+
+        // Organizations
+        Route::resource('/organizations', OrganizationController::class)
+        ->only(['index','store','update','destroy'])
+        ->names('master-data.organizations');
+
+        // Applicants
+        Route::resource('/applicants', ApplicantController::class)
+        ->only(['index','store','update','destroy'])
+        ->names('master-data.applicants');
+
+        // Persons
+        Route::resource('/persons', PersonController::class)
+        ->only(['index','store','update','destroy'])
+        ->names('master-data.persons');
     });
 });
 
