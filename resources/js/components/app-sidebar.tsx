@@ -124,7 +124,11 @@ const permitNavItems: NavItem[] = [
         href: permitRenewals.index(),
         icon: RefreshCw,
     },
-    {
+   
+];
+
+const polsusNavItems: NavItem[] = [
+     {
         title: 'Kartu Pengpin',
         href: kartuPengpin.index(),
         icon: CreditCard,
@@ -166,6 +170,7 @@ export function AppSidebar() {
                     items={IamNavItems}
                 />
                 <NavMain groupLabel="Master Data" items={masterNavItems} />
+                <NavMain groupLabel="Polsus" items={polsusNavItems} />
                 <NavMain groupLabel="Perizinan" items={permitNavItems} />
                 <NavMain
                     groupLabel="Manajemen Senjata"

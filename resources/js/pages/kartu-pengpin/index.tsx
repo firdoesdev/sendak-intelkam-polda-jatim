@@ -7,39 +7,10 @@ import { BreadcrumbItem, PaginationMeta } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Eye, Printer } from 'lucide-react';
+import { TKartuPengpin } from './types';
+import { CreateFormDialog } from './dialogs/create-form-dialog';
 
-interface KartuPengpin {
-    id: number;
-    card_number: string;
-    permit_id: number;
-    person_id: number;
-    weapon_id: number;
-    issued_at: string;
-    expired_at: string;
-    status: string;
-    status_label: string;
-    status_variant: string;
-    revoked_at: string | null;
-    revoked_by: number | null;
-    revoke_reason: string | null;
-    created_at: string;
-    permit: {
-        id: number;
-        permit_number: string;
-        permit_type: string;
-    };
-    person: {
-        id: number;
-        name: string;
-        nik: string;
-    };
-    weapon: {
-        id: number;
-        serial_number: string;
-        brand: string;
-        model: string;
-    };
-}
+
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -66,9 +37,9 @@ const isExpired = (expiredAt: string) => {
 };
 
 const KartuPengpinIndexPage = () => {
-    const page = usePage<{ data: PaginationMeta<KartuPengpin> }>();
+    const page = usePage<{ data: PaginationMeta<TKartuPengpin> }>();
 
-    const columns: ColumnDef<KartuPengpin>[] = [
+    const columns: ColumnDef<TKartuPengpin>[] = [
         {
             accessorKey: 'card_number',
             header: 'Nomor Kartu',
@@ -197,13 +168,9 @@ const KartuPengpinIndexPage = () => {
                 <DataTable
                     title="Kartu Pengawasan & Pengendalian (Kartu Pengpin)"
                     columns={columns}
-                    data={page.props.data.data}
+                    data={page.props.data.data}              
                     topActions={[
-                        <Button key="create" asChild>
-                            <Link href="/kartu-pengpin/create">
-                                Buat Kartu Pengpin
-                            </Link>
-                        </Button>,
+                        <CreateFormDialog key="create-form-dialog" />,
                     ]}
                 />
             </div>
