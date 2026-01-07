@@ -103,7 +103,7 @@ export const CreateFormDialog = ({
 
                 <form onSubmit={handleSubmit}>
                     <div className="grid gap-4">
-                        <div>
+                        <div className='space-y-2'>
                             <Label htmlFor="permit_id">
                                 Izin POLSUS{' '}
                                 <span className="text-destructive">*</span>
@@ -114,7 +114,7 @@ export const CreateFormDialog = ({
                                     setData('permit_id', value)
                                 }
                             >
-                                <SelectTrigger>
+                                <SelectTrigger className='w-full'>
                                     <SelectValue placeholder="Pilih izin POLSUS" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -142,7 +142,7 @@ export const CreateFormDialog = ({
                             )}
                         </div>
 
-                        <div>
+                        <div className='space-y-2'>
                             <Label htmlFor="person_id">
                                 Pemegang Kartu{' '}
                                 <span className="text-destructive">*</span>
@@ -153,7 +153,7 @@ export const CreateFormDialog = ({
                                     setData('person_id', value)
                                 }
                             >
-                                <SelectTrigger>
+                                <SelectTrigger className='w-full'>
                                     <SelectValue placeholder="Pilih pemegang kartu (Satpol PP, PPNS, Satpam, dll)" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -181,7 +181,7 @@ export const CreateFormDialog = ({
                             )}
                         </div>
 
-                        <div>
+                        <div className='space-y-2'>
                             <Label htmlFor="weapon_id">
                                 Senjata Api Nonorganik{' '}
                                 <span className="text-destructive">*</span>
@@ -192,7 +192,7 @@ export const CreateFormDialog = ({
                                     setData('weapon_id', value)
                                 }
                             >
-                                <SelectTrigger>
+                                <SelectTrigger className='w-full'>
                                     <SelectValue placeholder="Pilih senjata api yang dipinjamkan" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -221,7 +221,7 @@ export const CreateFormDialog = ({
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
-                            <div>
+                           <div className='space-y-2'>
                                 <Label htmlFor="issue_date">
                                     Tanggal Penerbitan{' '}
                                     <span className="text-destructive">*</span>
@@ -241,7 +241,7 @@ export const CreateFormDialog = ({
                                 )}
                             </div>
 
-                            <div>
+                           <div className='space-y-2'>
                                 <Label htmlFor="expiry_date">
                                     Tanggal Kadaluarsa{' '}
                                     <span className="text-destructive">*</span>
