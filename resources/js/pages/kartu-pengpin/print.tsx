@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 
 interface KartuPengpin {
     id: number;
-    card_number: string;
+    pengpin_number: string;
     permit_id: number;
     person_id: number;
     weapon_id: number;
-    issued_at: string;
-    expired_at: string;
+    issue_date: string;
+    expiry_date: string;
     permit: {
         id: number;
         permit_number: string;
@@ -17,8 +17,8 @@ interface KartuPengpin {
     };
     person: {
         id: number;
-        name: string;
-        nik: string;
+        full_name: string;
+        national_id: string;
         date_of_birth: string;
         address: string;
         phone: string;
@@ -26,8 +26,8 @@ interface KartuPengpin {
     weapon: {
         id: number;
         serial_number: string;
-        brand: string;
-        model: string;
+        manufacturer: string;
+        name: string;
         caliber: string;
         weapon_type: string;
         year_of_manufacture: number;
@@ -49,7 +49,7 @@ const KartuPengpinPrintPage = () => {
 
     return (
         <>
-            <Head title={`Cetak Kartu Pengpin ${kartu.card_number}`} />
+            <Head title={`Cetak Kartu Pengpin ${kartu.pengpin_number}`} />
 
             <div className="min-h-screen bg-white p-8 print:p-0">
                 <style>{`
@@ -83,7 +83,7 @@ const KartuPengpinPrintPage = () => {
                         </h1>
                         <h2 className="text-2xl font-bold mb-4">SENJATA API</h2>
                         <div className="inline-block bg-gray-200 px-6 py-2 rounded">
-                            <span className="text-xl font-mono font-bold">{kartu.card_number}</span>
+                            <span className="text-xl font-mono font-bold">{kartu.pengpin_number}</span>
                         </div>
                     </div>
 
@@ -97,11 +97,11 @@ const KartuPengpinPrintPage = () => {
                             <div className="grid grid-cols-2 gap-x-8 gap-y-3">
                                 <div>
                                     <div className="text-sm font-semibold text-gray-600">Nama Lengkap</div>
-                                    <div className="font-medium text-lg">{kartu.person.name}</div>
+                                    <div className="font-medium text-lg">{kartu.person.full_name}</div>
                                 </div>
                                 <div>
                                     <div className="text-sm font-semibold text-gray-600">NIK</div>
-                                    <div className="font-medium text-lg font-mono">{kartu.person.nik}</div>
+                                    <div className="font-medium text-lg font-mono">{kartu.person.national_id}</div>
                                 </div>
                                 <div>
                                     <div className="text-sm font-semibold text-gray-600">Tanggal Lahir</div>
@@ -136,11 +136,11 @@ const KartuPengpinPrintPage = () => {
                                 </div>
                                 <div>
                                     <div className="text-sm font-semibold text-gray-600">Merek</div>
-                                    <div className="font-medium text-lg">{kartu.weapon.brand}</div>
+                                    <div className="font-medium text-lg">{kartu.weapon.manufacturer}</div>
                                 </div>
                                 <div>
                                     <div className="text-sm font-semibold text-gray-600">Model</div>
-                                    <div className="font-medium">{kartu.weapon.model}</div>
+                                    <div className="font-medium">{kartu.weapon.name}</div>
                                 </div>
                                 <div>
                                     <div className="text-sm font-semibold text-gray-600">Jenis</div>
@@ -174,7 +174,7 @@ const KartuPengpinPrintPage = () => {
                                 <div>
                                     <div className="text-sm font-semibold text-gray-600">Tanggal Terbit</div>
                                     <div className="font-medium">
-                                        {new Date(kartu.issued_at).toLocaleDateString('id-ID', {
+                                        {new Date(kartu.issue_date).toLocaleDateString('id-ID', {
                                             day: 'numeric',
                                             month: 'long',
                                             year: 'numeric'
@@ -184,7 +184,7 @@ const KartuPengpinPrintPage = () => {
                                 <div>
                                     <div className="text-sm font-semibold text-gray-600">Berlaku Sampai</div>
                                     <div className="font-medium">
-                                        {new Date(kartu.expired_at).toLocaleDateString('id-ID', {
+                                        {new Date(kartu.expiry_date).toLocaleDateString('id-ID', {
                                             day: 'numeric',
                                             month: 'long',
                                             year: 'numeric'

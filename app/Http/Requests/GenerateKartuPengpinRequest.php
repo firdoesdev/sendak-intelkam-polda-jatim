@@ -18,20 +18,25 @@ class GenerateKartuPengpinRequest extends FormRequest
             'permit_id' => ['required', 'exists:permits,id'],
             'person_id' => ['required', 'exists:persons,id'],
             'weapon_id' => ['required', 'exists:weapons,id'],
-            'issued_at' => ['required', 'date'],
-            'expired_at' => ['required', 'date', 'after:issued_at'],
+            'issue_date' => ['required', 'date'],
+            'expiry_date' => ['required', 'date', 'after:issue_date'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'permit_id.exists' => 'Ijin tidak ditemukan',
-            'person_id.exists' => 'Pengguna tidak ditemukan',
-            'weapon_id.exists' => 'Senjata tidak ditemukan',
-            'issued_at.required' => 'Tanggal terbit wajib diisi',
-            'expired_at.required' => 'Tanggal expired wajib diisi',
-            'expired_at.after' => 'Tanggal expired harus setelah tanggal terbit',
+            'permit_id.required' => 'Izin wajib dipilih',
+            'permit_id.exists' => 'Izin tidak ditemukan',
+            'person_id.required' => 'Pemegang kartu wajib dipilih',
+            'person_id.exists' => 'Pemegang kartu tidak ditemukan',
+            'weapon_id.required' => 'Senjata api wajib dipilih',
+            'weapon_id.exists' => 'Senjata api tidak ditemukan',
+            'issue_date.required' => 'Tanggal penerbitan wajib diisi',
+            'issue_date.date' => 'Format tanggal penerbitan tidak valid',
+            'expiry_date.required' => 'Tanggal kadaluarsa wajib diisi',
+            'expiry_date.date' => 'Format tanggal kadaluarsa tidak valid',
+            'expiry_date.after' => 'Tanggal kadaluarsa harus setelah tanggal penerbitan',
         ];
     }
 }

@@ -37,28 +37,45 @@ const isExpired = (expiredAt: string) => {
 };
 
 const KartuPengpinIndexPage = () => {
-    const page = usePage<{ data: PaginationMeta<TKartuPengpin> }>();
+    const page = usePage<{ 
+        data: PaginationMeta<TKartuPengpin>;
+        permits: Array<{
+            id: number;
+            permit_number: string;
+            permit_type: string;
+        }>;
+        persons: Array<{
+            id: number;
+            full_name: string;
+            national_id: string;
+        }>;
+        weapons: Array<{
+            id: number;
+            serial_number: string;
+            name: string;
+        }>;
+    }>();
 
     const columns: ColumnDef<TKartuPengpin>[] = [
         {
-            accessorKey: 'card_number',
+            accessorKey: 'pengpin_number',
             header: 'Nomor Kartu',
             cell: ({ row }) => (
                 <div className="font-mono font-medium">
-                    {row.original.card_number}
+                    {row.original.pengpin_number}
                 </div>
             ),
         },
         {
-            accessorKey: 'person.name',
+            accessorKey: 'person.full_name',
             header: 'Pemilik',
             cell: ({ row }) => (
                 <div>
                     <div className="font-medium">
-                        {row.original.person.name}
+                        {row.original.person.full_name}
                     </div>
                     <div className="text-sm text-muted-foreground">
-                        {row.original.person.nik}
+                        {row.original.person.national_id}
                     </div>
                 </div>
             ),
@@ -72,7 +89,7 @@ const KartuPengpinIndexPage = () => {
                         {row.original.weapon.serial_number}
                     </div>
                     <div className="text-sm text-muted-foreground">
-                        {row.original.weapon.brand} {row.original.weapon.model}
+                        {row.original.weapon.manufacturer} {row.original.weapon.name}
                     </div>
                 </div>
             ),
@@ -92,17 +109,17 @@ const KartuPengpinIndexPage = () => {
             ),
         },
         {
-            accessorKey: 'expired_at',
+            accessorKey: 'expiry_date',
             header: 'Masa Berlaku',
             cell: ({ row }) => {
-                const expired = isExpired(row.original.expired_at);
-                const expiringSoon = isExpiringSoon(row.original.expired_at);
+                const expired = isExpired(row.original.expiry_date);
+                const expiringSoon = isExpiringSoon(row.original.expiry_date);
 
                 return (
                     <div>
                         <div className="font-medium">
                             {new Date(
-                                row.original.expired_at,
+                                row.original.expiry_date,
                             ).toLocaleDateString('id-ID')}
                         </div>
                         {expired && (
@@ -170,7 +187,12 @@ const KartuPengpinIndexPage = () => {
                     columns={columns}
                     data={page.props.data.data}              
                     topActions={[
-                        <CreateFormDialog key="create-form-dialog" />,
+                        <CreateFormDialog 
+                            key="create-form-dialog" 
+                            permits={page.props.permits}
+                            persons={page.props.persons}
+                            weapons={page.props.weapons}
+                        />,
                     ]}
                 />
             </div>

@@ -23,12 +23,12 @@ import { Label } from '@/components/ui/label';
 
 interface KartuPengpin {
     id: number;
-    card_number: string;
+    pengpin_number: string;
     permit_id: number;
     person_id: number;
     weapon_id: number;
-    issued_at: string;
-    expired_at: string;
+    issue_date: string;
+    expiry_date: string;
     status: string;
     status_label: string;
     status_variant: string;
@@ -45,8 +45,8 @@ interface KartuPengpin {
     };
     person: {
         id: number;
-        name: string;
-        nik: string;
+        full_name: string;
+        national_id: string;
         date_of_birth: string;
         address: string;
         phone: string;
@@ -54,8 +54,8 @@ interface KartuPengpin {
     weapon: {
         id: number;
         serial_number: string;
-        brand: string;
-        model: string;
+        manufacturer: string;
+        name: string;
         caliber: string;
         weapon_type: string;
         year_of_manufacture: number;
@@ -87,7 +87,7 @@ const KartuPengpinShowPage = () => {
             href: '/kartu-pengpin',
         },
         {
-            title: kartu.card_number,
+            title: kartu.pengpin_number,
             href: `/kartu-pengpin/${kartu.id}`,
         },
     ];
@@ -116,14 +116,14 @@ const KartuPengpinShowPage = () => {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Kartu Pengpin ${kartu.card_number}`} />
+            <Head title={`Kartu Pengpin ${kartu.pengpin_number}`} />
 
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight font-mono">{kartu.card_number}</h1>
+                        <h1 className="text-3xl font-bold tracking-tight font-mono">{kartu.pengpin_number}</h1>
                         <p className="text-muted-foreground">
-                            Diterbitkan pada {new Date(kartu.issued_at).toLocaleDateString('id-ID')}
+                            Diterbitkan pada {new Date(kartu.issue_date).toLocaleDateString('id-ID')}
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -146,11 +146,11 @@ const KartuPengpinShowPage = () => {
                         <CardContent className="space-y-2">
                             <div>
                                 <div className="text-sm text-muted-foreground">Nama Lengkap</div>
-                                <div className="font-medium">{kartu.person.name}</div>
+                                <div className="font-medium">{kartu.person.full_name}</div>
                             </div>
                             <div>
                                 <div className="text-sm text-muted-foreground">NIK</div>
-                                <div className="font-medium">{kartu.person.nik}</div>
+                                <div className="font-medium">{kartu.person.national_id}</div>
                             </div>
                             <div>
                                 <div className="text-sm text-muted-foreground">Tanggal Lahir</div>
@@ -180,7 +180,7 @@ const KartuPengpinShowPage = () => {
                             </div>
                             <div>
                                 <div className="text-sm text-muted-foreground">Merek & Model</div>
-                                <div className="font-medium">{kartu.weapon.brand} {kartu.weapon.model}</div>
+                                <div className="font-medium">{kartu.weapon.manufacturer} {kartu.weapon.name}</div>
                             </div>
                             <div>
                                 <div className="text-sm text-muted-foreground">Jenis</div>
@@ -221,13 +221,13 @@ const KartuPengpinShowPage = () => {
                             <div>
                                 <div className="text-sm text-muted-foreground">Tanggal Terbit</div>
                                 <div className="font-medium">
-                                    {new Date(kartu.issued_at).toLocaleDateString('id-ID')}
+                                    {new Date(kartu.issue_date).toLocaleDateString('id-ID')}
                                 </div>
                             </div>
                             <div>
                                 <div className="text-sm text-muted-foreground">Tanggal Kadaluarsa</div>
                                 <div className="font-medium">
-                                    {new Date(kartu.expired_at).toLocaleDateString('id-ID')}
+                                    {new Date(kartu.expiry_date).toLocaleDateString('id-ID')}
                                 </div>
                             </div>
                             {expired && (

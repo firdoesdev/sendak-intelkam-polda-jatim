@@ -31,6 +31,7 @@ class KartuPengpinPolicy
     public function create(User $user): bool
     {
         // Users with permission can create
+        // TODO
         return $user->can('create_kartu_pengpin');
     }
 

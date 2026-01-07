@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Permits\GenerateKartuPengpin;
+use App\Enums\KartuPengpinStatus;
 use App\Http\Requests\GenerateKartuPengpinRequest;
 use App\Models\KartuPengpin;
 use App\Models\Permit;
@@ -24,11 +25,25 @@ class KartuPengpinController extends Controller
             'person',
             'weapon'
         ])
-        ->latest('issued_at')
+        ->latest('issue_date')
         ->paginate(20);
+
+        // Data untuk form create dialog
+        $permits = Permit::select('id', 'permit_number', 'permit_type')
+            ->where('permit_type', 'POLSUS')
+            ->get();
+        
+        $persons = Person::select('id', 'full_name', 'national_id')
+            ->get();
+        
+        $weapons = Weapon::select('id', 'serial_number', 'name')
+            ->get();
 
         return Inertia::render('kartu-pengpin/index', [
             'data' => $kartuPengpin,
+            'permits' => $permits,
+            'persons' => $persons,
+            'weapons' => $weapons,
         ]);
     }
 
@@ -52,19 +67,24 @@ class KartuPengpinController extends Controller
         $person = Person::findOrFail($request->input('person_id'));
         $weapon = Weapon::findOrFail($request->input('weapon_id'));
 
-        // Check if permit is POLSUS
+        // Validasi: Kartu Pengpin hanya untuk izin POLSUS
         if ($permit->permit_type !== 'POLSUS') {
-            return back()->withErrors(['permit_id' => 'Kartu Pengpin hanya untuk ijin POLSUS']);
+            return back()->withErrors([
+                'permit_id' => 'Kartu Pengpin hanya dapat diterbitkan untuk izin POLSUS (Penguasaan Pinjam Pakai Senjata Api Nonorganik)'
+            ]);
         }
 
-        // Check if already exists
+        // Cek apakah sudah ada kartu aktif untuk kombinasi ini
         $exists = KartuPengpin::where('permit_id', $permit->id)
             ->where('person_id', $person->id)
             ->where('weapon_id', $weapon->id)
+            ->where('status', KartuPengpinStatus::ACTIVE)
             ->exists();
 
         if ($exists) {
-            return back()->withErrors(['kartu_pengpin' => 'Kartu Pengpin sudah ada untuk kombinasi ini']);
+            return back()->withErrors([
+                'kartu_pengpin' => 'Kartu Pengpin aktif sudah ada untuk kombinasi permit, person, dan senjata ini'
+            ]);
         }
 
         try {
@@ -72,13 +92,17 @@ class KartuPengpinController extends Controller
                 permit: $permit,
                 person: $person,
                 weapon: $weapon,
-                issuedAt: new \DateTime($request->input('issued_at')),
-                expiredAt: new \DateTime($request->input('expired_at'))
+                issueDate: new \DateTime($request->input('issue_date')),
+                expiryDate: new \DateTime($request->input('expiry_date'))
             );
 
+            Inertia::flash([
+                'success' => 'Kartu Penguasaan Pinjam Pakai Senjata Api berhasil diterbitkan'
+            ]);
+
             return redirect()
-                ->route('kartu-pengpin.show', $kartuPengpin)
-                ->with('success', 'Kartu Pengpin berhasil diterbitkan');
+                ->route('kartu-pengpin.index', $kartuPengpin)
+                ->with('success', 'Kartu Penguasaan Pinjam Pakai Senjata Api berhasil diterbitkan');
         } catch (\Exception $e) {
             return back()->withErrors(['kartu_pengpin' => 'Gagal menerbitkan Kartu Pengpin: ' . $e->getMessage()]);
         }
@@ -106,8 +130,10 @@ class KartuPengpinController extends Controller
             'reason.max' => 'Alasan maksimal 500 karakter',
         ]);
 
-        if ($kartuPengpin->status !== 'active') {
-            return back()->withErrors(['status' => 'Hanya Kartu Pengpin aktif yang dapat dicabut']);
+        if ($kartuPengpin->status !== KartuPengpinStatus::ACTIVE) {
+            return back()->withErrors([
+                'status' => 'Hanya Kartu Pengpin dengan status aktif yang dapat dicabut'
+            ]);
         }
 
         $this->generateKartuPengpin->revoke(
@@ -115,6 +141,6 @@ class KartuPengpinController extends Controller
             reason: $request->input('reason')
         );
 
-        return back()->with('success', 'Kartu Pengpin berhasil dicabut');
+        return back()->with('success', 'Kartu Penguasaan Pinjam Pakai Senjata Api berhasil dicabut');
     }
 }
