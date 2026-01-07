@@ -33,7 +33,7 @@ class WeaponHibahTransferController extends Controller
         ->latest('submitted_at')
         ->paginate(20);
 
-        return Inertia::render('weapons/hibah-transfers/index', [
+        return Inertia::render('hibah-transfers/index', [
             'transfers' => $transfers,
         ]);
 
@@ -52,7 +52,7 @@ class WeaponHibahTransferController extends Controller
             'activities'
         ]);
 
-        return Inertia::render('weapons/hibah-transfers/show', [
+        return Inertia::render('hibah-transfers/show', [
             'transfer' => $transfer,
         ]);
     }

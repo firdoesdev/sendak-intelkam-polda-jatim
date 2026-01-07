@@ -53,7 +53,7 @@ class WeaponTransferController extends Controller
 
         $data = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
-        return Inertia::render('weapons/transfer-requests/index', [
+        return Inertia::render('transfer-requests/index', [
             'data' => $data,
             'warehouses' => Warehouse::select('id', 'name', 'code')
                 ->where('is_active', true)

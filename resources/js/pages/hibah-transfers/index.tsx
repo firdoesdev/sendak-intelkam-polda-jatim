@@ -75,18 +75,22 @@ const HibahTransfersIndexPage = () => {
     const [submitDialog, setSubmitDialog] = useState<number | null>(null);
 
     const handleSubmit = (id: number) => {
-        router.post(hibahTransfers.submit(id).url, {}, {
-            preserveState: true,
-            replace: true,
-            only: ['transfers'],
-            onSuccess: () => {
-                setSubmitDialog(null);
-                toast.success('Transfer hibah berhasil diajukan');
+        router.post(
+            hibahTransfers.submit(id).url,
+            {},
+            {
+                preserveState: true,
+                replace: true,
+                only: ['transfers'],
+                onSuccess: () => {
+                    setSubmitDialog(null);
+                    toast.success('Transfer hibah berhasil diajukan');
+                },
+                onError: () => {
+                    toast.error('Gagal mengajukan transfer hibah');
+                },
             },
-            onError: () => {
-                toast.error('Gagal mengajukan transfer hibah');
-            },
-        });
+        );
     };
 
     const columns: ColumnDef<WeaponHibahTransfer>[] = [
@@ -182,18 +186,20 @@ const HibahTransfersIndexPage = () => {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Transfer Hibah Senjata" />
 
-            <DataTable
-                title="Transfer Hibah Senjata"
-                columns={columns}
-                data={page.props.transfers.data}
-                topActions={[
-                    <Button key="create" asChild>
-                        <Link href="/weapons/hibah-transfers/create">
-                            Buat Transfer Hibah
-                        </Link>
-                    </Button>,
-                ]}
-            />
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+                <DataTable
+                    title="Transfer Hibah Senjata"
+                    columns={columns}
+                    data={page.props.transfers.data}
+                    topActions={[
+                        <Button key="create" asChild>
+                            <Link href="/weapons/hibah-transfers/create">
+                                Buat Transfer Hibah
+                            </Link>
+                        </Button>,
+                    ]}
+                />
+            </div>
 
             <AlertDialog
                 open={submitDialog !== null}

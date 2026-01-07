@@ -1,12 +1,12 @@
-import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, PaginationMeta } from '@/types';
-import { Head, usePage, Link } from '@inertiajs/react';
 import DataTable from '@/components/data-table';
-import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Eye, Printer } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
 import kartuPengpin from '@/routes/kartu-pengpin';
+import { BreadcrumbItem, PaginationMeta } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { ColumnDef } from '@tanstack/react-table';
+import { Eye, Printer } from 'lucide-react';
 
 interface KartuPengpin {
     id: number;
@@ -55,7 +55,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 const isExpiringSoon = (expiredAt: string) => {
     const expiry = new Date(expiredAt);
     const now = new Date();
-    const daysUntilExpiry = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    const daysUntilExpiry = Math.ceil(
+        (expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+    );
     return daysUntilExpiry <= 30 && daysUntilExpiry > 0;
 };
 
@@ -71,7 +73,9 @@ const KartuPengpinIndexPage = () => {
             accessorKey: 'card_number',
             header: 'Nomor Kartu',
             cell: ({ row }) => (
-                <div className="font-mono font-medium">{row.original.card_number}</div>
+                <div className="font-mono font-medium">
+                    {row.original.card_number}
+                </div>
             ),
         },
         {
@@ -79,7 +83,9 @@ const KartuPengpinIndexPage = () => {
             header: 'Pemilik',
             cell: ({ row }) => (
                 <div>
-                    <div className="font-medium">{row.original.person.name}</div>
+                    <div className="font-medium">
+                        {row.original.person.name}
+                    </div>
                     <div className="text-sm text-muted-foreground">
                         {row.original.person.nik}
                     </div>
@@ -91,7 +97,9 @@ const KartuPengpinIndexPage = () => {
             header: 'Senjata',
             cell: ({ row }) => (
                 <div>
-                    <div className="font-medium">{row.original.weapon.serial_number}</div>
+                    <div className="font-medium">
+                        {row.original.weapon.serial_number}
+                    </div>
                     <div className="text-sm text-muted-foreground">
                         {row.original.weapon.brand} {row.original.weapon.model}
                     </div>
@@ -103,7 +111,9 @@ const KartuPengpinIndexPage = () => {
             header: 'Izin',
             cell: ({ row }) => (
                 <div>
-                    <div className="font-medium">{row.original.permit.permit_number}</div>
+                    <div className="font-medium">
+                        {row.original.permit.permit_number}
+                    </div>
                     <div className="text-sm text-muted-foreground">
                         {row.original.permit.permit_type}
                     </div>
@@ -116,19 +126,27 @@ const KartuPengpinIndexPage = () => {
             cell: ({ row }) => {
                 const expired = isExpired(row.original.expired_at);
                 const expiringSoon = isExpiringSoon(row.original.expired_at);
-                
+
                 return (
                     <div>
                         <div className="font-medium">
-                            {new Date(row.original.expired_at).toLocaleDateString('id-ID')}
+                            {new Date(
+                                row.original.expired_at,
+                            ).toLocaleDateString('id-ID')}
                         </div>
                         {expired && (
-                            <Badge variant="destructive" className="text-xs mt-1">
+                            <Badge
+                                variant="destructive"
+                                className="mt-1 text-xs"
+                            >
                                 Kadaluarsa
                             </Badge>
                         )}
                         {!expired && expiringSoon && (
-                            <Badge variant="secondary" className="text-xs mt-1 bg-yellow-500 text-white">
+                            <Badge
+                                variant="secondary"
+                                className="mt-1 bg-yellow-500 text-xs text-white"
+                            >
                                 Segera Habis
                             </Badge>
                         )}
@@ -140,7 +158,7 @@ const KartuPengpinIndexPage = () => {
             accessorKey: 'status',
             header: 'Status',
             cell: ({ row }) => (
-                <Badge variant={row.original.status_variant as any}>
+                <Badge variant={row.original.status_variant as "default" | "secondary" | "destructive" | "outline" | null | undefined}>
                     {row.original.status_label}
                 </Badge>
             ),
@@ -150,24 +168,19 @@ const KartuPengpinIndexPage = () => {
             header: 'Aksi',
             cell: ({ row }) => (
                 <div className="flex gap-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        asChild
-                    >
+                    <Button variant="outline" size="sm" asChild>
                         <Link href={kartuPengpin.show(row.original.id).url}>
-                            <Eye className="h-4 w-4 mr-1" />
+                            <Eye className="mr-1 h-4 w-4" />
                             Lihat
                         </Link>
                     </Button>
                     {row.original.status === 'active' && (
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            asChild
-                        >
-                            <Link href={kartuPengpin.print(row.original.id).url} target="_blank">
-                                <Printer className="h-4 w-4 mr-1" />
+                        <Button variant="secondary" size="sm" asChild>
+                            <Link
+                                href={kartuPengpin.print(row.original.id).url}
+                                target="_blank"
+                            >
+                                <Printer className="mr-1 h-4 w-4" />
                                 Cetak
                             </Link>
                         </Button>
@@ -180,19 +193,20 @@ const KartuPengpinIndexPage = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Kartu Pengpin" />
-
-            <DataTable
-                title="Kartu Pengawasan & Pengendalian (Kartu Pengpin)"
-                columns={columns}
-                data={page.props.data.data}
-                topActions={[
-                    <Button key="create" asChild>
-                        <Link href="/kartu-pengpin/create">
-                            Buat Kartu Pengpin
-                        </Link>
-                    </Button>,
-                ]}
-            />
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+                <DataTable
+                    title="Kartu Pengawasan & Pengendalian (Kartu Pengpin)"
+                    columns={columns}
+                    data={page.props.data.data}
+                    topActions={[
+                        <Button key="create" asChild>
+                            <Link href="/kartu-pengpin/create">
+                                Buat Kartu Pengpin
+                            </Link>
+                        </Button>,
+                    ]}
+                />
+            </div>
         </AppLayout>
     );
 };

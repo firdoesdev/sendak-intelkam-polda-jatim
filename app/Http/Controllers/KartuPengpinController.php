@@ -27,7 +27,7 @@ class KartuPengpinController extends Controller
         ->latest('issued_at')
         ->paginate(20);
 
-        return Inertia::render('permits/kartu-pengpin/index', [
+        return Inertia::render('kartu-pengpin/index', [
             'data' => $kartuPengpin,
         ]);
     }
@@ -41,7 +41,7 @@ class KartuPengpinController extends Controller
             'activities'
         ]);
 
-        return Inertia::render('permits/kartu-pengpin/show', [
+        return Inertia::render('kartu-pengpin/show', [
             'kartuPengpin' => $kartuPengpin,
         ]);
     }
@@ -92,7 +92,7 @@ class KartuPengpinController extends Controller
             'weapon'
         ]);
 
-        return Inertia::render('permits/kartu-pengpin/print', [
+        return Inertia::render('kartu-pengpin/print', [
             'kartuPengpin' => $kartuPengpin,
         ]);
     }
