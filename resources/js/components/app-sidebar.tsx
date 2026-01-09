@@ -79,21 +79,14 @@ const masterNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Organisasi',
+        title: 'Instansi / Organisasi',
         href: organizations.index(),
         icon: LayoutGrid,
     },
-    {
-        title: 'Data Pemohon',
-        href: persons.index(),
-        icon: LayoutGrid,
-    },
-    {
-        title: 'Permohonan Perizinan',
-        href: applicants.index(),
-        icon: LayoutGrid,
-    },
+   
 ];
+
+
 
 const weaponNavItems: NavItem[] = [
     {
@@ -113,7 +106,17 @@ const weaponNavItems: NavItem[] = [
     },
 ];
 
-const permitNavItems: NavItem[] = [
+const permitsNavItems: NavItem[] = [
+     {
+        title: 'Data Pemohon',
+        href: persons.index(),
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Permohonan Perizinan',
+        href: applicants.index(),
+        icon: LayoutGrid,
+    },
     {
         title: 'Data Perizinan',
         href: permits.index(),
@@ -169,13 +172,15 @@ export function AppSidebar() {
                     groupLabel="Account & Permissions"
                     items={IamNavItems}
                 />
-                <NavMain groupLabel="Master Data" items={masterNavItems} />
+                
+                
+                <NavMain groupLabel="Permohonan & Perizinan SENPI" items={permitsNavItems} />
                 <NavMain groupLabel="Polsus" items={polsusNavItems} />
-                <NavMain groupLabel="Perizinan" items={permitNavItems} />
                 <NavMain
                     groupLabel="Manajemen Senjata"
                     items={weaponNavItems}
                 />
+                <NavMain groupLabel="Master Data" items={masterNavItems} />
             </SidebarContent>
 
             <SidebarFooter>
