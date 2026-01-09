@@ -33,9 +33,9 @@ export enum EnumPermitStatus {
 
 export const PermitStatusOptions = [
     { label: 'Draft', value: EnumPermitStatus.DRAFT, variant: 'secondary' },
-    { label: 'Menunggu Persetujuan', value: EnumPermitStatus.PENDING, variant: 'warning' },
-    { label: 'Disetujui', value: EnumPermitStatus.APPROVED, variant: 'success' },
+    { label: 'Menunggu Persetujuan', value: EnumPermitStatus.PENDING, variant: 'outline' },
+    { label: 'Disetujui', value: EnumPermitStatus.APPROVED, variant: 'default' },
     { label: 'Ditolak', value: EnumPermitStatus.REJECTED, variant: 'destructive' },
-    { label: 'Kadaluarsa', value: EnumPermitStatus.EXPIRED, variant: 'outline' },
-    { label: 'Dibatalkan', value: EnumPermitStatus.CANCELLED, variant: 'outline' },
+    { label: 'Kadaluarsa', value: EnumPermitStatus.EXPIRED, variant: 'destructive' },
+    { label: 'Dibatalkan', value: EnumPermitStatus.CANCELLED, variant: 'destructive' },
 ];

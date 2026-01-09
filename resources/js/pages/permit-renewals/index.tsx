@@ -21,6 +21,9 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Textarea } from '@/components/ui/textarea';
 
+import permitRenewal from '@/routes/permits/renewals'
+
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Perpanjangan Izin',
@@ -62,22 +65,22 @@ const PermitRenewalsPage = () => {
     }
 
     const handleApprove = (id: number) => {
-        router.post(`/permits/renewals/${id}/approve`, {}, {
+        const permitRenewalApprove = permitRenewal.approve(id)
+        router.post(permitRenewalApprove.url, {}, {
             preserveState: true,
             replace: true,
             only: ['data'],
-            onSuccess: () => {
-                setApproveDialog(null);
-                toast.success('Perpanjangan izin berhasil disetujui');
-            },
             onError: () => {
                 toast.error('Gagal menyetujui perpanjangan izin');
+            },
+            onFlash: (flash:{ success?: string , message?: string }) => {
+                toast.success(flash?.message ? flash.message : 'Perpanjangan izin berhasil disetujui');
             },
         });
     };
 
     const handleReject = (id: number) => {
-        router.post(`/permits/renewals/${id}/reject`, 
+        router.post(`/renewals-permits/${id}/reject`, 
             { rejection_reason: rejectionReason }, 
             {
                 preserveState: true,

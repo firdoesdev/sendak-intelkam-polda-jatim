@@ -35,7 +35,6 @@ import { z } from 'zod';
 import { toast } from 'sonner';
 import { weaponSchema } from './form-schema';
 import { WeaponStatusOptions, WeaponConditionOptions, PermitTypeOptions, TDialogProps } from '../types';
-import { Row } from '@tanstack/react-table';
 
 export const EditWeaponForm = ({ row, open, onOpenChange }: TDialogProps) => {
     const page = usePage<{
@@ -98,7 +97,7 @@ export const EditWeaponForm = ({ row, open, onOpenChange }: TDialogProps) => {
                     </DialogHeader>
 
                     <form onSubmit={form.handleSubmit(handleSubmit)}>
-                        <div className="grid gap-4">
+                           <div className="grid gap-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <FormField
                                     control={form.control}
@@ -153,61 +152,8 @@ export const EditWeaponForm = ({ row, open, onOpenChange }: TDialogProps) => {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />
-
+                            />            
                             <div className="grid grid-cols-2 gap-4">
-                                <FormField
-                                    control={form.control}
-                                    name="permit_type"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor="permit_type">Tipe Izin</FormLabel>
-                                            <Select
-                                                onValueChange={field.onChange}
-                                                defaultValue={field.value}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger id="permit_type">
-                                                        <SelectValue placeholder="Pilih tipe izin" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {PermitTypeOptions.map((option) => (
-                                                        <SelectItem
-                                                            key={option.value}
-                                                            value={option.value}
-                                                        >
-                                                            {option.label}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-
-                                <FormField
-                                    control={form.control}
-                                    name="weapon_type"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor="weapon_type">Jenis Senjata</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    id="weapon_type"
-                                                    placeholder="ex: Pistol, Rifle"
-                                                    {...field}
-                                                    value={field.value || ''}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-3 gap-4">
                                 <FormField
                                     control={form.control}
                                     name="manufacturer"
@@ -265,8 +211,60 @@ export const EditWeaponForm = ({ row, open, onOpenChange }: TDialogProps) => {
                                     )}
                                 />
                             </div>
+                            
+                                <div className="grid grid-cols-2 gap-4">
+                                <FormField
+                                    control={form.control}
+                                    name="permit_type"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel htmlFor="permit_type">Tipe Izin</FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger id="permit_type" className='w-full'>
+                                                        <SelectValue placeholder="Pilih tipe izin" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {PermitTypeOptions.map((option) => (
+                                                        <SelectItem
+                                                            key={option.value}
+                                                            value={option.value}
+                                                        >
+                                                            {option.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                            <div className="grid grid-cols-3 gap-4">
+                                <FormField
+                                    control={form.control}
+                                    name="weapon_type"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel htmlFor="weapon_type">Jenis Senjata</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    id="weapon_type"
+                                                    placeholder="ex: Pistol, Rifle"
+                                                    {...field}
+                                                    value={field.value || ''}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
                                 <FormField
                                     control={form.control}
                                     name="warehouse_id"
@@ -278,7 +276,7 @@ export const EditWeaponForm = ({ row, open, onOpenChange }: TDialogProps) => {
                                                 defaultValue={field.value?.toString()}
                                             >
                                                 <FormControl>
-                                                    <SelectTrigger id="warehouse_id">
+                                                    <SelectTrigger id="warehouse_id" className='w-full'>
                                                         <SelectValue placeholder="Pilih gudang" />
                                                     </SelectTrigger>
                                                 </FormControl>
@@ -309,7 +307,7 @@ export const EditWeaponForm = ({ row, open, onOpenChange }: TDialogProps) => {
                                                 defaultValue={field.value}
                                             >
                                                 <FormControl>
-                                                    <SelectTrigger id="condition">
+                                                    <SelectTrigger id="condition" className='w-full'>
                                                         <SelectValue placeholder="Pilih kondisi" />
                                                     </SelectTrigger>
                                                 </FormControl>
@@ -340,7 +338,7 @@ export const EditWeaponForm = ({ row, open, onOpenChange }: TDialogProps) => {
                                                 defaultValue={field.value}
                                             >
                                                 <FormControl>
-                                                    <SelectTrigger id="status">
+                                                    <SelectTrigger id="status" className='w-full'>
                                                         <SelectValue placeholder="Pilih status" />
                                                     </SelectTrigger>
                                                 </FormControl>
@@ -380,7 +378,6 @@ export const EditWeaponForm = ({ row, open, onOpenChange }: TDialogProps) => {
                                 )}
                             />
                         </div>
-
                         <DialogFooter className="mt-6">
                             <Button type="submit" disabled={isSubmitting}>
                                 {isSubmitting && <Spinner />}

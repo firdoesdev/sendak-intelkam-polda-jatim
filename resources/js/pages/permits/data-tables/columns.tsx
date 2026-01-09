@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
-import { TPermit, PermitTypeOptions, PermitStatusOptions } from '../types';
+import { TPermit, PermitTypeOptions, PermitStatusOptions, EnumPermitStatus } from '../types';
 import { EditPermitForm } from '../forms/edit-form-dialog';
 import { DeletePermitDialog } from '../dialogs/delete-dialog';
 import { RenewalFormDialog } from '../forms/renewal-form-dialog';
@@ -22,7 +22,7 @@ const ActionsCell = ({ row }: { row: Row<TPermit> }) => {
     const [editDialog, setEditDialog] = useState(false);
     const [renewalDialog, setRenewalDialog] = useState(false);
     
-    const canRenew = row.original.status === 'approved';
+    const canRenew = row.original.status === EnumPermitStatus.EXPIRED;
 
     return (
         <>
@@ -131,7 +131,7 @@ export const columns: ColumnDef<TPermit>[] = [
                 (opt) => opt.value === row.original.status
             );
             return (
-                <Badge variant={status?.variant as any || 'secondary'}>
+                <Badge variant={(status?.variant as "secondary" | "destructive" | "outline" | "default") || "default"}>
                     {status?.label || row.original.status}
                 </Badge>
             );

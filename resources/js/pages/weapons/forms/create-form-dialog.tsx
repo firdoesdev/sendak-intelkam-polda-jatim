@@ -159,61 +159,8 @@ export const CreateWeaponForm = () => {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />
-
+                            />            
                             <div className="grid grid-cols-2 gap-4">
-                                <FormField
-                                    control={form.control}
-                                    name="permit_type"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor="permit_type">Tipe Izin</FormLabel>
-                                            <Select
-                                                onValueChange={field.onChange}
-                                                defaultValue={field.value}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger id="permit_type">
-                                                        <SelectValue placeholder="Pilih tipe izin" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {PermitTypeOptions.map((option) => (
-                                                        <SelectItem
-                                                            key={option.value}
-                                                            value={option.value}
-                                                        >
-                                                            {option.label}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-
-                                <FormField
-                                    control={form.control}
-                                    name="weapon_type"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel htmlFor="weapon_type">Jenis Senjata</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    id="weapon_type"
-                                                    placeholder="ex: Pistol, Rifle"
-                                                    {...field}
-                                                    value={field.value || ''}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-3 gap-4">
                                 <FormField
                                     control={form.control}
                                     name="manufacturer"
@@ -271,8 +218,60 @@ export const CreateWeaponForm = () => {
                                     )}
                                 />
                             </div>
+                            
+                                <div className="grid grid-cols-2 gap-4">
+                                <FormField
+                                    control={form.control}
+                                    name="permit_type"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel htmlFor="permit_type">Tipe Izin</FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger id="permit_type" className='w-full'>
+                                                        <SelectValue placeholder="Pilih tipe izin" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {PermitTypeOptions.map((option) => (
+                                                        <SelectItem
+                                                            key={option.value}
+                                                            value={option.value}
+                                                        >
+                                                            {option.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                            <div className="grid grid-cols-3 gap-4">
+                                <FormField
+                                    control={form.control}
+                                    name="weapon_type"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel htmlFor="weapon_type">Jenis Senjata</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    id="weapon_type"
+                                                    placeholder="ex: Pistol, Rifle"
+                                                    {...field}
+                                                    value={field.value || ''}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
                                 <FormField
                                     control={form.control}
                                     name="warehouse_id"
@@ -284,7 +283,7 @@ export const CreateWeaponForm = () => {
                                                 defaultValue={field.value?.toString()}
                                             >
                                                 <FormControl>
-                                                    <SelectTrigger id="warehouse_id">
+                                                    <SelectTrigger id="warehouse_id" className='w-full'>
                                                         <SelectValue placeholder="Pilih gudang" />
                                                     </SelectTrigger>
                                                 </FormControl>
@@ -315,7 +314,7 @@ export const CreateWeaponForm = () => {
                                                 defaultValue={field.value}
                                             >
                                                 <FormControl>
-                                                    <SelectTrigger id="condition">
+                                                    <SelectTrigger id="condition" className='w-full'>
                                                         <SelectValue placeholder="Pilih kondisi" />
                                                     </SelectTrigger>
                                                 </FormControl>
@@ -346,7 +345,7 @@ export const CreateWeaponForm = () => {
                                                 defaultValue={field.value}
                                             >
                                                 <FormControl>
-                                                    <SelectTrigger id="status">
+                                                    <SelectTrigger id="status" className='w-full'>
                                                         <SelectValue placeholder="Pilih status" />
                                                     </SelectTrigger>
                                                 </FormControl>

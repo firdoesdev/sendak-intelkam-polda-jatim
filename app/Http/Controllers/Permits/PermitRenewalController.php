@@ -28,7 +28,7 @@ class PermitRenewalController extends Controller
 
     public function index(Request $request)
     {
-        return Inertia::render('permits/renewals/index', [
+        return Inertia::render('permit-renewals/index', [
             'data' => $this->listRenewal->execute([
                 'search' => $request->search ?? null,
                 'status' => $request->status ?? null,
@@ -54,9 +54,11 @@ class PermitRenewalController extends Controller
         
         try {
             $this->approveRenewal->execute($id, null);
+            Inertia::flash('success', 'Perpanjangan izin berhasil disetujui.');
             return to_route('permits.renewals.index')
                 ->with('success', 'Perpanjangan izin berhasil disetujui.');
         } catch (\Exception $e) {
+            Inertia::flash('error', 'Gagal menyetujui perpanjangan izin: ' . $e->getMessage());
             return back()->with('error', $e->getMessage());
         }
     }

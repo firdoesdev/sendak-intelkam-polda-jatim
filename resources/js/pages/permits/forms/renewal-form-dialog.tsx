@@ -163,6 +163,7 @@ export const RenewalFormDialog = ({ permit, open, onOpenChange }: RenewalFormDia
                                                     field.onChange(date ? format(date, 'yyyy-MM-dd') : '');
                                                 }}
                                                 disabled={(date) =>
+                                                    // Disable dates earlier than or equal to current valid_to
                                                     permit.valid_to ? date <= new Date(permit.valid_to) : false
                                                 }
                                                 initialFocus
