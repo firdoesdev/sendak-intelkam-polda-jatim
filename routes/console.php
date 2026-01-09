@@ -10,7 +10,12 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+// Schedule a daily task to check and update expired permits
 Schedule::call(function () {
     $action = new CheckAndUpdateToExpired();
     $action->execute();
-})->everyFiveSeconds();
+})
+->timezone('Asia/Jakarta')
+->daily()
+->name('Check and Update Expired Permits')
+->withoutOverlapping();
