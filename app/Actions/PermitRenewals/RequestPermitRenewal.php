@@ -7,6 +7,7 @@ use App\Models\PermitRenewal;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Enums\PermitStatus;
 
 class RequestPermitRenewal
 {
@@ -15,8 +16,8 @@ class RequestPermitRenewal
         // 1. Load permit with validation
         $permit = Permit::findOrFail($data['permit_id']);
         
-        // 2. Business Rule: Permit must be APPROVED
-        if ($permit->status !== 'approved') {
+        // 2. Business Rule: Permit must be EXPIRED to be renewed
+        if ($permit->status !== PermitStatus::EXPIRED->value) {
             throw ValidationException::withMessages([
                 'permit_id' => 'Izin harus dalam status disetujui untuk dapat diperpanjang.',
             ]);
