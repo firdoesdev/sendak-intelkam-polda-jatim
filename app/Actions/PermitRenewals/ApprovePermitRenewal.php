@@ -2,6 +2,7 @@
 
 namespace App\Actions\PermitRenewals;
 
+use App\Enums\PermitStatus;
 use App\Models\PermitRenewal;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +40,7 @@ class ApprovePermitRenewal
                     'valid_to' => $renewal->new_valid_to,
                     'last_notified_at' => null,
                     'notification_count' => 0,
+                    'status' => PermitStatus::APPROVED->value,
                 ]);
             }
             
