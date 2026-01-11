@@ -17,7 +17,7 @@ class CheckAndUpdateToExpired
         $now = now();
 
         $permitsToExpire = Permit::where('status', 'approved')
-            ->where('valid_to', '<', $now)
+            ->where('valid_to', '<=', $now)
             ->get();
 
         foreach ($permitsToExpire as $permit) {
