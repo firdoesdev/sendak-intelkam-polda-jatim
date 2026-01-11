@@ -19,6 +19,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
+Route::get('/octane-test', fn () => response('OK'));
+
+
 require __DIR__.'/settings.php';
 require __DIR__.'/iam.php';
 require __DIR__.'/master-data.php';
