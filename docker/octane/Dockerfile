@@ -70,8 +70,8 @@ RUN composer install \
     --optimize-autoloader \
     --classmap-authoritative
 
-# Install Node dependencies & build frontend
-RUN npm ci --omit=dev && npm run build
+# Install Node dependencies & build frontend (need dev deps for build)
+RUN npm ci && npm run build
 
 # Clean up
 RUN rm -rf node_modules .git tests
