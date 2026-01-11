@@ -33,8 +33,11 @@ RUN apk add --no-cache --virtual .build-deps \
 # PHP config
 COPY docker/octane/php.ini /usr/local/etc/php/conf.d/custom.ini
 
-# Non-root user
-RUN addgroup -g 1000 www-data && \
+# Non-root user (www-data already exists in php:alpine, just ensure correct UID/GID)
+RUN set -x && \
+    deluser www-data 2>/dev/null || true && \
+    delgroup www-data 2>/dev/null || true && \
+    addgroup -g 1000 www-data && \
     adduser -D -u 1000 -G www-data www-data
 
 WORKDIR /var/www/html
