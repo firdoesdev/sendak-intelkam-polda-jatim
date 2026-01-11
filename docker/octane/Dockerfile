@@ -18,13 +18,14 @@ RUN apk add --no-cache --virtual .build-deps \
     libpq-dev \
     icu-dev \
     oniguruma-dev \
+    openssl-dev \
     && docker-php-ext-install -j$(nproc) \
         pdo_pgsql \
         intl \
         mbstring \
         opcache \
         pcntl \
-    && pecl install -D 'enable-sockets="no" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="no" enable-swoole-json="yes" enable-swoole-curl="yes" enable-cares="yes" enable-brotli="no" enable-zstd="no"' swoole \
+    && pecl install -D 'enable-sockets="yes" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="no" enable-swoole-json="yes" enable-swoole-curl="no" enable-cares="no" enable-brotli="no" enable-zstd="no"' swoole \
     && docker-php-ext-enable swoole \
     && apk del .build-deps
 
