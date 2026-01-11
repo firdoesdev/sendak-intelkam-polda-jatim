@@ -24,7 +24,8 @@ RUN docker-php-ext-install \
     pdo_pgsql \
     intl \
     mbstring \
-    opcache
+    opcache \
+    pcntl
 
 # 3️⃣ Install Swoole (BIARKAN DEFAULT)
 RUN pecl install swoole \
@@ -32,7 +33,9 @@ RUN pecl install swoole \
 
 # 4️⃣ Config
 COPY docker/octane/php.ini /usr/local/etc/php/conf.d/custom.ini
-COPY supervisor/octane.conf /etc/supervisor/conf.d/octane.conf
+# COPY supervisor/octane.conf /etc/supervisor/conf.d/octane.conf
+COPY supervisor/octane.ini /etc/supervisor.d/octane.ini
+
 
 WORKDIR /var/www/html
 
