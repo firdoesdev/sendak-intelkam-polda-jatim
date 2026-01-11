@@ -24,7 +24,7 @@ RUN apk add --no-cache --virtual .build-deps \
         mbstring \
         opcache \
         pcntl \
-    && pecl install swoole \
+    && pecl install -D 'enable-sockets="no" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="no" enable-swoole-json="yes" enable-swoole-curl="yes" enable-cares="yes" enable-brotli="no" enable-zstd="no"' swoole \
     && docker-php-ext-enable swoole \
     && apk del .build-deps
 
