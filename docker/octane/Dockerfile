@@ -24,7 +24,8 @@ RUN docker-php-ext-install \
     pdo_pgsql \
     intl \
     mbstring \
-    opcache
+    opcache \
+    pcntl
 
 # 3️⃣ Install Swoole (BIARKAN DEFAULT)
 RUN pecl install swoole \
