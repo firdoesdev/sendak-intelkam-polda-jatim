@@ -27,9 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if ($this->app->environment('production')) {
-            URL::forceScheme('https');
-        }
         // Register policies
         Gate::policy(WeaponHibahTransferRequest::class, WeaponHibahTransferRequestPolicy::class);
         Gate::policy(KartuPengpin::class, KartuPengpinPolicy::class);
