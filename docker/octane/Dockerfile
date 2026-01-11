@@ -83,6 +83,7 @@ FROM base AS production
 COPY --from=build --chown=www-data:www-data /var/www/html /var/www/html
 
 # Supervisor config
+COPY docker/octane/supervisord.conf /etc/supervisord.conf
 COPY supervisor/octane.ini /etc/supervisor.d/octane.ini
 
 # Set permissions
@@ -94,4 +95,4 @@ USER www-data
 
 EXPOSE 8000
 
-CMD ["/usr/bin/supervisord", "-n"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
