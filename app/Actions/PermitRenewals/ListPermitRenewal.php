@@ -9,14 +9,14 @@ class ListPermitRenewal
 {
     public function execute(array $filters = []): LengthAwarePaginator
     {
-        $userDivisionId = auth()->user()->division_id;
+        $userDivisionId = auth()->user()->default_division_id;
 
         $query = PermitRenewal::with(['permit.division', 'permit.applicant', 'requester', 'approver']);
 
         // TODO add condition where permit renewal request's permit division_id matches the authenticated user's division_id
-        // $query->whereHas('requester', function ($q) use ($userDivisionId) {
-        //     $q->where('default_division_id', $userDivisionId);
-        // });
+        $query->whereHas('requester', function ($q) use ($userDivisionId) {
+            $q->where('default_division_id', $userDivisionId);
+        });
         
 
         

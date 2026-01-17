@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Illuminate\Support\Str;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -43,7 +44,7 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user()?->only('id', 'name', 'email','email_verified_at','default_division_id'),
+                'user' => $request->user()?->load('defaultDivision'),
                 // 'roles' => $user?->getRoleNames(),
                 // 'permissions' => $user?->getAllPermissions()->pluck('name'),
             ],
