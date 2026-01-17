@@ -96,4 +96,5 @@ class Permit extends Model
     {
         return $this->hasMany(KartuPengpin::class);
     }
+    
 }

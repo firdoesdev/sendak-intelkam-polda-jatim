@@ -24,6 +24,7 @@ class WeaponFactory extends Factory
             'status' => 'available',
             'acquisition_type' => 'new',
             'is_active' => true,
+            'warehouse_id' => \App\Models\Warehouse::inRandomOrder()->first()?->id,
         ];
     }
 }

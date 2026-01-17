@@ -5,6 +5,7 @@ namespace App\Actions\Permits;
 use App\Models\Permit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use Gate;
 
 class UpdatePermit
 {
@@ -15,9 +16,17 @@ class UpdatePermit
 
     public function execute(int $id, array $data): Permit
     {
+        // Find the permit
         $permit = Permit::findOrFail($id);
-        $oldStatus = $permit->status;
         
+        // Authorize the update action
+        Gate::authorize('update', $permit);
+
+
+        // Store old status for comparison
+        $oldStatus = $permit->status;   
+
+        // set `updated_by` field by current user
         $data['updated_by'] = Auth::id();
 
         // Handle status transitions
@@ -65,6 +74,7 @@ class UpdatePermit
 
     private function generatePermitNumber(Permit $permit): string
     {
+        
         // Format: [PERMIT_TYPE]-[YEAR][MONTH]-[SEQUENTIAL]
         // Example: SENPI-202512-0001
         $year = now()->format('Y');

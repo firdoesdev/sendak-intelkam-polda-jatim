@@ -3,6 +3,9 @@ import { LucideIcon } from 'lucide-react';
 
 export interface Auth {
     user: User;
+    abilities?: {
+        [key: string]: boolean;
+    };
 }
 
 export interface BreadcrumbItem {
@@ -39,6 +42,12 @@ export interface User {
     two_factor_enabled?: boolean;
     created_at: string;
     updated_at: string;
+    default_division?: {
+        id: number;
+        code: string;
+        name: string;
+        is_active: boolean;
+    };
     [key: string]: unknown; // This allows for additional properties...
 }
 

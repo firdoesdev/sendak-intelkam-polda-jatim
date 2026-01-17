@@ -7,6 +7,8 @@ use App\Actions\PermitRenewals\ApprovePermitRenewal;
 use App\Actions\PermitRenewals\ListPermitRenewal;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PermitRenewals\PermitRenewalStoreRequest;
+use App\Models\PermitRenewal;
+use Gate;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -48,13 +50,18 @@ class PermitRenewalController extends Controller
         }
     }
 
-    public function approve(Request $request, string $id)
+    public function approve(Request $request, string $id, PermitRenewal $permitRenewal)
     {
-        abort_unless($request->user()->can('approve-permit-renewal'), 403, 'Anda tidak memiliki izin untuk menyetujui perpanjangan.');
         
         try {
+            // Run the approval action
             $this->approveRenewal->execute($id, null);
-            Inertia::flash('success', 'Perpanjangan izin berhasil disetujui.');
+            
+            Inertia::flash([
+                'key' => 'success',
+                'message' => 'Perpanjangan izin berhasil disetujui Woi.'
+            ]);
+
             return to_route('permits.renewals.index')
                 ->with('success', 'Perpanjangan izin berhasil disetujui.');
         } catch (\Exception $e) {
