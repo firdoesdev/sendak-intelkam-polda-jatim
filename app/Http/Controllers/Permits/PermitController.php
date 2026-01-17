@@ -9,10 +9,12 @@ use App\Actions\Permits\ListPermit;
 use App\Http\Controllers\Controller;
 use App\Models\Division;
 use App\Models\Applicant;
+use Gate;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\Permits\PermitStoreRequest;
 use App\Http\Requests\Permits\PermitUpdateRequest;
+use App\Models\Permit;
 
 class PermitController extends Controller
 {
@@ -36,6 +38,8 @@ class PermitController extends Controller
     
     public function index(Request $request)
     {
+        Gate::authorize('viewAny', Permit::class);
+
         return Inertia::render('permits/index',[
             'data' => $this->listPermit->execute([
                 'search' => $request->search ?? null,

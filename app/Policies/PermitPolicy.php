@@ -2,26 +2,28 @@
 
 namespace App\Policies;
 
-use App\Models\PermitRenewal;
+use App\Models\Permit;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PermitRenewalPolicy
+class PermitPolicy
 {
+    use HandlesAuthorization;
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->hasPermissionTo('view-permits');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, PermitRenewal $permitRenewal): bool
+    public function view(User $user, Permit $permit): bool
     {
-        return false;
+        return $user->hasPermissionTo('view-permits');
     }
 
     /**
@@ -35,38 +37,33 @@ class PermitRenewalPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, PermitRenewal $permitRenewal): bool
+    public function update(User $user, Permit $permit): bool
     {
-        return false;
-        // return $user->hasPermissionTo('approve-permit-renewal') && $user->id !== $permitRenewal->requested_by;
-    }
-
-    public function approve(User $user): bool
-    {
-        return $user->hasPermissionTo('approve-permit-renewal');
+        
+        return $user->hasPermissionTo('manage-permits');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, PermitRenewal $permitRenewal): bool
+    public function delete(User $user, Permit $permit): bool
     {
-        return false;
+        return $user->hasPermissionTo('manage-permits');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, PermitRenewal $permitRenewal): bool
+    public function restore(User $user, Permit $permit): bool
     {
-        return false;
+        return $user->hasPermissionTo('manage-permits');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, PermitRenewal $permitRenewal): bool
+    public function forceDelete(User $user, Permit $permit): bool
     {
-        return false;
+        return $user->hasPermissionTo('manage-permits');
     }
 }

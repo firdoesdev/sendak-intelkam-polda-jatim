@@ -3,6 +3,7 @@
 namespace App\Actions\Permits;
 
 use App\Models\Permit;
+use Gate;
 
 class ListPermit
 {
@@ -13,7 +14,10 @@ class ListPermit
 
     public function execute(array $request)
     {
+        $userDivisionId = auth()->user()->default_division_id;
+    
         return Permit::with(['division', 'applicant.person', 'applicant.organization', 'creator', 'updater'])
+            ->where('division_id', $userDivisionId)
             ->when($request['search'] ?? null, function ($query, $search) {
                 $query->whereRaw('LOWER(permit_number) like ?', ['%' . strtolower($search) . '%'])
                       ->orWhereHas('applicant', function ($q) use ($search) {

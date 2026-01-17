@@ -4,6 +4,7 @@ namespace App\Actions\Permits;
 
 use App\Models\Permit;
 use Illuminate\Support\Facades\Auth;
+use Gate;
 
 class CreatePermit
 {
@@ -14,6 +15,10 @@ class CreatePermit
 
     public function execute(array $data): Permit
     {
+
+        Gate::authorize('create', Permit::class);
+        
+
         $data['created_by'] = Auth::id();
         $data['status'] = $data['status'] ?? 'draft';
         

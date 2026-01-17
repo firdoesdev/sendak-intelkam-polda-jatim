@@ -4,15 +4,16 @@ namespace App\Actions\PermitRenewals;
 
 use App\Enums\PermitStatus;
 use App\Models\PermitRenewal;
-use Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Gate;
 
 class ApprovePermitRenewal
 {
     public function execute(int $id, ?string $rejectionReason = null): PermitRenewal
     {
-        // Gate::authorize('approve-permit-renewals', PermitRenewal::class);
+
+        Gate::authorize('approve', PermitRenewal::class);
 
         return DB::transaction(function () use ($id, $rejectionReason) {
             $renewal = PermitRenewal::with('permit')->findOrFail($id);
@@ -59,8 +60,8 @@ class ApprovePermitRenewal
         $month = now()->format('m');
         $prefix = 'RNW';
         
-        $lastRenewal = PermitRenewal::whereYear('approved_at', $year)
-            ->whereMonth('approved_at', $month)
+        $lastRenewal = PermitRenewal::whereYear('approved_at', '=', $year)
+            ->whereMonth('approved_at', '=', $month)
             ->whereNotNull('renewal_number')
             ->orderBy('renewal_number', 'desc')
             ->first();

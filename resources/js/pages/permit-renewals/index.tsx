@@ -58,11 +58,11 @@ const PermitRenewalsPage = () => {
     const [rejectionReason, setRejectionReason] = useState('');
 
     // Force render to see if component loads
-    if (typeof window !== 'undefined') {
-        console.log('Component loaded!');
-        console.log('Page props:', page.props);
-        console.log('Data:', page.props.data);
-    }
+    // if (typeof window !== 'undefined') {
+    //     console.log('Component loaded!');
+    //     console.log('Page props:', page.props);
+    //     console.log('Data:', page.props.data);
+    // }
 
     const handleApprove = (id: number) => {
         const permitRenewalApprove = permitRenewal.approve(id)
@@ -73,8 +73,18 @@ const PermitRenewalsPage = () => {
             onError: () => {
                 toast.error('Gagal menyetujui perpanjangan izin');
             },
-            onFlash: (flash:{ success?: string , message?: string }) => {
-                toast.success(flash?.message ? flash.message : 'Perpanjangan izin berhasil disetujui');
+            onSuccess: (response) => {
+                
+               switch (response.flash?.key) {
+                    case 'success':
+                        toast.success(response.flash.message as string);
+                        break;
+                
+                    default:
+                        toast.error(response.flash.message as string);
+                        break;
+                }
+                setApproveDialog(null);
             },
         });
     };
