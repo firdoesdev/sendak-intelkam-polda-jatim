@@ -10,6 +10,8 @@ use App\Models\PermitDocument;
 use App\Policies\WeaponHibahTransferRequestPolicy;
 use App\Policies\KartuPengpinPolicy;
 use App\Policies\PermitDocumentPolicy;
+use App\Policies\PermitRenewalPolicy;
+use App\Models\PermitRenewal;
 use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,5 +33,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(WeaponHibahTransferRequest::class, WeaponHibahTransferRequestPolicy::class);
         Gate::policy(KartuPengpin::class, KartuPengpinPolicy::class);
         Gate::policy(PermitDocument::class, PermitDocumentPolicy::class);
+        Gate::policy(PermitRenewal::class, PermitRenewalPolicy::class);
     }
 }

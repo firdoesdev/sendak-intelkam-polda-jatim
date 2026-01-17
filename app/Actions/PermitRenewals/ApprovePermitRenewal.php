@@ -4,6 +4,7 @@ namespace App\Actions\PermitRenewals;
 
 use App\Enums\PermitStatus;
 use App\Models\PermitRenewal;
+use Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -11,6 +12,8 @@ class ApprovePermitRenewal
 {
     public function execute(int $id, ?string $rejectionReason = null): PermitRenewal
     {
+        // Gate::authorize('approve-permit-renewals', PermitRenewal::class);
+
         return DB::transaction(function () use ($id, $rejectionReason) {
             $renewal = PermitRenewal::with('permit')->findOrFail($id);
             
@@ -20,28 +23,25 @@ class ApprovePermitRenewal
             
             $isApproved = is_null($rejectionReason);
             
-            $renewal->update([
-                'status' => $isApproved ? 'approved' : 'rejected',
-                'approved_by' => Auth::id(),
-                'approved_at' => now(),
-                'rejection_reason' => $rejectionReason,
-            ]);
+            $renewal->status = $isApproved ? 'approved' : 'rejected';
+            $renewal->approved_by = Auth::id();
+            $renewal->approved_at = now();
+            $renewal->rejection_reason = $rejectionReason;
+            $renewal->save();
             
             if ($isApproved) {
                 // Generate renewal number on approval
                 if (empty($renewal->renewal_number)) {
-                    $renewal->update([
-                        'renewal_number' => $this->generateRenewalNumber($renewal),
-                    ]);
+                    $renewal->renewal_number = $this->generateRenewalNumber($renewal);
+                    $renewal->save();
                 }
                 
                 // Update permit's valid_to date and reset notification tracking
-                $renewal->permit->update([
-                    'valid_to' => $renewal->new_valid_to,
-                    'last_notified_at' => null,
-                    'notification_count' => 0,
-                    'status' => PermitStatus::APPROVED->value,
-                ]);
+                $renewal->permit->valid_to = $renewal->new_valid_to;
+                $renewal->permit->last_notified_at = null;
+                $renewal->permit->notification_count = 0;
+                $renewal->permit->status = PermitStatus::APPROVED->value;
+                $renewal->permit->save();
             }
             
             // TODO: Send notification to requester
