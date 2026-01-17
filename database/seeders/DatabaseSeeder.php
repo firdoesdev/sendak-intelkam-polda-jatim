@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Models\Division;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,51 +16,72 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        if(app()->environment('local')) {
+        if(app()->environment('APP_ENV') !== 'production') {
             $this->call([
                 DivisionSeeder::class,
                 PoliceUnitSeeder::class,
                 WarehouseSeeder::class,
                 OrganizationSeeder::class,
+                WeaponSeeder::class
             ]);
         }
         
         User::factory(20)->create([
             'police_unit_id' => \App\Models\PoliceUnit::inRandomOrder()->first()?->id,
-            'default_division_id' => \App\Models\Division::inRandomOrder()->first()?->id,
+            'default_division_id' => Division::inRandomOrder()->first()?->id,
         ]);
 
          // basic permissions Phase 1
         $permissions = [
             'manage-masters',   // divisions, police_units, storages, organizations, persons
+            
+            // CRUD Permits
             'view-permits',
-            'manage-permits',
-            'request-permit-renewal',
-            'approve-permit-renewal',
+            'create-permits',
+            'edit-permits',
+            'delete-permits',
+            // Handle Request & Approval Permit Renewal
+            'request-permit-renewals',
+            'approve-permit-renewals',
+            'reject-permit-renewals',
+            'create-permit-renewals',
+            'view-permit-renewals',
+            'edit-permit-renewals',
+            'delete-permit-renewals',
         ];
 
         foreach ($permissions as $perm) {
             Permission::firstOrCreate(['name' => $perm]);
         }
 
-        $adminRole   = Role::firstOrCreate(['name' => 'admin-sendak']);
-        $operatorRole = Role::firstOrCreate(['name' => 'operator']);
+        // Create Roles and assign existing permissions
+        $superAdminRole   = Role::firstOrCreate(['name' => 'super-admin']);
+        $senpiRole = Role::firstOrCreate(['name' => 'senpi']);
+        $polsusRole = Role::firstOrCreate(['name' => 'polsus']);
+        $handakRole = Role::firstOrCreate(['name' => 'handak']);
+        $sportRole = Role::firstOrCreate(['name' => 'sport']);
 
-        $adminRole->givePermissionTo($permissions);
-        $operatorRole->givePermissionTo(['view-permits', 'request-permit-renewal']);
+        // Assign Permissions to Roles  
+        $superAdminRole->givePermissionTo($permissions);
+        $senpiRole->givePermissionTo($permissions);
+        $polsusRole->givePermissionTo($permissions);
+        $handakRole->givePermissionTo($permissions);
+        $sportRole->givePermissionTo($permissions);
 
-        $user = User::firstOrCreate(
+        $superAdminUser = User::firstOrCreate(
                 ['email' => 'test@example.com'],
                 [
                     'name' => 'Test User',
                     'password' => 'password',
                     'email_verified_at' => now(),
+                    'default_division_id' => Division::where('code','SENPI')->first()?->id,
+                    'police_unit_id' => \App\Models\PoliceUnit::inRandomOrder()->first()?->id,
                 ]
             );
 
         // Assign ke user pertama
-        if ($user) {
-            $user->assignRole('admin-sendak');
+        if ($superAdminUser) {
+            $superAdminUser->assignRole('super-admin');
         }
 
       

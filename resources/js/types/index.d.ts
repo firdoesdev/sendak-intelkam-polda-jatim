@@ -3,6 +3,9 @@ import { LucideIcon } from 'lucide-react';
 
 export interface Auth {
     user: User;
+    abilities?: {
+        [key: string]: boolean;
+    };
 }
 
 export interface BreadcrumbItem {

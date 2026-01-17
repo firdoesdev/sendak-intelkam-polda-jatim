@@ -16,13 +16,17 @@ import { TPermit, PermitTypeOptions, PermitStatusOptions, EnumPermitStatus } fro
 import { EditPermitForm } from '../forms/edit-form-dialog';
 import { DeletePermitDialog } from '../dialogs/delete-dialog';
 import { RenewalFormDialog } from '../forms/renewal-form-dialog';
+import { usePage } from '@inertiajs/react';
+import { SharedData } from '@/types';
 
 const ActionsCell = ({ row }: { row: Row<TPermit> }) => {
+    const props = usePage<SharedData>().props;
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [editDialog, setEditDialog] = useState(false);
     const [renewalDialog, setRenewalDialog] = useState(false);
     
-    const canRenew = row.original.status === EnumPermitStatus.EXPIRED;
+    // Check If Expired and User Has Ability to Request Renewal
+    const canRenew = row.original.status === EnumPermitStatus.EXPIRED && props.auth.abilities?.['request-permit-renewals'];
 
     return (
         <>

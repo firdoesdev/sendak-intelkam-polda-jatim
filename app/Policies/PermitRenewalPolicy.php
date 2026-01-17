@@ -13,7 +13,7 @@ class PermitRenewalPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class PermitRenewalPolicy
      */
     public function view(User $user, PermitRenewal $permitRenewal): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,7 +29,8 @@ class PermitRenewalPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->can('request-permit-renewals');
+        // return true;
     }
 
     /**
@@ -37,13 +38,14 @@ class PermitRenewalPolicy
      */
     public function update(User $user, PermitRenewal $permitRenewal): bool
     {
-        return false;
-        // return $user->hasPermissionTo('approve-permit-renewal') && $user->id !== $permitRenewal->requested_by;
+        return $user->can('request-permit-renewals');
+        // return true;
     }
 
     public function approve(User $user): bool
     {
-        return $user->hasPermissionTo('approve-permit-renewal');
+        return $user->can('approve-permit-renewals');
+        // return true
     }
 
     /**
@@ -51,7 +53,7 @@ class PermitRenewalPolicy
      */
     public function delete(User $user, PermitRenewal $permitRenewal): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -59,7 +61,7 @@ class PermitRenewalPolicy
      */
     public function restore(User $user, PermitRenewal $permitRenewal): bool
     {
-        return false;
+        // return true;
     }
 
     /**
@@ -67,6 +69,6 @@ class PermitRenewalPolicy
      */
     public function forceDelete(User $user, PermitRenewal $permitRenewal): bool
     {
-        return false;
+        // return true;
     }
 }

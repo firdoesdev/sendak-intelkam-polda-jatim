@@ -31,7 +31,7 @@ class PermitPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->can('create-permits');
     }
 
     /**
@@ -40,7 +40,8 @@ class PermitPolicy
     public function update(User $user, Permit $permit): bool
     {
         
-        return $user->hasPermissionTo('manage-permits');
+        return $user->can('edit-permits') && $permit->division->id === $user->default_division_id;
+        // return true;
     }
 
     /**
@@ -48,7 +49,7 @@ class PermitPolicy
      */
     public function delete(User $user, Permit $permit): bool
     {
-        return $user->hasPermissionTo('manage-permits');
+        return $user->can('delete-permits') && $permit->division->id === $user->division_id;
     }
 
     /**
@@ -56,7 +57,7 @@ class PermitPolicy
      */
     public function restore(User $user, Permit $permit): bool
     {
-        return $user->hasPermissionTo('manage-permits');
+        return $user->hasPermissionTo('update-permits') && $permit->division->id === $user->default_division_id;
     }
 
     /**
@@ -64,6 +65,6 @@ class PermitPolicy
      */
     public function forceDelete(User $user, Permit $permit): bool
     {
-        return $user->hasPermissionTo('manage-permits');
+        return $user->hasPermissionTo('delete-permits');
     }
 }

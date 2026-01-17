@@ -9,6 +9,7 @@ use App\Actions\Permits\ListPermit;
 use App\Http\Controllers\Controller;
 use App\Models\Division;
 use App\Models\Applicant;
+use App\Models\PermitRenewal;
 use Gate;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -49,6 +50,13 @@ class PermitController extends Controller
             ]),
             'divisions' => Division::select('id', 'code', 'name')->where('is_active', true)->orderBy('name')->get(),
             'applicants' => Applicant::select('id', 'display_name', 'applicant_type')->orderBy('display_name')->get(),
+            'auth'=>[
+                'user'=> $request->user(),
+                'abilities'=> [
+                    'request-permit-renewals' => Gate::allows('request-permit-renewals', PermitRenewal::class),
+                ],
+                // 'abilities'=> $request->user()->getAbilities(Permit::class),
+            ],
         ]);
     }
 
