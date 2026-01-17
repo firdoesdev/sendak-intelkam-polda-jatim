@@ -50,7 +50,7 @@ class PermitRenewalController extends Controller
         }
     }
 
-    public function approve(Request $request, string $id, PermitRenewal $permitRenewal)
+    public function approve(Request $request, string $id)
     {
         
         try {
@@ -65,7 +65,10 @@ class PermitRenewalController extends Controller
             return to_route('permits.renewals.index')
                 ->with('success', 'Perpanjangan izin berhasil disetujui.');
         } catch (\Exception $e) {
-            Inertia::flash('error', 'Gagal menyetujui perpanjangan izin: ' . $e->getMessage());
+            Inertia::flash([
+                'key' => 'error',
+                'message' => $e->getMessage()
+            ]);
             return back()->with('error', $e->getMessage());
         }
     }

@@ -61,7 +61,7 @@ class PermitRenewalPolicy
      */
     public function restore(User $user, PermitRenewal $permitRenewal): bool
     {
-        // return true;
+        return true;
     }
 
     /**
@@ -69,6 +69,6 @@ class PermitRenewalPolicy
      */
     public function forceDelete(User $user, PermitRenewal $permitRenewal): bool
     {
-        // return true;
+        return true;
     }
 }

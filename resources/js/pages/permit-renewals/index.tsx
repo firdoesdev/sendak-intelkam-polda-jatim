@@ -74,16 +74,16 @@ const PermitRenewalsPage = () => {
                 toast.error('Gagal menyetujui perpanjangan izin');
             },
             onSuccess: (response) => {
-                
-               switch (response.flash?.key) {
-                    case 'success':
-                        toast.success(response.flash.message as string);
-                        break;
-                
-                    default:
-                        toast.error(response.flash.message as string);
-                        break;
+                console.log('Approve response:', response);
+
+                if(response?.flash?.key === 'success'){
+                    toast.success('Perpanjangan izin disetujui');
                 }
+                else{
+                    toast.error(response?.flash?.message as string);
+                }
+                
+               
                 setApproveDialog(null);
             },
         });

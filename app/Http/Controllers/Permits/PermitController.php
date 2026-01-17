@@ -42,20 +42,19 @@ class PermitController extends Controller
         Gate::authorize('viewAny', Permit::class);
 
         return Inertia::render('permits/index',[
-            'data' => $this->listPermit->execute([
+            'data' => Inertia::defer(fn()=> $this->listPermit->execute([
                 'search' => $request->search ?? null,
                 'status' => $request->status ?? null,
                 'permit_type' => $request->permit_type ?? null,
                 'division_id' => $request->division_id ?? null,
-            ]),
-            'divisions' => Division::select('id', 'code', 'name')->where('is_active', true)->orderBy('name')->get(),
-            'applicants' => Applicant::select('id', 'display_name', 'applicant_type')->orderBy('display_name')->get(),
+            ])),
+            'divisions' => fn() => Division::select('id', 'code', 'name')->where('is_active', true)->orderBy('name')->get(),
+            'applicants' => fn() => Applicant::select('id', 'display_name', 'applicant_type')->orderBy('display_name')->get(),
             'auth'=>[
-                'user'=> $request->user(),
+                'user'=> $request->user()?->load('defaultDivision'),
                 'abilities'=> [
                     'request-permit-renewals' => Gate::allows('request-permit-renewals', PermitRenewal::class),
                 ],
-                // 'abilities'=> $request->user()->getAbilities(Permit::class),
             ],
         ]);
     }
