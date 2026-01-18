@@ -26,10 +26,10 @@ class DatabaseSeeder extends Seeder
             ]);
         }
         
-        User::factory(20)->create([
-            'police_unit_id' => \App\Models\PoliceUnit::inRandomOrder()->first()?->id,
-            'default_division_id' => Division::inRandomOrder()->first()?->id,
-        ]);
+        // User::factory(20)->create([
+        //     'police_unit_id' => \App\Models\PoliceUnit::inRandomOrder()->first()?->id,
+        //     'default_division_id' => Division::inRandomOrder()->first()?->id,
+        // ]);
 
          // basic permissions Phase 1
         $permissions = [
