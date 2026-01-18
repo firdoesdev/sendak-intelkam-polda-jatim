@@ -2,11 +2,16 @@
 
 namespace Database\Factories;
 
+use App\Models\Applicant;
 use App\Models\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Applicant>
+ */
 class ApplicantFactory extends Factory
 {
+    protected $model = Applicant::class;
 
     public function definition(): array
     {
