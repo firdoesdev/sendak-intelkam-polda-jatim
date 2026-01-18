@@ -19,12 +19,12 @@ class PoliceUnitFactory extends Factory
     {
         return [
             //
-            'code' => $this->faker->unique()->bothify('PU-####'),
-            'name' => $this->faker->company(),
-            'unit_type' => $this->faker->randomElement(PoliceUnitType::getUnitTypes()),
-            'region' => $this->faker->city(),
-            'address' => $this->faker->address(),
-            'is_active' => $this->faker->boolean(90), // 90% chance of being active
+            'code' => fake()->unique()->bothify('PU-####'),
+            'name' => fake()->company(),
+            'unit_type' => fake()->randomElement(PoliceUnitType::getUnitTypes()),
+            'region' => fake()->city(),
+            'address' => fake()->address(),
+            'is_active' => fake()->boolean(90), // 90% chance of being active
             'created_at' => now(),
             'updated_at' => now(),
 
