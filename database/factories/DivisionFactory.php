@@ -12,9 +12,9 @@ class DivisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => fake()->randomElement(['SENPI', 'SPORT', 'POLSUS', 'HANDAK']),
-            'name' => fake()->word(),
-            'description' => fake()->sentence(),
+            'code' => $this->faker->randomElement(['SENPI', 'SPORT', 'POLSUS', 'HANDAK']),
+            'name' => $this->faker->word(),
+            'description' => $this->faker->sentence(),
             'is_active' => true,
         ];
     }

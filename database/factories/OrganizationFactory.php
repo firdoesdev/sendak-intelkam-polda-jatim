@@ -12,14 +12,14 @@ class OrganizationFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->company(),
-            'org_type' => fake()->randomElement(['company', 'club', 'government', 'other']),
-            'registration_no' => fake()->numerify('##########'),
-            'tax_no' => fake()->numerify('###############'),
-            'address' => fake()->address(),
-            'city' => fake()->city(),
-            'province' => fake()->state(),
-            'email' => fake()->companyEmail(),
+            'name' => $this->faker->company(),
+            'org_type' => $this->faker->randomElement(['company', 'club', 'government', 'other']),
+            'registration_no' => $this->faker->numerify('##########'),
+            'tax_no' => $this->faker->numerify('###############'),
+            'address' => $this->faker->address(),
+            'city' => $this->faker->city(),
+            'province' => $this->faker->state(),
+            'email' => $this->faker->companyEmail(),
         ];
     }
 }

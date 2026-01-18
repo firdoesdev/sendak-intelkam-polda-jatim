@@ -12,12 +12,12 @@ class WarehouseFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => fake()->unique()->regexify('[A-Z]{3}-[0-9]{3}'),
-            'name' => fake()->company() . ' Warehouse',
+            'code' => $this->faker->unique()->regexify('[A-Z]{3}-[0-9]{3}'),
+            'name' => $this->faker->company() . ' Warehouse',
             'storage_type' => 'POLICE_UNIT',
-            'address' => fake()->address(),
-            'city' => fake()->city(),
-            'province' => fake()->state(),
+            'address' => $this->faker->address(),
+            'city' => $this->faker->city(),
+            'province' => $this->faker->state(),
             'is_active' => true,
         ];
     }
