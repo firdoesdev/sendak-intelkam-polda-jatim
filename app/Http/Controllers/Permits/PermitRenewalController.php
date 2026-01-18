@@ -59,23 +59,24 @@ class PermitRenewalController extends Controller
             
             Inertia::flash([
                 'key' => 'success',
-                'message' => 'Perpanjangan izin berhasil disetujui Woi.'
+                'message' => 'Perpanjangan izin berhasil disetujui.'
             ]);
-
+            
             return to_route('permits.renewals.index')
                 ->with('success', 'Perpanjangan izin berhasil disetujui.');
         } catch (\Exception $e) {
+            
             Inertia::flash([
                 'key' => 'error',
                 'message' => $e->getMessage()
             ]);
+
             return back()->with('error', $e->getMessage());
         }
     }
 
     public function reject(Request $request, string $id)
     {
-        abort_unless($request->user()->can('approve-permit-renewal'), 403, 'Anda tidak memiliki izin untuk menolak perpanjangan.');
         
         $request->validate([
             'rejection_reason' => 'required|string',
@@ -83,9 +84,21 @@ class PermitRenewalController extends Controller
 
         try {
             $this->approveRenewal->execute($id, $request->rejection_reason);
+
+            Inertia::flash([
+                'key' => 'success',
+                'message' => 'Perpanjangan izin berhasil ditolak.'
+            ]);
+            
             return to_route('permits.renewals.index')
                 ->with('success', 'Perpanjangan izin ditolak.');
         } catch (\Exception $e) {
+            
+            Inertia::flash([
+                'key' => 'error',
+                'message' => $e->getMessage()
+            ]);
+
             return back()->with('error', $e->getMessage());
         }
     }

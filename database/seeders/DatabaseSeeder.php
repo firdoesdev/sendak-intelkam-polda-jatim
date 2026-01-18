@@ -42,8 +42,7 @@ class DatabaseSeeder extends Seeder
             'delete-permits',
             // Handle Request & Approval Permit Renewal
             'request-permit-renewals',
-            'approve-permit-renewals',
-            'reject-permit-renewals',
+            'approval-permit-renewals',
             'create-permit-renewals',
             'view-permit-renewals',
             'edit-permit-renewals',

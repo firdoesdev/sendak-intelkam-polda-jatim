@@ -15,7 +15,7 @@ class PermitPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('view-permits');
+        return $user->can('view-permits');
     }
 
     /**
@@ -23,7 +23,7 @@ class PermitPolicy
      */
     public function view(User $user, Permit $permit): bool
     {
-        return $user->hasPermissionTo('view-permits');
+        return $user->can('view-permits');
     }
 
     /**

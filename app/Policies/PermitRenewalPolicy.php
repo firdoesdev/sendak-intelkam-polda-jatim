@@ -44,7 +44,7 @@ class PermitRenewalPolicy
 
     public function approve(User $user): bool
     {
-        return $user->can('approve-permit-renewals');
+        return $user->can('approval-permit-renewals');
         // return true
     }
 

@@ -70,20 +70,11 @@ const PermitRenewalsPage = () => {
             preserveState: true,
             replace: true,
             only: ['data'],
-            onError: () => {
-                toast.error('Gagal menyetujui perpanjangan izin');
+            onError: (error) => {
+                toast.error(error?.flash?.message as string);
             },
             onSuccess: (response) => {
-                console.log('Approve response:', response);
-
-                if(response?.flash?.key === 'success'){
-                    toast.success('Perpanjangan izin disetujui');
-                }
-                else{
-                    toast.error(response?.flash?.message as string);
-                }
-                
-               
+                toast.success(response?.flash?.message as string);
                 setApproveDialog(null);
             },
         });
@@ -96,13 +87,13 @@ const PermitRenewalsPage = () => {
                 preserveState: true,
                 replace: true,
                 only: ['data'],
-                onSuccess: () => {
+                onSuccess: (response) => {
                     setRejectDialog(null);
                     setRejectionReason('');
-                    toast.success('Perpanjangan izin ditolak');
+                    toast.success(response?.flash?.message as string);
                 },
-                onError: () => {
-                    toast.error('Gagal menolak perpanjangan izin');
+                onError: (error) => {
+                    toast.error(error?.flash?.message as string);
                 },
             }
         );
