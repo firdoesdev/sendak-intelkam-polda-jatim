@@ -1,4 +1,4 @@
-FROM php:8.3-cli-alpine AS base
+FROM php:8.4-cli-alpine AS base
 
 # Runtime dependencies
 RUN apk add --no-cache \
