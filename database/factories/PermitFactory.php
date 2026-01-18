@@ -13,7 +13,7 @@ class PermitFactory extends Factory
         $user = User::first() ?? User::factory()->create();
         
         return [
-            'permit_type' => fake()->randomElement(['SENPI', 'SPORT', 'POLSUS', 'HANDAK']),
+            'permit_type' => $this->faker->randomElement(['SENPI', 'SPORT', 'POLSUS', 'HANDAK']),
             'status' => 'draft',
             'valid_from' => now(),
             'valid_to' => now()->addYear(),

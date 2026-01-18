@@ -10,14 +10,14 @@ class PersonFactory extends Factory
     public function definition(): array
     {
         return [
-            'national_id' => fake()->numerify('###############'),
-            'full_name' => fake()->name(),
-            'birth_date' => fake()->date(),
-            'gender' => fake()->randomElement(['male', 'female']),
-            'job_title' => fake()->jobTitle(),
-            'address' => fake()->address(),
-            'city' => fake()->city(),
-            'province' => fake()->state(),
+            'national_id' => $this->faker->numerify('###############'),
+            'full_name' => $this->faker->name(),
+            'birth_date' => $this->faker->date(),
+            'gender' => $this->faker->randomElement(['male', 'female']),
+            'job_title' => $this->faker->jobTitle(),
+            'address' => $this->faker->address(),
+            'city' => $this->faker->city(),
+            'province' => $this->faker->state(),
         ];
     }
 }
