@@ -20,12 +20,12 @@ RUN apk add --no-cache --virtual .build-deps \
     oniguruma-dev \
     openssl-dev \
     && docker-php-ext-install -j$(nproc) \
-        pdo_pgsql \
-        intl \
-        mbstring \
-        opcache \
-        pcntl \
-        sockets \
+    pdo_pgsql \
+    intl \
+    mbstring \
+    opcache \
+    pcntl \
+    sockets \
     && pecl install -D 'enable-sockets="yes" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="no" enable-swoole-json="yes" enable-swoole-curl="no" enable-cares="no" enable-brotli="no" enable-zstd="no"' swoole \
     && docker-php-ext-enable swoole \
     && apk del .build-deps
@@ -69,6 +69,8 @@ RUN composer install \
     --prefer-dist \
     --optimize-autoloader \
     --classmap-authoritative
+
+
 
 # Install Node dependencies & build frontend (need dev deps for build)
 RUN npm ci && npm run build
