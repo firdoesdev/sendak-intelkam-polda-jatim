@@ -50,11 +50,12 @@ services:
     container_name: app-postgres
     restart: unless-stopped
     environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_DB: ${DB_DATABASE:-sendak}
       POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
-      PGDATA: /var/lib/postgresql/data
+      # PGDATA: /var/lib/postgresql/data
     volumes:
       - pgsql-data:/var/lib/postgresql/data
     healthcheck:
