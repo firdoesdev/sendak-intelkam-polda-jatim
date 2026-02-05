@@ -55,6 +55,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
       PGDATA: /var/lib/postgresql/data
+      PGPORT: ${DB_PORT}
     volumes:
       - pgsql-data:/var/lib/postgresql/data
     healthcheck:
