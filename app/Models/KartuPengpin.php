@@ -6,7 +6,6 @@ use App\Enums\KartuPengpinStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
 /**
@@ -27,7 +26,6 @@ use Spatie\Activitylog\LogOptions;
  */
 class KartuPengpin extends Model
 {
-    use LogsActivity;
 
     protected $table = 'kartu_pengpin';
 
