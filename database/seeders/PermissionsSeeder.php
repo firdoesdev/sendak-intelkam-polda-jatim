@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class PermissionsSeeder extends Seeder
 {
@@ -14,7 +15,7 @@ class PermissionsSeeder extends Seeder
     public function run(): void
     {
         // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Create permissions for Hibah Transfer
         $hibahPermissions = [
@@ -56,6 +57,23 @@ class PermissionsSeeder extends Seeder
             );
         }
 
+        // Create permissions for Weapon CRUD & Transfer
+        $weaponPermissions = [
+            'view-weapons' => 'Melihat Data Senjata',
+            'create-weapons' => 'Menambah Senjata',
+            'edit-weapons' => 'Mengubah Data Senjata',
+            'delete-weapons' => 'Menghapus Senjata',
+            'create-transfer-requests' => 'Membuat Permintaan Transfer Senjata',
+            'approve-transfer-requests' => 'Menyetujui Permintaan Transfer Senjata',
+        ];
+
+        foreach ($weaponPermissions as $name => $description) {
+            Permission::firstOrCreate(
+                ['name' => $name],
+                ['guard_name' => 'web']
+            );
+        }
+
         $this->command->info('✅ Permissions created successfully!');
 
         // Assign permissions to roles
@@ -78,6 +96,12 @@ class PermissionsSeeder extends Seeder
                 'revoke_kartu_pengpin',
                 'manage_kartu_pengpin',
                 'manage_permit_documents',
+                'view-weapons',
+                'create-weapons',
+                'edit-weapons',
+                'delete-weapons',
+                'create-transfer-requests',
+                'approve-transfer-requests',
             ]);
             $this->command->info('✅ Admin permissions assigned');
         }
@@ -88,6 +112,10 @@ class PermissionsSeeder extends Seeder
             $staff->givePermissionTo([
                 'create_hibah_transfer',
                 'create_kartu_pengpin',
+                'view-weapons',
+                'create-weapons',
+                'edit-weapons',
+                'create-transfer-requests',
             ]);
             $this->command->info('✅ Staff permissions assigned');
         }
@@ -101,8 +129,22 @@ class PermissionsSeeder extends Seeder
                 'create_kartu_pengpin',
                 'revoke_kartu_pengpin',
                 'manage_permit_documents',
+                'view-weapons',
+                'create-weapons',
+                'edit-weapons',
+                'create-transfer-requests',
+                'approve-transfer-requests',
             ]);
             $this->command->info('✅ Supervisor permissions assigned');
+        }
+
+        // Viewer — read-only access
+        $viewer = Role::where('name', 'viewer')->first();
+        if ($viewer) {
+            $viewer->givePermissionTo([
+                'view-weapons',
+            ]);
+            $this->command->info('✅ Viewer permissions assigned');
         }
     }
 }

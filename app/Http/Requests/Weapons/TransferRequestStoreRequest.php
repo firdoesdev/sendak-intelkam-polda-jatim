@@ -8,7 +8,7 @@ class TransferRequestStoreRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // TODO: Add permission check
+        return $this->user()->can('create-transfer-requests');
     }
 
     public function rules(): array

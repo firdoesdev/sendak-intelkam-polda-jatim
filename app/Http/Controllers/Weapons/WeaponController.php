@@ -7,20 +7,25 @@ use App\Actions\Weapons\DeleteWeapon;
 use App\Actions\Weapons\ListWeapon;
 use App\Actions\Weapons\UpdateWeapon;
 use App\Enums\PermitType;
-use App\Enums\WeaponStatus;
 use App\Enums\WeaponCondition;
+use App\Enums\WeaponStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Weapons\WeaponStoreRequest;
 use App\Http\Requests\Weapons\WeaponUpdateRequest;
 use App\Models\Warehouse;
+use App\Models\Weapon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class WeaponController extends Controller
 {
     private $listWeapon;
+
     private $createWeapon;
+
     private $updateWeapon;
+
     private $deleteWeapon;
 
     public function __construct(
@@ -37,6 +42,8 @@ class WeaponController extends Controller
 
     public function index(Request $request)
     {
+        Gate::authorize('viewAny', Weapon::class);
+
         return Inertia::render('weapons/index', [
             'data' => $this->listWeapon->execute([
                 'search' => $request->search ?? null,
@@ -49,16 +56,16 @@ class WeaponController extends Controller
                 ->where('is_active', true)
                 ->orderBy('name')
                 ->get(),
-            'permitTypes' => collect(PermitType::cases())->map(fn($type) => [
+            'permitTypes' => collect(PermitType::cases())->map(fn ($type) => [
                 'value' => $type->value,
                 'label' => $type->label(),
             ]),
-            'statuses' => collect(WeaponStatus::cases())->map(fn($status) => [
+            'statuses' => collect(WeaponStatus::cases())->map(fn ($status) => [
                 'value' => $status->value,
                 'label' => $status->label(),
                 'variant' => $status->variant(),
             ]),
-            'conditions' => collect(WeaponCondition::cases())->map(fn($condition) => [
+            'conditions' => collect(WeaponCondition::cases())->map(fn ($condition) => [
                 'value' => $condition->value,
                 'label' => $condition->label(),
                 'variant' => $condition->variant(),
@@ -75,6 +82,7 @@ class WeaponController extends Controller
     {
         try {
             $this->createWeapon->execute($request->validated());
+
             return to_route('weapons.index')->with('success', 'Senjata berhasil ditambahkan.');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
@@ -85,6 +93,7 @@ class WeaponController extends Controller
     {
         try {
             $this->updateWeapon->execute($id, $request->validated());
+
             return to_route('weapons.index')->with('success', 'Senjata berhasil diperbarui.');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
@@ -93,8 +102,12 @@ class WeaponController extends Controller
 
     public function destroy(string $id)
     {
+        $weapon = Weapon::findOrFail($id);
+        Gate::authorize('delete', $weapon);
+
         try {
             $this->deleteWeapon->execute($id);
+
             return to_route('weapons.index')->with('success', 'Senjata berhasil dihapus.');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());

@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Weapons;
 
-use App\Actions\Weapons\RequestTransferWeapon;
 use App\Actions\Weapons\ApproveTransferWeapon;
+use App\Actions\Weapons\RequestTransferWeapon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Weapons\TransferRequestStoreRequest;
-use App\Models\WeaponTransferRequest;
 use App\Models\Warehouse;
+use App\Models\WeaponTransferRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class WeaponTransferController extends Controller
 {
     private $requestTransfer;
+
     private $approveTransfer;
 
     public function __construct(
@@ -26,12 +28,14 @@ class WeaponTransferController extends Controller
 
     public function index(Request $request)
     {
+        Gate::authorize('viewAny', WeaponTransferRequest::class);
+
         $query = WeaponTransferRequest::with([
             'weapon',
             'fromWarehouse',
             'toWarehouse',
             'requester',
-            'approver'
+            'approver',
         ]);
 
         // Filter by status
@@ -66,6 +70,7 @@ class WeaponTransferController extends Controller
     {
         try {
             $this->requestTransfer->execute($request->validated());
+
             return to_route('weapons.transfer-requests.index')
                 ->with('success', 'Permintaan transfer berhasil dibuat.');
         } catch (\Exception $e) {
@@ -75,8 +80,12 @@ class WeaponTransferController extends Controller
 
     public function approve(Request $request, string $id)
     {
+        $transfer = WeaponTransferRequest::findOrFail($id);
+        Gate::authorize('approve', $transfer);
+
         try {
             $this->approveTransfer->execute($id, null);
+
             return to_route('weapons.transfer-requests.index')
                 ->with('success', 'Permintaan transfer berhasil disetujui.');
         } catch (\Exception $e) {
@@ -86,12 +95,16 @@ class WeaponTransferController extends Controller
 
     public function reject(Request $request, string $id)
     {
+        $transfer = WeaponTransferRequest::findOrFail($id);
+        Gate::authorize('approve', $transfer);
+
         $request->validate([
             'rejection_reason' => 'required|string',
         ]);
 
         try {
             $this->approveTransfer->execute($id, $request->rejection_reason);
+
             return to_route('weapons.transfer-requests.index')
                 ->with('success', 'Permintaan transfer ditolak.');
         } catch (\Exception $e) {
