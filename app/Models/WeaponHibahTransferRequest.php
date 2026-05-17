@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Support\LogOptions;
 
 class WeaponHibahTransferRequest extends Model
 {
-
     protected $fillable = [
         'request_number',
         'weapon_id',
@@ -35,7 +34,7 @@ class WeaponHibahTransferRequest extends Model
         return LogOptions::defaults()
             ->logOnly(['status', 'request_number'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function weapon(): BelongsTo

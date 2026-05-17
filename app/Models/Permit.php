@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Permit extends Model
 {
-    use HasFactory ;
+    use HasFactory;
 
     protected $fillable = [
         'permit_number',
@@ -41,7 +41,7 @@ class Permit extends Model
         return LogOptions::defaults()
             ->logOnly(['status', 'permit_type', 'valid_from', 'valid_to', 'recommendation_type', 'activity_type'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function division()
@@ -95,5 +95,4 @@ class Permit extends Model
     {
         return $this->hasMany(KartuPengpin::class);
     }
-    
 }

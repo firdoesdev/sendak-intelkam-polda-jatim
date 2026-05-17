@@ -3,30 +3,29 @@
 namespace App\Models;
 
 use App\Enums\KartuPengpinStatus;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Support\LogOptions;
 
 /**
  * Kartu Penguasaan Pinjam Pakai Senjata Api (Nonorganik)
- * 
- * Kartu izin resmi yang dikeluarkan Polri melalui Dirintelkam Polda untuk 
- * penguasaan sementara senjata api nonorganik (milik TNI/Polri) untuk keperluan 
+ *
+ * Kartu izin resmi yang dikeluarkan Polri melalui Dirintelkam Polda untuk
+ * penguasaan sementara senjata api nonorganik (milik TNI/Polri) untuk keperluan
  * tugas keamanan seperti Satpol PP, PPNS, Satpam, dll.
- * 
+ *
  * Proses: Permohonan izin penguasaan ke Polda dengan melampirkan:
  * - Surat permohonan & surat tugas
  * - Fotokopi KTA/SK
  * - Surat mahir penggunaan senpi
  * - Surat kesehatan & tes psikologi
  * - SKCK dan pasfoto
- * 
+ *
  * Hanya berlaku untuk izin POLSUS dengan jangka waktu tertentu.
  */
 class KartuPengpin extends Model
 {
-
     protected $table = 'kartu_pengpin';
 
     protected $fillable = [
@@ -64,7 +63,7 @@ class KartuPengpin extends Model
         return LogOptions::defaults()
             ->logOnly(['status', 'pengpin_number', 'expiry_date', 'revoke_reason'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     /**
@@ -115,7 +114,7 @@ class KartuPengpin extends Model
     public function isActive(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->status === KartuPengpinStatus::ACTIVE && !$this->is_expired
+            get: fn () => $this->status === KartuPengpinStatus::ACTIVE && ! $this->is_expired
         );
     }
 
@@ -140,7 +139,7 @@ class KartuPengpin extends Model
     }
 
     // Backward compatibility accessors
-    
+
     /**
      * Alias untuk pengpin_number (backward compatibility)
      */
