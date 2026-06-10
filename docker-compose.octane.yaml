@@ -46,7 +46,7 @@ services:
           memory: 512M
 
   pgsql:
-    image: postgres:18-alpine
+    image: postgres:latest
     container_name: app-postgres
     restart: unless-stopped
     environment:
