@@ -9,10 +9,12 @@ export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
-            ssr: 'resources/js/ssr.tsx',
+            // ssr: 'resources/js/ssr.tsx',
             refresh: true,
         }),
-        inertia(),
+        inertia({
+            ssr:false
+        }),
         react({
             babel: {
                 plugins: ['babel-plugin-react-compiler'],
