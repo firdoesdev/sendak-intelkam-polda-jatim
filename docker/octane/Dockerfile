@@ -61,6 +61,13 @@ COPY --chown=www-data:www-data . .
 
 USER www-data
 
+# Ensure required directories exist (may be excluded via .dockerignore)
+RUN mkdir -p bootstrap/cache \
+    storage/logs \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views
+
 # Install PHP dependencies
 RUN composer install \
     --no-dev \
