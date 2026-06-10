@@ -73,6 +73,8 @@ RUN composer install \
 
 
 # Install Node dependencies & build frontend (need dev deps for build)
+ARG VITE_APP_NAME=Laravel
+ENV VITE_APP_NAME=$VITE_APP_NAME
 RUN npm ci && npm run build:ssr
 
 # Clean up
