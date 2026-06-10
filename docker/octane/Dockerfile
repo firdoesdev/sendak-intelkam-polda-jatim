@@ -73,7 +73,7 @@ RUN composer install \
 
 
 # Install Node dependencies & build frontend (need dev deps for build)
-RUN npm ci && npm run build
+RUN npm ci && npm run build::ssr
 
 # Clean up
 RUN rm -rf node_modules .git tests
