@@ -13,7 +13,7 @@ import { useReactTable, getCoreRowModel, flexRender, ColumnDef, getFilteredRowMo
 import { Link, usePage } from "@inertiajs/react";
 import { PaginationMeta } from "@/types";
 import { ChevronLeft, ChevronsLeft, ChevronRight, ChevronsRight } from 'lucide-react'
-import { useState, useEffect, Activity, useEffectEvent } from "react";
+import { useState, useEffect } from "react";
 import clsx from "clsx";
 
 interface DataTableProps<T> {
@@ -43,12 +43,8 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
         }
     });
 
-    const selectedRow = useEffectEvent((onSelectedRows?: (rows: T[]) => void) => {
-        onSelectedRows?.(table.getFilteredSelectedRowModel().rows.map((row) => row.original));
-    })
-    
     useEffect(() => {
-        selectedRow(props.onSelectedRows);
+        props.onSelectedRows?.(table.getFilteredSelectedRowModel().rows.map((row) => row.original));
     }, [props.onSelectedRows, rowSelection]);
 
     return (
@@ -59,13 +55,13 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                     {props.topActions}
                 </div>
             </div>
-            <div className="mb-4 flex flex-col lg:flex-row justify-start gap-2">
-                <Activity mode={props.onSearch ? "visible" : "hidden"}>
-                    <Input placeholder="Search" className="w-full lg:max-w-1/4" onChange={(e) => props.onSearch?.(e.target.value)} />
-                </Activity>
-                <div className="flex gap-2">
+            <div className="mb-4 flex flex-col lg:flex-row lg:justify-between space-y-2 items-center">
+                <div className="flex">
                     {props.filters}
                 </div>
+                  {props.onSearch && (
+                    <Input placeholder="Search" className="w-full lg:max-w-1/4" onChange={(e) => props.onSearch?.(e.target.value)} />
+                )}
             </div>
             
             <Table>
@@ -115,12 +111,12 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                 'justify-between': table.getFilteredSelectedRowModel().rows.length > 0,
                 'justify-end': table.getFilteredSelectedRowModel().rows.length === 0,
             })}>
-                <Activity mode={table.getFilteredSelectedRowModel().rows.length > 0 ? "visible" : "hidden"}>
+                {table.getFilteredSelectedRowModel().rows.length > 0 && (
                     <div className="text-muted-foreground flex-1 text-sm">
                         {table.getFilteredSelectedRowModel().rows.length} of{" "}
                         {table.getFilteredRowModel().rows.length} row(s) selected.
                     </div>
-                </Activity>
+                )}
                 <div className="flex items-center space-x-2">
                     <Button
                         asChild
