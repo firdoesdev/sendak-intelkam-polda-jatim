@@ -1,13 +1,13 @@
 <?php
 
-use App\Models\Permit;
-use App\Models\ExplosivesMaterial;
-use App\Models\Warehouse;
-use App\Models\Applicant;
-use App\Models\Division;
+use App\Enums\ActivityType;
 use App\Enums\PermitType;
 use App\Enums\RecommendationType;
-use App\Enums\ActivityType;
+use App\Models\Applicant;
+use App\Models\Division;
+use App\Models\ExplosivesMaterial;
+use App\Models\Permit;
+use App\Models\Warehouse;
 
 test('HANDAK permit can have recommendation type', function () {
     $division = Division::factory()->create(['code' => 'HANDAK']);
@@ -97,7 +97,8 @@ test('recommendation type has default validity days', function () {
     expect($p1->defaultValidityDays())->toBe(180);
     expect($p2->defaultValidityDays())->toBe(365);
     expect($p3->defaultValidityDays())->toBe(90);
-    expect($ijinGudang->defaultValidityDays())->toBe(730);
+    // Durasi Ijin Gudang dinamis mengikuti rekomendasi instansi terkait (mis. ESDM)
+    expect($ijinGudang->defaultValidityDays())->toBeNull();
 });
 
 test('permit can track activity type for HANDAK', function () {

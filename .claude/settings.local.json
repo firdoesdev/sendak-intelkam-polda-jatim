@@ -1,7 +1,27 @@
 {
   "permissions": {
     "allow": [
-      "Bash(php artisan *)"
+      "Bash(php artisan *)",
+      "Bash(composer require *)",
+      "Bash(sed -n '60,120p' resources/js/components/data-table.tsx)",
+      "Bash(sed -n '1,40p' resources/js/types/index.d.ts)",
+      "Bash(npm run *)",
+      "Bash(composer show *)",
+      "Bash(vendor/bin/pint --dirty --format agent)",
+      "Bash(npm ls *)",
+      "mcp__laravel-boost__browser-logs",
+      "Bash(node -e \"const {z} = require\\('zod'\\); console.log\\('ZodIssueCode:', typeof z.ZodIssueCode, z.ZodIssueCode && z.ZodIssueCode.custom\\);\")",
+      "mcp__laravel-boost__read-log-entries",
+      "Bash(npx --no-install playwright --version)",
+      "Read(//Users/mbex71/.cache/**)",
+      "Read(//Users/mbex71/Library/Caches/**)",
+      "mcp__laravel-boost__get-absolute-url",
+      "Bash(mkdir -p /Users/mbex71/.cache/handak-verify)",
+      "Bash(npm init *)",
+      "Bash(npm i *)",
+      "Read(//Applications/Google Chrome.app/Contents/MacOS/**)",
+      "Read(//Applications/**)",
+      "Bash(xargs ls)"
     ]
   }
 }

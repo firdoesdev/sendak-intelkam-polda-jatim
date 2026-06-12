@@ -74,6 +74,26 @@ class PermissionsSeeder extends Seeder
             );
         }
 
+        // Create permissions for Handak (rekom bahan peledak)
+        $handakPermissions = [
+            'view-handak-permits' => 'Melihat Rekom Handak',
+            'create-handak-permits' => 'Membuat Rekom Handak',
+            'edit-handak-permits' => 'Mengubah Rekom Handak',
+            'delete-handak-permits' => 'Menghapus Rekom Handak',
+            'approve-handak-permits' => 'Menyetujui Rekom Handak',
+            'issue-handak-si' => 'Menerbitkan No SI Rekom Handak',
+            'view-handak-stock' => 'Melihat Stok Bahan Peledak',
+            'record-handak-usage' => 'Mencatat Pemakaian Bahan Peledak',
+            'print-handak-letter' => 'Mencetak Surat Rekom Handak',
+        ];
+
+        foreach ($handakPermissions as $name => $description) {
+            Permission::firstOrCreate(
+                ['name' => $name],
+                ['guard_name' => 'web']
+            );
+        }
+
         $this->command->info('✅ Permissions created successfully!');
 
         // Assign permissions to roles
@@ -102,6 +122,15 @@ class PermissionsSeeder extends Seeder
                 'delete-weapons',
                 'create-transfer-requests',
                 'approve-transfer-requests',
+                'view-handak-permits',
+                'create-handak-permits',
+                'edit-handak-permits',
+                'delete-handak-permits',
+                'approve-handak-permits',
+                'issue-handak-si',
+                'view-handak-stock',
+                'record-handak-usage',
+                'print-handak-letter',
             ]);
             $this->command->info('✅ Admin permissions assigned');
         }
@@ -116,6 +145,12 @@ class PermissionsSeeder extends Seeder
                 'create-weapons',
                 'edit-weapons',
                 'create-transfer-requests',
+                'view-handak-permits',
+                'create-handak-permits',
+                'edit-handak-permits',
+                'view-handak-stock',
+                'record-handak-usage',
+                'print-handak-letter',
             ]);
             $this->command->info('✅ Staff permissions assigned');
         }
@@ -134,8 +169,35 @@ class PermissionsSeeder extends Seeder
                 'edit-weapons',
                 'create-transfer-requests',
                 'approve-transfer-requests',
+                'view-handak-permits',
+                'approve-handak-permits',
+                'issue-handak-si',
+                'view-handak-stock',
+                'print-handak-letter',
             ]);
             $this->command->info('✅ Supervisor permissions assigned');
+        }
+
+        // Role divisi handak & super-admin (dipakai DatabaseSeeder) mendapat seluruh permission handak
+        $handakRoleNames = ['super-admin', 'handak'];
+        $allHandakPermissions = [
+            'view-handak-permits',
+            'create-handak-permits',
+            'edit-handak-permits',
+            'delete-handak-permits',
+            'approve-handak-permits',
+            'issue-handak-si',
+            'view-handak-stock',
+            'record-handak-usage',
+            'print-handak-letter',
+        ];
+
+        foreach ($handakRoleNames as $roleName) {
+            $role = Role::where('name', $roleName)->first();
+            if ($role) {
+                $role->givePermissionTo($allHandakPermissions);
+                $this->command->info("✅ {$roleName} handak permissions assigned");
+            }
         }
 
         // Viewer — read-only access
@@ -143,6 +205,8 @@ class PermissionsSeeder extends Seeder
         if ($viewer) {
             $viewer->givePermissionTo([
                 'view-weapons',
+                'view-handak-permits',
+                'view-handak-stock',
             ]);
             $this->command->info('✅ Viewer permissions assigned');
         }

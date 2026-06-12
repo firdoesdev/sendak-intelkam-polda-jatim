@@ -12,8 +12,11 @@ class Permit extends Model
 
     protected $fillable = [
         'permit_number',
+        'si_number',
         'division_id',
         'applicant_id',
+        'parent_permit_id',
+        'warehouse_id',
         'permit_type',
         'status',
         'submitted_at',
@@ -24,6 +27,11 @@ class Permit extends Model
         'notification_count',
         'recommendation_type',
         'activity_type',
+        'representative_name',
+        'representative_title',
+        'representative_nationality',
+        'purpose',
+        'activity_location',
         'created_by',
         'updated_by',
     ];
@@ -39,7 +47,7 @@ class Permit extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['status', 'permit_type', 'valid_from', 'valid_to', 'recommendation_type', 'activity_type'])
+            ->logOnly(['status', 'permit_type', 'valid_from', 'valid_to', 'recommendation_type', 'activity_type', 'si_number', 'parent_permit_id'])
             ->logOnlyDirty()
             ->dontLogEmptyChanges();
     }
@@ -89,6 +97,31 @@ class Permit extends Model
     public function explosivesMaterials()
     {
         return $this->hasMany(ExplosivesMaterial::class);
+    }
+
+    public function parentPermit()
+    {
+        return $this->belongsTo(Permit::class, 'parent_permit_id');
+    }
+
+    public function childPermits()
+    {
+        return $this->hasMany(Permit::class, 'parent_permit_id');
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
+
+    public function handakReferences()
+    {
+        return $this->hasMany(HandakPermitReference::class);
+    }
+
+    public function stockLedgerEntries()
+    {
+        return $this->hasMany(ExplosivesStockLedger::class);
     }
 
     public function kartuPengpin()
