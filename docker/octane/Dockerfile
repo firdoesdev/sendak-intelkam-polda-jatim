@@ -97,13 +97,17 @@ COPY --from=build --chown=www-data:www-data /var/www/html /var/www/html
 COPY docker/octane/supervisord.conf /etc/supervisord.conf
 COPY supervisor/octane.ini /etc/supervisor.d/octane.ini
 
-# Set permissions
+# Entrypoint: syncs public assets to shared nginx volume on every start
+COPY docker/octane/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Set permissions & prepare nginx public dir
 RUN chown -R www-data:www-data \
     /var/www/html/storage \
-    /var/www/html/bootstrap/cache
-
-USER www-data
+    /var/www/html/bootstrap/cache && \
+    mkdir -p /srv/public
 
 EXPOSE 8000
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+# Entrypoint runs as root to write to the named volume, supervisord manages www-data
+ENTRYPOINT ["/entrypoint.sh"]

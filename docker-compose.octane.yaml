@@ -22,7 +22,8 @@ services:
     ports:
       - "3001:8000"
     volumes:
-      - app-public:/var/www/html/public
+      - app-public:/srv/public
+      - app-storage:/var/www/html/public/storage
     depends_on:
       pgsql:
         condition: service_healthy
@@ -102,4 +103,6 @@ volumes:
   redis-data:
     driver: local
   app-public:
+    driver: local
+  app-storage:
     driver: local
