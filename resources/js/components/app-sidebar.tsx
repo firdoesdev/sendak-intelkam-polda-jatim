@@ -21,6 +21,8 @@ import policeUnits from '@/routes/master-data/police-units';
 import warehouses from '@/routes/master-data/warehouses';
 import permits from '@/routes/permits';
 import weapons from '@/routes/weapons';
+import handakPermits from '@/routes/handak-permits';
+import handakStock from '@/routes/handak-stock';
 import permitRenewals from '@/routes/permits/renewals';
 import hibahTransfers from '@/routes/weapons/hibah-transfers';
 import transferRequests from '@/routes/weapons/transfer-requests';
@@ -30,11 +32,13 @@ import { Link } from '@inertiajs/react';
 import {
     ArrowLeftRight,
     BookOpen,
+    Bomb,
     CreditCard,
     Folder,
     Gift,
     Key,
     LayoutGrid,
+    Package,
     RefreshCw,
     Shield,
     Users,
@@ -130,6 +134,19 @@ const permitsNavItems: NavItem[] = [
    
 ];
 
+const handakNavItems: NavItem[] = [
+    {
+        title: 'Rekom Handak',
+        href: handakPermits.index(),
+        icon: Bomb,
+    },
+    {
+        title: 'Stok Bahan Peledak',
+        href: handakStock.index(),
+        icon: Package,
+    },
+];
+
 const polsusNavItems: NavItem[] = [
      {
         title: 'Kartu Pengpin',
@@ -176,6 +193,7 @@ export function AppSidebar() {
                 
                 <NavMain groupLabel="Permohonan & Perizinan SENPI" items={permitsNavItems} />
                 <NavMain groupLabel="Polsus" items={polsusNavItems} />
+                <NavMain groupLabel="Handak" items={handakNavItems} />
                 <NavMain
                     groupLabel="Manajemen Senjata"
                     items={weaponNavItems}

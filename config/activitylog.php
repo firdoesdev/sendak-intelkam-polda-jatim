@@ -18,6 +18,15 @@ return [
     'clean_after_days' => 365,
 
     /*
+     * The database connection and table used by the activity_log migrations.
+     * These keys were removed from the v5 package config, but the migrations
+     * in this project still read them.
+     */
+    'database_connection' => env('ACTIVITY_LOGGER_DB_CONNECTION'),
+
+    'table_name' => env('ACTIVITY_LOGGER_TABLE_NAME', 'activity_log'),
+
+    /*
      * If no log name is passed to the activity() helper
      * we use this default log name.
      */

@@ -16,12 +16,14 @@ class Warehouse extends Model
         'police_unit_id',
         'organization_id',
         'address',
+        'village',
         'city',
         'province',
         'latitude',
         'longitude',
         'capacity_kg',
         'current_load_kg',
+        'area_sqm',
         'is_active',
     ];
 
@@ -31,6 +33,7 @@ class Warehouse extends Model
         'longitude' => 'decimal:7',
         'capacity_kg' => 'decimal:2',
         'current_load_kg' => 'decimal:2',
+        'area_sqm' => 'decimal:2',
     ];
 
     public function policeUnit()
