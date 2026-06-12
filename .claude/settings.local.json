@@ -20,7 +20,8 @@
       "Bash(npm init *)",
       "Bash(npm i *)",
       "Read(//Applications/Google Chrome.app/Contents/MacOS/**)",
-      "Read(//Applications/**)"
+      "Read(//Applications/**)",
+      "Bash(xargs ls)"
     ]
   }
 }

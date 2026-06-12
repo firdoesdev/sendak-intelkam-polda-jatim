@@ -17,7 +17,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { usePage } from '@inertiajs/react';
 import { PlusIcon, Trash2Icon } from 'lucide-react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import {
     RecommendationTypeOptions,
@@ -36,8 +36,8 @@ export const HandakPermitFormFields = () => {
     const materialsArray = useFieldArray({ control: form.control, name: 'materials' });
     const referencesArray = useFieldArray({ control: form.control, name: 'references' });
 
-    const recommendationType = form.watch('recommendation_type');
-    const applicantId = form.watch('applicant_id');
+    const recommendationType = useWatch({ control: form.control, name: 'recommendation_type' });
+    const applicantId = useWatch({ control: form.control, name: 'applicant_id' });
 
     const selectedApplicant = applicants.find((applicant) => applicant.id === applicantId);
     const organizationId = selectedApplicant?.organization_id ?? null;
