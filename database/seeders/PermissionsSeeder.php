@@ -94,6 +94,23 @@ class PermissionsSeeder extends Seeder
             );
         }
 
+        // Create permissions for Permits
+        $permitPermissions = [
+            'view-permits' => 'Melihat Data Izin',
+            'create-permits' => 'Membuat Izin',
+            'edit-permits' => 'Mengubah Data Izin',
+            'delete-permits' => 'Menghapus Izin',
+            'request-permit-renewals' => 'Mengajukan Perpanjangan Izin',
+            'approval-permit-renewals' => 'Menyetujui Perpanjangan Izin',
+        ];
+
+        foreach ($permitPermissions as $name => $description) {
+            Permission::firstOrCreate(
+                ['name' => $name],
+                ['guard_name' => 'web']
+            );
+        }
+
         $this->command->info('✅ Permissions created successfully!');
 
         // Assign permissions to roles
@@ -131,6 +148,12 @@ class PermissionsSeeder extends Seeder
                 'view-handak-stock',
                 'record-handak-usage',
                 'print-handak-letter',
+                'view-permits',
+                'create-permits',
+                'edit-permits',
+                'delete-permits',
+                'request-permit-renewals',
+                'approval-permit-renewals',
             ]);
             $this->command->info('✅ Admin permissions assigned');
         }
@@ -151,6 +174,10 @@ class PermissionsSeeder extends Seeder
                 'view-handak-stock',
                 'record-handak-usage',
                 'print-handak-letter',
+                'view-permits',
+                'create-permits',
+                'edit-permits',
+                'request-permit-renewals',
             ]);
             $this->command->info('✅ Staff permissions assigned');
         }
@@ -174,6 +201,11 @@ class PermissionsSeeder extends Seeder
                 'issue-handak-si',
                 'view-handak-stock',
                 'print-handak-letter',
+                'view-permits',
+                'create-permits',
+                'edit-permits',
+                'delete-permits',
+                'approval-permit-renewals',
             ]);
             $this->command->info('✅ Supervisor permissions assigned');
         }
@@ -207,6 +239,7 @@ class PermissionsSeeder extends Seeder
                 'view-weapons',
                 'view-handak-permits',
                 'view-handak-stock',
+                'view-permits',
             ]);
             $this->command->info('✅ Viewer permissions assigned');
         }

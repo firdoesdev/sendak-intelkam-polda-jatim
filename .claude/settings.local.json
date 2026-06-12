@@ -21,7 +21,8 @@
       "Bash(npm i *)",
       "Read(//Applications/Google Chrome.app/Contents/MacOS/**)",
       "Read(//Applications/**)",
-      "Bash(xargs ls)"
+      "Bash(xargs ls)",
+      "Bash(vendor/bin/pint --dirty --format agent database/seeders/PermissionsSeeder.php app/Policies/PermitPolicy.php)"
     ]
   }
 }
