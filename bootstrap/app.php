@@ -2,13 +2,14 @@
 
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -37,9 +38,30 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(function (AuthorizationException $e, Request $request) {
-            if ($request->inertia()) {
-                return redirect()->back(303)->with('error', 'Anda tidak memiliki akses untuk melakukan tindakan ini.');
+        $exceptions->respond(function (Response $response, Throwable $e, Request $request) {
+            $status = $response->getStatusCode();
+
+            // CSRF token mismatch: send the user back with a friendly message.
+            if ($status === 419) {
+                return back()->with('error', 'Halaman kedaluwarsa, silakan coba lagi.');
             }
+
+            // Authorization denied on an Inertia request: redirect back with a flash
+            // so the user sees a toast instead of a raw, non-Inertia error response.
+            if ($status === 403 && $request->inertia()) {
+                return back()->with('error', 'Anda tidak memiliki akses untuk melakukan tindakan ini.');
+            }
+
+            // Friendly Inertia error pages for unhandled HTTP errors in production.
+            // Locally the default Inertia error modal is kept so the real backend
+            // exception/stack trace stays visible while debugging.
+            if (! app()->environment(['local', 'testing'])
+                && in_array($status, [500, 503, 404, 403])) {
+                return Inertia::render('error-page', ['status' => $status])
+                    ->toResponse($request)
+                    ->setStatusCode($status);
+            }
+
+            return $response;
         });
     })->create();

@@ -6,6 +6,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
 import {Toaster} from '@/components/ui/sonner'
+import { registerFlashToasts } from '@/components/flash-toaster';
+import { SharedData } from '@/types';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -17,6 +19,8 @@ createInertiaApp({
             import.meta.glob('./pages/**/*.tsx'),
         ),
     setup({ el, App, props }) {
+        registerFlashToasts((props.initialPage.props as unknown as SharedData).flash);
+
         const root = createRoot(el);
 
         root.render(
