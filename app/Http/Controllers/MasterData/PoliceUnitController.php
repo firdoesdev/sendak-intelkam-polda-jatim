@@ -33,10 +33,9 @@ class PoliceUnitController extends Controller
     {
         //
         return Inertia::render('master-data/police-units/index',[
-            // 'data' => PoliceUnit::orderByDesc('created_at')->paginate(10)
-            'data' => $this->listPoliceUnit->execute([
+            'data' => Inertia::defer(fn()=>$this->listPoliceUnit->execute([
                 'search' => $request->search ?? null
-            ])
+            ]))
         ]);
     }
 

@@ -1,8 +1,9 @@
 import AppLayout from '@/layouts/app-layout';
 import policeUnits from '@/routes/master-data/police-units';
 import { BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Deferred, Head } from '@inertiajs/react';
 import PoliceUnitDataTable from './data-tables/table';
+import LoadingFallback from '@/components/loading-page';
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -17,7 +18,9 @@ const PoliceUnitsPage = () => {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Data Kepolisian" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+                <Deferred data='data' fallback={<LoadingFallback />}>
                 <PoliceUnitDataTable/>
+                </Deferred>
             </div>
         </AppLayout>
     );

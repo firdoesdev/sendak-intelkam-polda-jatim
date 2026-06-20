@@ -40,9 +40,9 @@ class WarehouseController extends Controller
     {
         //
         return Inertia::render('master-data/warehouses/index', [
-            'data' => $this->listWarehouse->execute([
+            'data' => Inertia::defer(fn()=>$this->listWarehouse->execute([
                 'search' => $request->search ?? null
-            ]),
+            ])),
             'policeUnits' => PoliceUnit::select('id', 'name', 'code')->where('is_active', true)->orderBy('name')->get(),
             'organizations' => Organization::select('id', 'name')->orderBy('name')->get(),
         ]);

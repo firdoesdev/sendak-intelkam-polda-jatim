@@ -38,9 +38,9 @@ class OrganizationController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('master-data/organizations/index',[
-            'data' => $this->listOrganization->execute([
+            'data' => Inertia::defer(fn()=>$this->listOrganization->execute([
                 'search' => $request->search ?? null
-            ])
+            ]))
         ]);
     }
 
