@@ -27,7 +27,8 @@ RUN apk add --no-cache --virtual .build-deps \
     pcntl \
     sockets \
     && pecl install -D 'enable-sockets="yes" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="no" enable-swoole-json="yes" enable-swoole-curl="no" enable-cares="no" enable-brotli="no" enable-zstd="no"' swoole \
-    && docker-php-ext-enable swoole \
+    && pecl install -D 'enable-redis-igbinary="no" enable-redis-lzf="no" enable-redis-zstd="no"' redis \
+    && docker-php-ext-enable swoole redis \
     && apk del .build-deps
 
 # PHP config
