@@ -20,7 +20,8 @@ const PersonDataTable = () => {
     return (
         <DataTable<TPerson>
             onSearch={handleSearch}
-            title="Data Person"
+            title="Data Profile"
+            description='Kelola dan pengaturan data profile'
             columns={columns}
             data={page.props.data.data}
             topActions={[<CreatePersonForm key="add-person" />]}

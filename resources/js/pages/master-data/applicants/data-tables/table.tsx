@@ -20,7 +20,8 @@ const ApplicantDataTable = () => {
     return (
         <DataTable<TApplicant>
             onSearch={handleSearch}
-            title="Data Pemohon"
+            title="Pengajuan & Permohonan Ijin"
+            description='Kelola data pengajuan perijinan perorangan & instansi'
             columns={columns}
             data={page.props.data.data}
             topActions={[<CreateApplicantForm key="add-applicant" />]}

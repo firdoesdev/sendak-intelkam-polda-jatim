@@ -6,7 +6,7 @@ import PersonDataTable from './data-tables/table';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Data Person',
+        title: 'Data Profile',
         href: persons.index().url,
     },
 ];
@@ -14,7 +14,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const PersonsPage = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Data Person" />
+            <Head title="Data Profile" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <PersonDataTable />
             </div>

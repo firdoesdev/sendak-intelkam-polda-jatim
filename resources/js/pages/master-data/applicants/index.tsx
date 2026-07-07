@@ -6,7 +6,7 @@ import ApplicantDataTable from './data-tables/table';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Data Pemohon',
+        title: 'Pengajuan & Permohonan Ijin',
         href: applicants.index().url,
     },
 ];
@@ -14,7 +14,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const ApplicantsPage = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Data Pemohon" />
+            <Head title="Pengajuan & Permohonan Ijin" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <ApplicantDataTable />
             </div>

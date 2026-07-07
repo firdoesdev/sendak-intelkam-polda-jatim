@@ -47,9 +47,14 @@ export interface User {
     two_factor_enabled?: boolean;
     created_at: string;
     updated_at: string;
+    roles: {
+        guard_name: string
+        id: number
+        name: string
+    }[],
     default_division?: {
         id: number;
-        code: string;
+        code: 'senpi' | 'polsus' | 'handak' | 'sport';
         name: string;
         is_active: boolean;
     };

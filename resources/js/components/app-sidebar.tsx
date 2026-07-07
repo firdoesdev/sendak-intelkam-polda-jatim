@@ -1,4 +1,3 @@
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -11,28 +10,28 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import handakPermits from '@/routes/handak-permits';
+import handakStock from '@/routes/handak-stock';
+import permissions from '@/routes/iam/permissions';
 import roles from '@/routes/iam/roles';
 import users from '@/routes/iam/users';
-import permissions from '@/routes/iam/permissions';
+import kartuPengpin from '@/routes/kartu-pengpin';
 import applicants from '@/routes/master-data/applicants';
 import organizations from '@/routes/master-data/organizations';
 import persons from '@/routes/master-data/persons';
 import policeUnits from '@/routes/master-data/police-units';
 import warehouses from '@/routes/master-data/warehouses';
 import permits from '@/routes/permits';
-import weapons from '@/routes/weapons';
-import handakPermits from '@/routes/handak-permits';
-import handakStock from '@/routes/handak-stock';
 import permitRenewals from '@/routes/permits/renewals';
+import weapons from '@/routes/weapons';
 import hibahTransfers from '@/routes/weapons/hibah-transfers';
 import transferRequests from '@/routes/weapons/transfer-requests';
-import kartuPengpin from '@/routes/kartu-pengpin';
-import { type NavItem } from '@/types';
+import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
     ArrowLeftRight,
-    BookOpen,
     Bomb,
+    BookOpen,
     CreditCard,
     Folder,
     Gift,
@@ -53,12 +52,7 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-const IamNavItems: NavItem[] = [
-    {
-        title: 'Users',
-        href: users.index(),
-        icon: Users,
-    },
+const RolePermissionsNavItems: NavItem[] = [
     {
         title: 'Roles',
         href: roles.index(),
@@ -68,6 +62,14 @@ const IamNavItems: NavItem[] = [
         title: 'Permissions',
         href: permissions.index(),
         icon: Key,
+    },
+];
+
+const IamNavItems: NavItem[] = [
+    {
+        title: 'Users',
+        href: users.index(),
+        icon: Users,
     },
 ];
 
@@ -87,10 +89,7 @@ const masterNavItems: NavItem[] = [
         href: organizations.index(),
         icon: LayoutGrid,
     },
-   
 ];
-
-
 
 const weaponNavItems: NavItem[] = [
     {
@@ -111,13 +110,13 @@ const weaponNavItems: NavItem[] = [
 ];
 
 const permitsNavItems: NavItem[] = [
-     {
-        title: 'Data Pemohon',
+    {
+        title: 'Data Profile',
         href: persons.index(),
         icon: LayoutGrid,
     },
     {
-        title: 'Permohonan Perizinan',
+        title: 'Pengajuan & Permohonan Ijin',
         href: applicants.index(),
         icon: LayoutGrid,
     },
@@ -131,8 +130,11 @@ const permitsNavItems: NavItem[] = [
         href: permitRenewals.index(),
         icon: RefreshCw,
     },
-   
 ];
+
+// const senpiNavItems: NavItem[] = [
+
+// ];
 
 const handakNavItems: NavItem[] = [
     {
@@ -148,7 +150,7 @@ const handakNavItems: NavItem[] = [
 ];
 
 const polsusNavItems: NavItem[] = [
-     {
+    {
         title: 'Kartu Pengpin',
         href: kartuPengpin.index(),
         icon: CreditCard,
@@ -169,6 +171,10 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { props } = usePage<SharedData>();
+
+    const { default_division, roles } = props.auth.user;
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -183,23 +189,49 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
-                <NavMain items={mainNavItems} />
-                <NavMain
-                    groupLabel="Account & Permissions"
-                    items={IamNavItems}
-                />
-                
-                
-                <NavMain groupLabel="Permohonan & Perizinan SENPI" items={permitsNavItems} />
-                <NavMain groupLabel="Polsus" items={polsusNavItems} />
-                <NavMain groupLabel="Handak" items={handakNavItems} />
-                <NavMain
-                    groupLabel="Manajemen Senjata"
-                    items={weaponNavItems}
-                />
-                <NavMain groupLabel="Master Data" items={masterNavItems} />
-            </SidebarContent>
+            {roles.length !== 0 ? (
+                <SidebarContent>
+                    <NavMain items={mainNavItems} />
+                    <NavMain
+                        groupLabel="Account & Permissions"
+                        items={
+                            roles.some((role) => role.name === 'super-admin')
+                                ? [...IamNavItems, ...RolePermissionsNavItems]
+                                : IamNavItems
+                        }
+                    />
+
+                    <NavMain
+                        groupLabel="Data Permohonan & Ijin"
+                        items={permitsNavItems}
+                    />
+
+                    {/* Menu Senpi & Sport */}
+                    {default_division?.code === 'senpi' ||
+                    default_division?.code === 'sport' ||
+                    roles.some((role) => role.name === 'senpi') ||
+                    roles.some((role) => role.name === 'sport') ? (
+                        <NavMain
+                            groupLabel="Manajemen Senjata"
+                            items={weaponNavItems}
+                        />
+                    ) : null}
+
+                    {/* Polsus Menu */}
+                    {default_division?.code === 'polsus' ||
+                    roles.some((role) => role.name === 'polsus') ? (
+                        <NavMain groupLabel="Polsus" items={polsusNavItems} />
+                    ) : null}
+
+                    {/* Handak Menu */}
+                    {default_division?.code === 'handak' ||
+                    roles.some((role) => role.name === 'handak') ? (
+                        <NavMain groupLabel="Handak" items={handakNavItems} />
+                    ) : null}
+
+                    <NavMain groupLabel="Master Data" items={masterNavItems} />
+                </SidebarContent>
+            ) : null}
 
             <SidebarFooter>
                 {/* <NavFooter items={footerNavItems} className="mt-auto" /> */}
