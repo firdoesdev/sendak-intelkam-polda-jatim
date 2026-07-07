@@ -28,7 +28,7 @@ import hibahTransfers from '@/routes/weapons/hibah-transfers';
 import transferRequests from '@/routes/weapons/transfer-requests';
 import kartuPengpin from '@/routes/kartu-pengpin';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
     ArrowLeftRight,
     BookOpen,

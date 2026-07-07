@@ -16,7 +16,7 @@ class ListUser
     public function execute(array $request)
     {
         //
-        return User::with('roles')
+        return User::with('roles','defaultDivision','policeUnit')
             ->when($request['search'] ?? null, function ($query, $search) {
                 $query->whereRaw('LOWER(name) like ?', ['%' . strtolower($search) . '%'])
                       ->orWhereRaw('LOWER(email) like ?', ['%' . strtolower($search) . '%']);
