@@ -16,25 +16,25 @@ class DivisionSeeder extends Seeder
         //
         $divisions = [
             [
-                'code' => 'SENPI',
+                'code' => 'senpi',
                 'name' => 'Divisi Senjata dan Perlengkapan',
                 'description' => 'Divisi yang mengelola senjata dan perlengkapan terkait.',
                 'is_active' => true,
             ],
             [
-                'code' => 'POLSUS',
+                'code' => 'polsus',
                 'name' => 'Divisi Polisi Khusus',
                 'description' => 'Divisi yang bertanggung jawab atas operasi polisi khusus.',
                 'is_active' => true,
             ],
             [
-                'code' => 'HANDAK',
+                'code' => 'handak',
                 'name' => 'Divisi Handak',
                 'description' => 'Divisi yang mengelola bahan peledak dan alat bantu peledak.',
                 'is_active' => true,
             ],
             [
-                'code' => 'SPORT',
+                'code' => 'sport',
                 'name' => 'Divisi Olahraga',
                 'description' => 'Divisi yang mengelola kegiatan olahraga di lingkungan kepolisian.',
                 'is_active' => true,
